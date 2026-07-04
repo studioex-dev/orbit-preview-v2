@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orbit — The Event Networking Experience</title>
+<meta name="description" content="Orbit turns any event's attendees into a live, measurable network via a simple QR card. One scan turns two strangers into a connection.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#050507;
+  --ink2:#0A0E1A;
+  --white:#F5F4F0;
+  --grey:#8A8F98;
+  --grey-l:#B8BCC4;
+  --grey-d:#4A4E57;
+  --yellow:#F5C518;
+  --n-blue:#3B6FF6;
+  --n-green:#2ECC71;
+  --n-red:#E74C3C;
+  --n-teal:#1ABC9C;
+  --n-orange:#E67E22;
+  --n-violet:#8E7CFF;
+  --serif:'Fraunces',Georgia,serif;
+  --mono:'Space Mono',monospace;
+  --sans:'Inter',-apple-system,sans-serif;
+  --pad:clamp(20px,5vw,80px);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:auto}
+html.lenis{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto}
+body{
+  background:var(--ink);
+  color:var(--white);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+::selection{background:var(--yellow);color:var(--ink)}
+a{color:inherit;text-decoration:none}
+canvas{display:block}
+
+/* ---------- Typography ---------- */
+.eyebrow{
+  font-family:var(--mono);
+  font-size:12px;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  color:var(--yellow);
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:34px;
+}
+.eyebrow.grey{color:var(--grey)}
+.eyebrow::before{content:"";width:34px;height:1px;background:currentColor;opacity:.7}
+.eyebrow.center{justify-content:center}
+.eyebrow.center::after{content:"";width:34px;height:1px;background:currentColor;opacity:.7}
+h1,h2,h3,.serif{
+  font-family:var(--serif);
+  font-weight:300;
+  line-height:1.04;
+  letter-spacing:-0.015em;
+}
+h1{font-size:clamp(2.6rem,7.2vw,7.2rem)}
+h2{font-size:clamp(2.1rem,4.6vw,4.5rem)}
+h3{font-size:clamp(1.4rem,2.2vw,2rem);line-height:1.15}
+h1 b,h2 b,h3 b,.serif b{font-weight:700}
+.body{color:var(--grey-l);font-size:clamp(16px,1.3vw,19px);max-width:56ch}
+.body.muted{color:var(--grey)}
+
+/* line reveal */
+.rv{display:block;overflow:hidden}
+.rv>span{display:block;transform:translateY(110%);will-change:transform}
+.reduced .rv>span{transform:none!important}
+
+/* ---------- Layout ---------- */
+section{position:relative;padding:clamp(90px,12vh,160px) var(--pad)}
+.wrap{max-width:1440px;margin:0 auto;position:relative}
+.narrow{max-width:1200px;margin:0 auto;position:relative}
+.full-bleed{padding-left:0;padding-right:0}
+
+/* ---------- Nav ---------- */
+nav{
+  position:fixed;inset:0 0 auto 0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 clamp(18px,3vw,44px);
+  height:74px;
+  transition:background .45s,border-color .45s,backdrop-filter .45s;
+  border-bottom:1px solid transparent;
+}
+nav.solid{background:rgba(5,5,7,.82);backdrop-filter:blur(14px);border-bottom-color:rgba(245,244,240,.08)}
+.logo{display:flex;align-items:center;gap:12px;font-family:var(--serif);font-weight:600;font-size:22px;letter-spacing:.01em}
+.logo svg{width:30px;height:30px}
+.logo small{font-family:var(--mono);font-size:9px;letter-spacing:.22em;color:var(--grey);text-transform:uppercase;margin-left:6px;padding-left:14px;border-left:1px solid var(--grey-d)}
+.nav-links{display:flex;gap:34px;font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.nav-links a{color:var(--grey-l);position:relative;padding:6px 0;transition:color .25s}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:0;background:var(--yellow);transition:width .3s}
+.nav-links a:hover{color:var(--white)}
+.nav-links a:hover::after{width:100%}
+.nav-ctas{display:flex;gap:12px;align-items:center}
+@media(max-width:900px){.nav-links{display:none}}
+
+/* ---------- Buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+  padding:15px 30px;border:1px solid var(--white);color:var(--white);
+  cursor:pointer;background:transparent;transition:background .3s,color .3s,border-color .3s;
+  will-change:transform;
+}
+.btn:hover{background:var(--white);color:var(--ink)}
+.btn.primary{background:var(--yellow);border-color:var(--yellow);color:var(--ink);font-weight:700}
+.btn.primary:hover{background:#ffd83d;border-color:#ffd83d}
+.btn.small{padding:10px 20px;font-size:11px}
+
+/* ---------- Odometer ---------- */
+.odo{display:inline-flex;overflow:hidden;font-variant-numeric:tabular-nums;vertical-align:baseline}
+.odo .col{display:inline-block;height:1em;line-height:1;overflow:hidden}
+.odo .col .stack{display:block;transform:translateY(0);transition:transform 2.2s cubic-bezier(.16,1,.3,1)}
+.odo .col .stack span{display:block;height:1em;line-height:1}
+.odo .static{display:inline-block;height:1em;line-height:1}
+
+/* ---------- Hero ---------- */
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:12vh;overflow:hidden}
+#heroCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+#hero .wrap{z-index:2}
+#hero h1{max-width:14ch}
+#hero .sub{margin-top:40px;max-width:44ch;font-size:clamp(17px,1.5vw,21px);color:var(--grey-l)}
+#hero .sub b{color:var(--white);font-weight:600}
+.hero-meta{
+  position:absolute;bottom:40px;right:var(--pad);
+  font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--grey);
+  display:flex;align-items:center;gap:12px;z-index:2;
+}
+.hero-meta .dot{width:7px;height:7px;border-radius:50%;background:var(--yellow);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+.scroll-hint{position:absolute;bottom:40px;left:var(--pad);font-family:var(--mono);font-size:10px;letter-spacing:.3em;color:var(--grey);text-transform:uppercase;z-index:2}
+.scroll-hint::after{content:"";display:block;width:1px;height:44px;background:linear-gradient(var(--grey),transparent);margin:12px 0 0 2px}
+
+/* sticky demo cta */
+#stickyCta{
+  position:fixed;bottom:28px;right:28px;z-index:99;
+  opacity:0;transform:translateY(20px);pointer-events:none;
+  transition:opacity .5s,transform .5s;
+}
+#stickyCta.on{opacity:1;transform:none;pointer-events:auto}
+
+/* ---------- Stakes / globe ---------- */
+#stakes{min-height:110vh;display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center}
+#globeCanvas{position:absolute;inset:0;width:100%;height:100%;opacity:.9}
+#stakes h2{position:relative;z-index:2;max-width:22ch;margin:0 auto;font-size:clamp(2rem,4.4vw,4.2rem);text-shadow:0 0 60px rgba(5,5,7,.9)}
+#stakes .veil{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(5,5,7,.25) 0%,rgba(5,5,7,.72) 100%)}
+
+/* ---------- Problem ---------- */
+.problem-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(245,244,240,.09);margin-top:70px}
+.problem-card{background:var(--ink);padding:clamp(28px,3vw,52px);position:relative;min-height:340px;display:flex;flex-direction:column}
+.problem-card .idx{font-family:var(--mono);font-size:clamp(3rem,5vw,4.6rem);color:var(--yellow);line-height:1;margin-bottom:auto}
+.problem-card h3{margin:36px 0 14px}
+.problem-card p{color:var(--grey);font-size:15.5px}
+.problem-close{margin-top:110px;text-align:center}
+.problem-close h2{max-width:26ch;margin:0 auto}
+@media(max-width:900px){.problem-cards{grid-template-columns:1fr}}
+
+/* ---------- Reveal (What is Orbit) ---------- */
+#reveal{overflow:hidden;text-align:center;padding-top:clamp(120px,18vh,220px)}
+#revealCanvas{position:absolute;inset:0;width:100%;height:100%;opacity:.5}
+#reveal .wrap{z-index:2}
+#reveal h2{font-size:clamp(2.4rem,5.6vw,5.6rem);max-width:18ch;margin:0 auto}
+.angles{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,3vw,56px);margin-top:clamp(80px,10vh,130px);text-align:left}
+.angle{padding-top:26px;border-top:2px solid var(--grey-d)}
+.angle.blue{border-top-color:var(--n-blue)}
+.angle.red{border-top-color:var(--n-red)}
+.angle.yellow{border-top-color:var(--yellow)}
+.angle .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.26em;color:var(--grey-l);margin-bottom:16px}
+.angle p{color:var(--grey);font-size:15.5px}
+.angle p b{color:var(--white);font-weight:600}
+@media(max-width:900px){.angles{grid-template-columns:1fr}}
+
+/* ---------- How it works ---------- */
+#how .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(40px,6vw,110px);align-items:center}
+.steps{display:flex;flex-direction:column;gap:0;margin-top:50px}
+.step{display:flex;align-items:center;gap:26px;padding:26px 0;border-bottom:1px solid rgba(245,244,240,.08);opacity:.28;transition:opacity .5s}
+.step.on{opacity:1}
+.step .ico{width:52px;height:52px;flex:none;border:1px solid var(--grey-d);border-radius:50%;display:grid;place-items:center;transition:border-color .5s,box-shadow .5s}
+.step.on .ico{border-color:var(--yellow);box-shadow:0 0 24px rgba(245,197,24,.25)}
+.step .ico svg{width:22px;height:22px;stroke:var(--white)}
+.step h3{font-size:clamp(1.3rem,1.8vw,1.7rem)}
+.step p{color:var(--grey);font-size:14.5px;margin-top:4px}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:44px}
+.chip{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;padding:9px 16px;border:1px solid rgba(245,244,240,.22);color:var(--grey-l);border-radius:100px}
+/* card mock */
+.card-mock{
+  background:linear-gradient(160deg,#0d1220,#05050a);
+  border:1px solid rgba(245,244,240,.12);
+  padding:clamp(28px,3vw,46px);
+  max-width:430px;margin:0 auto;
+  box-shadow:0 40px 90px rgba(0,0,0,.6);
+  transform:rotate(-1.6deg);
+}
+.card-mock .qr{width:100%;aspect-ratio:1;background:var(--white);padding:9%;margin-bottom:30px}
+.card-mock .qr svg{width:100%;height:100%}
+.card-mock .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.26em;color:var(--grey);text-transform:uppercase;margin-bottom:8px}
+.card-mock .phrase{font-family:var(--serif);font-size:clamp(1.2rem,1.7vw,1.55rem);font-weight:600;margin-bottom:26px}
+.card-mock .pin{font-family:var(--mono);font-size:clamp(2rem,3vw,2.8rem);color:var(--yellow);letter-spacing:.28em}
+@media(max-width:900px){#how .grid{grid-template-columns:1fr}}
+
+/* ---------- Journey ---------- */
+#journey{padding:0}
+#journeyPin{min-height:100vh;display:flex;align-items:center;padding:0 var(--pad);overflow:hidden}
+#journeyCanvas{position:absolute;inset:0;width:100%;height:100%;opacity:.42}
+.j-grid{display:grid;grid-template-columns:auto 1fr;gap:clamp(36px,7vw,120px);align-items:center;width:100%;max-width:1440px;margin:0 auto;position:relative;z-index:2}
+.j-num{font-family:var(--mono);font-size:clamp(6rem,14vw,13rem);line-height:1;color:var(--yellow)}
+.j-steps{position:relative;min-height:230px}
+.j-step{position:absolute;inset:0;opacity:0;transform:translateY(24px);transition:opacity .5s,transform .5s;pointer-events:none}
+.j-step.on{opacity:1;transform:none}
+.j-step h3{font-size:clamp(1.8rem,3.4vw,3rem);margin-bottom:16px}
+.j-step p{color:var(--grey-l);max-width:46ch}
+.j-track{position:absolute;left:var(--pad);right:var(--pad);bottom:46px;height:1px;background:rgba(245,244,240,.12);z-index:2}
+.j-track i{position:absolute;left:0;top:0;height:100%;width:0;background:var(--yellow);transition:width .2s linear}
+.j-eyebrow{position:absolute;top:110px;left:var(--pad);z-index:2}
+
+/* ---------- Match ---------- */
+#match .grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,110px);align-items:center}
+.goal-panel{border:1px solid rgba(245,244,240,.12);padding:clamp(26px,3vw,44px);background:linear-gradient(170deg,rgba(13,18,32,.7),rgba(5,5,10,.9))}
+.goal-panel .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--grey);margin-bottom:20px}
+.goal-chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:28px}
+.goal-chip{font-size:13.5px;padding:10px 18px;border:1px solid rgba(245,244,240,.2);border-radius:100px;cursor:pointer;color:var(--grey-l);transition:all .25s;user-select:none}
+.goal-chip:hover{border-color:var(--grey-l)}
+.goal-chip.sel{background:var(--yellow);border-color:var(--yellow);color:var(--ink);font-weight:600}
+.goal-panel .go{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--yellow);cursor:pointer}
+.mini-path{margin-top:34px;border-top:1px solid rgba(245,244,240,.1);padding-top:26px}
+#matchMini{width:100%;height:130px}
+.mini-cap{font-family:var(--mono);font-size:11.5px;color:var(--grey);letter-spacing:.06em;margin-top:10px}
+.mini-cap b{color:var(--n-teal);font-weight:700}
+.match-sub{margin-top:26px;color:var(--grey);font-size:15px;font-style:italic}
+@media(max-width:900px){#match .grid{grid-template-columns:1fr}}
+
+/* ---------- Live viz ---------- */
+#live{padding:0;min-height:110vh;display:flex;align-items:center;overflow:hidden}
+.venue{position:absolute;inset:0;background:
+  radial-gradient(ellipse 90% 55% at 50% 108%,rgba(59,111,246,.16),transparent 60%),
+  radial-gradient(ellipse 60% 40% at 78% 0%,rgba(142,124,255,.10),transparent 60%),
+  linear-gradient(#07080f,#050507)}
+.venue::after{content:"";position:absolute;inset:auto 0 0 0;height:38%;background:
+  repeating-linear-gradient(90deg,transparent 0 120px,rgba(245,244,240,.028) 120px 121px),
+  repeating-linear-gradient(0deg,transparent 0 60px,rgba(245,244,240,.028) 60px 61px);
+  transform:perspective(700px) rotateX(58deg);transform-origin:bottom;opacity:.8}
+#liveCanvas{position:absolute;inset:0;width:100%;height:100%}
+#live .wrap{z-index:2;width:100%;padding:120px var(--pad)}
+#live .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(40px,6vw,100px);align-items:end}
+.live-list{list-style:none;margin-top:40px;display:flex;flex-direction:column;gap:14px}
+.live-list li{display:flex;gap:14px;align-items:baseline;color:var(--grey-l);font-size:15.5px}
+.live-list li::before{content:"";width:8px;height:8px;flex:none;background:var(--yellow);transform:translateY(-1px)}
+.stat-card{background:rgba(5,5,7,.7);backdrop-filter:blur(12px);border:1px solid rgba(245,244,240,.14);padding:clamp(26px,3vw,42px)}
+.stat-card .livelbl{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;letter-spacing:.26em;color:var(--grey-l);text-transform:uppercase;margin-bottom:22px}
+.stat-card .livelbl .dot{width:8px;height:8px;border-radius:50%;background:#ff4b4b;animation:pulse 1.4s infinite}
+.stat-card .big{font-family:var(--serif);font-weight:700;font-size:clamp(3.4rem,6vw,5.6rem);line-height:1;color:var(--yellow)}
+.stat-card .unit{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--grey);margin-top:10px}
+.stat-sub{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:30px;padding-top:24px;border-top:1px solid rgba(245,244,240,.1)}
+.stat-sub div b{display:block;font-family:var(--mono);font-size:16px;color:var(--white)}
+.stat-sub div span{font-size:11.5px;color:var(--grey)}
+@media(max-width:900px){#live .grid{grid-template-columns:1fr}}
+
+/* ---------- Installation ---------- */
+#install .stage{position:relative;height:clamp(420px,62vh,640px);border:1px solid rgba(245,244,240,.1);margin-top:60px;background:radial-gradient(ellipse at center,#0a0e1a 0%,#050507 75%);cursor:crosshair;overflow:hidden}
+#installCanvas{position:absolute;inset:0;width:100%;height:100%}
+.node-card{
+  position:absolute;z-index:3;pointer-events:none;
+  background:rgba(5,5,7,.88);border:1px solid var(--yellow);
+  padding:16px 20px;min-width:210px;
+  opacity:0;transform:translateY(8px);transition:opacity .25s,transform .25s;
+}
+.node-card.on{opacity:1;transform:none}
+.node-card .nm{font-family:var(--serif);font-weight:600;font-size:19px}
+.node-card .rl{font-size:12px;color:var(--grey);margin-bottom:10px}
+.node-card .row{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--grey-l);padding:3px 0}
+.node-card .row b{color:var(--yellow)}
+.install-points{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,3vw,50px);margin-top:50px}
+.install-points h3{font-size:1.15rem;margin-bottom:8px}
+.install-points p{color:var(--grey);font-size:14.5px}
+@media(max-width:900px){.install-points{grid-template-columns:1fr}}
+
+/* ---------- Payoffs ---------- */
+.payoffs{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,2.4vw,40px);margin-top:64px}
+.payoff{border:1px solid rgba(245,244,240,.1);padding:clamp(28px,3vw,46px);background:linear-gradient(180deg,rgba(13,18,32,.35),transparent)}
+.payoff .ring{width:58px;height:58px;border-radius:50%;border:2px solid;display:grid;place-items:center;margin-bottom:30px}
+.payoff.c1 .ring{border-color:var(--n-blue)}
+.payoff.c2 .ring{border-color:var(--n-orange)}
+.payoff.c3 .ring{border-color:var(--n-green)}
+.payoff .ring svg{width:24px;height:24px;stroke:var(--white)}
+.payoff .lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.26em;color:var(--grey);text-transform:uppercase;margin-bottom:12px}
+.payoff h3{margin-bottom:18px}
+.payoff ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.payoff li{color:var(--grey-l);font-size:14.5px;padding-left:18px;position:relative}
+.payoff li::before{content:"—";position:absolute;left:0;color:var(--grey-d)}
+.payoff-close{margin-top:100px;text-align:center}
+.payoff-close h2{max-width:26ch;margin:0 auto}
+@media(max-width:900px){.payoffs{grid-template-columns:1fr}}
+
+/* ---------- Post event ---------- */
+#post .grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,110px);align-items:center}
+.report-mock{border:1px solid rgba(245,244,240,.12);background:linear-gradient(165deg,#0c1120,#06060c);padding:clamp(26px,3vw,44px);box-shadow:0 40px 100px rgba(0,0,0,.55)}
+.report-mock .rl{font-family:var(--mono);font-size:10px;letter-spacing:.26em;color:var(--yellow);text-transform:uppercase;margin-bottom:22px}
+.report-mock .head{font-family:var(--serif);font-size:clamp(1.5rem,2.2vw,2rem);line-height:1.2;margin-bottom:32px}
+.report-mock .head b{color:var(--yellow);font-weight:700}
+.bars{display:flex;flex-direction:column;gap:14px}
+.bar{display:grid;grid-template-columns:80px 1fr 44px;gap:14px;align-items:center;font-family:var(--mono);font-size:11px;color:var(--grey)}
+.bar .tr{height:5px;background:rgba(245,244,240,.08);position:relative;overflow:hidden}
+.bar .tr i{position:absolute;inset:0 auto 0 0;width:0;transition:width 1.6s cubic-bezier(.16,1,.3,1)}
+.bar:nth-child(1) .tr i{background:var(--n-blue)}
+.bar:nth-child(2) .tr i{background:var(--n-teal)}
+.bar:nth-child(3) .tr i{background:var(--n-violet)}
+.bar b{color:var(--white);text-align:right}
+@media(max-width:900px){#post .grid{grid-template-columns:1fr}}
+
+/* ---------- Proof ---------- */
+#proof{background:linear-gradient(#050507,#080b14 50%,#050507)}
+.proof-row{
+  display:grid;grid-template-columns:minmax(200px,420px) 1fr;gap:clamp(24px,5vw,90px);
+  align-items:baseline;padding:clamp(30px,4vh,52px) 0;border-bottom:1px solid rgba(245,244,240,.08);
+}
+.proof-row:first-of-type{border-top:1px solid rgba(245,244,240,.08)}
+.proof-row .num{font-family:var(--serif);font-weight:700;font-size:clamp(3.2rem,7.6vw,7rem);line-height:1;white-space:nowrap}
+.proof-row.c-blue .num{color:var(--n-blue)}
+.proof-row.c-green .num{color:var(--n-green)}
+.proof-row.c-red .num{color:var(--n-red)}
+.proof-row.c-teal .num{color:var(--n-teal)}
+.proof-row.c-orange .num{color:var(--n-orange)}
+.proof-row p{color:var(--grey-l);font-size:clamp(15px,1.3vw,18px);max-width:52ch}
+.proof-foot{font-family:var(--mono);font-size:12px;color:var(--grey);margin-top:36px;letter-spacing:.04em}
+@media(max-width:700px){.proof-row{grid-template-columns:1fr;gap:10px}}
+
+/* ---------- Where ---------- */
+.hours{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(18px,2vw,32px);margin-top:60px}
+.hour{border:1px solid rgba(245,244,240,.1);position:relative;overflow:hidden;aspect-ratio:4/4.6;background:#07080f}
+.hour canvas{position:absolute;inset:0;width:100%;height:100%}
+.hour .tag{position:absolute;top:18px;left:18px;font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--yellow);z-index:2}
+.hour .cap{position:absolute;bottom:18px;left:18px;right:18px;font-size:13.5px;color:var(--grey-l);z-index:2}
+@media(max-width:900px){.hours{grid-template-columns:1fr}.hour{aspect-ratio:16/10}}
+/* marquee */
+.marquee{overflow:hidden;border-top:1px solid rgba(245,244,240,.09);border-bottom:1px solid rgba(245,244,240,.09);padding:26px 0;margin:90px 0;white-space:nowrap}
+.marquee .track{display:inline-flex;gap:0;animation:mq 28s linear infinite}
+.marquee span{font-family:var(--serif);font-size:clamp(1.4rem,2.4vw,2.2rem);color:var(--grey-d);padding:0 34px}
+.marquee em{font-style:normal;color:var(--yellow);font-size:.6em;vertical-align:middle}
+@keyframes mq{to{transform:translateX(-50%)}}
+.reduced .marquee .track{animation:none}
+/* comparison */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(245,244,240,.1);border:1px solid rgba(245,244,240,.1)}
+.compare>div{background:var(--ink);padding:clamp(28px,3.4vw,54px)}
+.compare .hd{font-family:var(--mono);font-size:12px;letter-spacing:.24em;text-transform:uppercase;margin-bottom:30px}
+.compare .without .hd{color:var(--grey)}
+.compare .with .hd{color:var(--yellow)}
+.compare ul{list-style:none;display:flex;flex-direction:column;gap:16px}
+.compare li{display:flex;gap:14px;font-size:15px;color:var(--grey-l)}
+.compare .without li{color:var(--grey)}
+.compare li i{font-style:normal;flex:none;font-family:var(--mono)}
+.compare .without li i{color:var(--n-red)}
+.compare .with li i{color:var(--n-green)}
+@media(max-width:900px){.compare{grid-template-columns:1fr}}
+
+/* ---------- Pricing ---------- */
+.prices{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(18px,2vw,32px);margin-top:64px}
+.price{border:1px solid rgba(245,244,240,.12);padding:clamp(28px,3vw,46px);display:flex;flex-direction:column;min-height:380px;transition:border-color .3s,transform .3s;background:linear-gradient(180deg,rgba(13,18,32,.3),transparent)}
+.price:hover{border-color:var(--yellow);transform:translateY(-6px)}
+.price .idx{font-family:var(--mono);font-size:13px;color:var(--yellow);letter-spacing:.2em;margin-bottom:22px}
+.price h3{margin-bottom:14px}
+.price .use{color:var(--grey);font-size:14.5px;margin-bottom:auto}
+.price .fee{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey-l);margin-top:34px;padding-top:22px;border-top:1px solid rgba(245,244,240,.1)}
+.addon{
+  margin-top:26px;border:1px solid rgba(245,197,24,.4);padding:clamp(24px,3vw,40px);
+  display:flex;justify-content:space-between;align-items:center;gap:30px;flex-wrap:wrap;
+  background:linear-gradient(90deg,rgba(245,197,24,.06),transparent 60%);
+}
+.addon .t{font-family:var(--serif);font-size:clamp(1.3rem,2vw,1.8rem)}
+.addon .t b{font-weight:700}
+.addon p{color:var(--grey);font-size:14px;max-width:52ch}
+@media(max-width:900px){.prices{grid-template-columns:1fr}.price{min-height:0}}
+
+/* ---------- Contact ---------- */
+#contact .grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(50px,7vw,130px)}
+.field{margin-bottom:38px}
+.field label{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--grey);margin-bottom:10px}
+.field input,.field select{
+  width:100%;background:transparent;border:0;border-bottom:1px solid var(--grey-d);
+  color:var(--white);font-family:var(--sans);font-size:17px;padding:10px 0;outline:0;
+  transition:border-color .3s;border-radius:0;appearance:none;
+}
+.field select{cursor:pointer}
+.field select option{background:var(--ink2);color:var(--white)}
+.field input:focus,.field select:focus{border-bottom-color:var(--yellow)}
+#contact .mail{font-family:var(--mono);font-size:13px;color:var(--grey);margin-top:44px;letter-spacing:.08em}
+#contact .mail a{color:var(--yellow)}
+@media(max-width:900px){#contact .grid{grid-template-columns:1fr}}
+
+/* ---------- Closing ---------- */
+#closing{min-height:92vh;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden}
+#closeCanvas{position:absolute;inset:0;width:100%;height:100%;opacity:.55}
+#closing .inner{position:relative;z-index:2}
+#closing h2{font-size:clamp(2.2rem,5vw,4.8rem);max-width:24ch;margin:0 auto 54px}
+
+/* ---------- Footer ---------- */
+footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;max-width:1440px;margin:0 auto 70px}
+.foot-grid h4{font-family:var(--mono);font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--grey);margin-bottom:22px}
+.foot-grid ul{list-style:none;display:flex;flex-direction:column;gap:12px}
+.foot-grid a{color:var(--grey-l);font-size:14.5px;transition:color .25s}
+.foot-grid a:hover{color:var(--yellow)}
+.foot-base{max-width:1440px;margin:0 auto;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--grey-d);padding-top:30px;border-top:1px solid rgba(245,244,240,.07)}
+@media(max-width:900px){.foot-grid{grid-template-columns:1fr 1fr}}
+
+/* fade-up util */
+.fu{opacity:0;transform:translateY(40px)}
+.reduced .fu{opacity:1!important;transform:none!important}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav id="nav">
+  <a class="logo" href="#hero">
+    <svg viewBox="0 0 30 30" fill="none"><circle cx="15" cy="15" r="4.5" fill="#F5C518"/><ellipse cx="15" cy="15" rx="13" ry="6.5" stroke="#F5F4F0" stroke-width="1.4" transform="rotate(-24 15 15)"/><circle cx="26" cy="9.5" r="2" fill="#F5F4F0"/></svg>
+    Orbit <small>by Studio EX</small>
+  </a>
+  <div class="nav-links">
+    <a href="#reveal">System</a>
+    <a href="#how">How it Works</a>
+    <a href="#proof">The Proof</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#contact">About</a>
+  </div>
+  <div class="nav-ctas">
+    <a class="btn small magnetic" href="#contact">Demo</a>
+    <a class="btn small primary magnetic" href="#contact">Contact</a>
+  </div>
+</nav>
+
+<a id="stickyCta" class="btn primary magnetic" href="#contact">Demo →</a>
+
+<!-- ============ 2. HERO ============ -->
+<section id="hero" class="full-bleed">
+  <canvas id="heroCanvas"></canvas>
+  <div class="wrap" style="padding:0 var(--pad)">
+    <div class="eyebrow rv"><span>The Event Networking Experience</span></div>
+    <h1>
+      <span class="rv"><span>One scan turns two</span></span>
+      <span class="rv"><span>strangers into a <b>connection</b>.</span></span>
+    </h1>
+    <p class="sub rv"><span>Enhancing the most important part of networking — <b>the human touch</b>. No app. No account. A simple QR card that turns your room into a live, measurable network.</span></p>
+  </div>
+  <div class="scroll-hint">Scroll</div>
+  <div class="hero-meta"><span class="dot"></span> Live network · 4,271 connections</div>
+</section>
+
+<!-- ============ 3. STAKES / GLOBE ============ -->
+<section id="stakes" class="full-bleed">
+  <canvas id="globeCanvas"></canvas>
+  <div class="veil"></div>
+  <h2>
+    <span class="rv"><span>Everyone at your event is trying</span></span>
+    <span class="rv"><span>to meet the <b>right people</b>.</span></span>
+    <span class="rv"><span>Those who succeed have a <b>reason</b></span></span>
+    <span class="rv"><span><b>to come back</b> next year.</span></span>
+  </h2>
+</section>
+
+<!-- ============ 4. THE PROBLEM ============ -->
+<section id="problem">
+  <div class="narrow">
+    <div class="eyebrow fu">The Problem</div>
+    <h2 class="fu" style="max-width:20ch">Networking at events is <b>unorganised</b> and <b>inefficient</b>.</h2>
+    <div class="problem-cards">
+      <div class="problem-card fu">
+        <div class="idx odo" data-value="01">01</div>
+        <h3>Attendees hunt name badges</h3>
+        <p>Scanning lanyards across a crowded floor, hoping the right title walks past. The most valuable people in the room stay invisible.</p>
+      </div>
+      <div class="problem-card fu">
+        <div class="idx odo" data-value="02">02</div>
+        <h3>Contact exchange is broken</h3>
+        <p>Business cards get pocketed and forgotten. LinkedIn requests arrive with no context. The moment of connection evaporates by Monday.</p>
+      </div>
+      <div class="problem-card fu">
+        <div class="idx odo" data-value="03">03</div>
+        <h3>Event stakeholders fly blind</h3>
+        <p>Organisers, exhibitors and sponsors can't see the connections forming in their own room — the one thing everyone actually came for.</p>
+      </div>
+    </div>
+    <div class="problem-close">
+      <h2>
+        <span class="rv"><span>Networking is the reason they came.</span></span>
+        <span class="rv"><span>Yet it's the part <b>nobody is capitalising on</b>.</span></span>
+      </h2>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. WHAT IS ORBIT ============ -->
+<section id="reveal">
+  <canvas id="revealCanvas"></canvas>
+  <div class="wrap">
+    <div class="eyebrow center fu">What is Orbit?</div>
+    <h2>
+      <span class="rv"><span>The room is the <b>product</b>.</span></span>
+      <span class="rv"><span>Orbit is the <b>tool</b>.</span></span>
+    </h2>
+    <div class="angles">
+      <div class="angle blue fu">
+        <div class="lbl">Infrastructure</div>
+        <p>A QR system that unlocks your most valuable asset: <b>the people in your room</b>. No app, no account, works on any device.</p>
+      </div>
+      <div class="angle red fu">
+        <div class="lbl">Experience</div>
+        <p>Networking becomes a live, interactive spectacle — <b>a moment no one forgets</b>, projected across the venue in real time.</p>
+      </div>
+      <div class="angle yellow fu">
+        <div class="lbl">Action</div>
+        <p>'In Orbit' reports hand attendees, exhibitors and organisers <b>the data</b> — every connection, ready to become opportunity.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. HOW IT WORKS ============ -->
+<section id="how">
+  <div class="narrow">
+    <div class="grid">
+      <div>
+        <div class="eyebrow fu">How it works</div>
+        <h2 class="fu">A card. A scan.<br>A <b>connection</b>.</h2>
+        <div class="steps" id="howSteps">
+          <div class="step">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM18 18h3v3h-3z"/></svg></div>
+            <div><h3>Scan</h3><p>Point any phone camera at their card. That's the whole learning curve.</p></div>
+          </div>
+          <div class="step">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="7" cy="12" r="3"/><circle cx="17" cy="12" r="3"/><path d="M10 12h4"/></svg></div>
+            <div><h3>Connect</h3><p>Two strangers become a connection — logged, timestamped, mutual.</p></div>
+          </div>
+          <div class="step">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 21s-7-4.6-7-10a7 7 0 0 1 14 0c0 5.4-7 10-7 10z"/><circle cx="12" cy="11" r="2.5"/></svg></div>
+            <div><h3>Remember</h3><p>Add a note in three seconds. "Retail buyer, loved the demo, intro to Sara."</p></div>
+          </div>
+          <div class="step">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg></div>
+            <div><h3>Report</h3><p>Everyone leaves with their personal 'In Orbit' report. The event leaves with the map.</p></div>
+          </div>
+        </div>
+        <div class="chips fu">
+          <span class="chip">No App</span><span class="chip">No Account</span><span class="chip">No Friction</span><span class="chip">Works on any device</span>
+        </div>
+      </div>
+      <div class="fu">
+        <div class="card-mock">
+          <div class="qr">
+            <svg viewBox="0 0 29 29" shape-rendering="crispEdges" id="qrSvg"></svg>
+          </div>
+          <div class="lbl">Your code</div>
+          <div class="phrase">wonderful purple chinchilla</div>
+          <div class="lbl">Pin</div>
+          <div class="pin odo" data-value="4271" data-pad="0000">4271</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7. JOURNEY ============ -->
+<section id="journey" class="full-bleed">
+  <div id="journeyPin">
+    <canvas id="journeyCanvas"></canvas>
+    <div class="eyebrow j-eyebrow">The Orbit Journey — every touchpoint</div>
+    <div class="j-grid">
+      <div class="j-num"><span id="jNum">01</span></div>
+      <div class="j-steps" id="jSteps">
+        <div class="j-step on"><h3>Register</h3><p>Every ticket becomes an Orbit identity. A code phrase, a PIN, a card waiting at the door. Zero setup for the attendee.</p></div>
+        <div class="j-step"><h3>Pre-event</h3><p>Attendees set their intent — who they need to meet, what a "success" looks like. Orbit starts matching before anyone arrives.</p></div>
+        <div class="j-step"><h3>Arrive</h3><p>Pick up your card. Scan yourself into the network. Your first node lights up on the wall as you walk in.</p></div>
+        <div class="j-step"><h3>Connect</h3><p>Every handshake becomes a scan, every scan an edge in the graph. Notes attach to people, not paper.</p></div>
+        <div class="j-step"><h3>Experience</h3><p>The room watches itself become a network — a live constellation projected across the venue, growing by the minute.</p></div>
+        <div class="j-step"><h3>After</h3><p>Personal 'In Orbit' reports for attendees. Stand reports for exhibitors. The full map for organisers. The network keeps working.</p></div>
+      </div>
+    </div>
+    <div class="j-track"><i id="jTrack"></i></div>
+  </div>
+</section>
+
+<!-- ============ 8. HOW WE MATCH ============ -->
+<section id="match">
+  <div class="narrow">
+    <div class="grid">
+      <div>
+        <div class="eyebrow fu">How we match</div>
+        <h2 class="fu">"A success, if I leave having <b>met…</b>"</h2>
+        <p class="body fu" style="margin-top:30px">Orbit matches on <b style="color:var(--white)">intent, not job titles</b>. You tell it what a successful event looks like; it finds the shortest warm path to the people who fit — and brokers the introduction through someone you already know.</p>
+        <p class="match-sub fu">Who you missed — it continues long after you leave.</p>
+      </div>
+      <div class="goal-panel fu">
+        <div class="lbl">Your networking goals — pick two</div>
+        <div class="goal-chips" id="goalChips">
+          <span class="goal-chip sel">Meet retail buyers</span>
+          <span class="goal-chip sel">Find a co-founder</span>
+          <span class="goal-chip">Raise a round</span>
+          <span class="goal-chip">Hire senior talent</span>
+          <span class="goal-chip">Press &amp; media</span>
+        </div>
+        <div class="go magnetic">Find my people →</div>
+        <div class="mini-path">
+          <canvas id="matchMini"></canvas>
+          <div class="mini-cap"><b>Retail buyers</b> — 3 in the room, 1 degree away</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 9. LIVE VISUALISATION ============ -->
+<section id="live" class="full-bleed">
+  <div class="venue"></div>
+  <canvas id="liveCanvas"></canvas>
+  <div class="wrap">
+    <div class="eyebrow fu">Live visualisation</div>
+    <div class="grid">
+      <div>
+        <h2 class="fu" style="max-width:16ch">Your event, watching itself become a <b>network</b>, in real time.</h2>
+        <ul class="live-list fu">
+          <li>Display on any screen — LED wall, projector, plasma</li>
+          <li>Interactive installation that pulls a crowd</li>
+          <li>Real-time updates with every scan</li>
+          <li>A conversation starter in itself</li>
+          <li>Content amplification — everyone films it</li>
+        </ul>
+      </div>
+      <div class="stat-card fu">
+        <div class="livelbl"><span class="dot"></span> Live · Connections</div>
+        <div class="big odo" id="liveCount" data-value="4,271">4,271</div>
+        <div class="unit">and counting</div>
+        <div class="stat-sub">
+          <div><b>+230</b><span>last hour</span></div>
+          <div><b>12.3</b><span>avg / person</span></div>
+          <div><b>15:20</b><span>peak time</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10. INSTALLATION ============ -->
+<section id="install">
+  <div class="narrow">
+    <div class="eyebrow fu">Interactive installation</div>
+    <h2 class="fu">Find <b>yourself</b> in the network.</h2>
+    <div class="stage fu">
+      <canvas id="installCanvas"></canvas>
+      <div class="node-card" id="nodeCard">
+        <div class="nm">—</div>
+        <div class="rl">—</div>
+        <div class="row"><span>Connections</span><b class="cn">0</b></div>
+        <div class="row"><span>First link</span><b class="fl">—</b></div>
+        <div class="row"><span>Last link</span><b class="ll">—</b></div>
+      </div>
+    </div>
+    <div class="install-points">
+      <div class="fu"><h3>Self-scan instantly</h3><p>Walk up, scan your own card, watch your node ignite in the constellation.</p></div>
+      <div class="fu"><h3>Personalised stats</h3><p>Your connections, your reach, your degrees of separation — live on the wall.</p></div>
+      <div class="fu"><h3>A meeting point</h3><p>The installation becomes the busiest spot in the venue. People network <em>at</em> the network.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 11. PAYOFFS ============ -->
+<section id="payoffs">
+  <div class="narrow">
+    <div class="eyebrow fu">One pipeline, three payoffs</div>
+    <h2 class="fu">Everyone leaves with <b>data</b>.</h2>
+    <div class="payoffs">
+      <div class="payoff c1 fu">
+        <div class="ring"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg></div>
+        <div class="lbl">Attendees</div>
+        <h3>Every connection, kept</h3>
+        <ul><li>Every scan with your own notes attached</li><li>Personal 'In Orbit' report, built to share</li><li>Warm paths to the people you missed</li></ul>
+      </div>
+      <div class="payoff c2 fu">
+        <div class="ring"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-6h6v6"/></svg></div>
+        <div class="lbl">Exhibitors &amp; Sponsors</div>
+        <h3>Who your stand reached</h3>
+        <ul><li>Every visitor, logged and enriched</li><li>Benchmarked against the show floor</li><li>Concrete guidance on how to improve</li></ul>
+      </div>
+      <div class="payoff c3 fu">
+        <div class="ring"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M4 20V10M10 20V4M16 20v-8"/><path d="M2 20h20"/></svg></div>
+        <div class="lbl">Hosts &amp; Organisers</div>
+        <h3>The whole map</h3>
+        <ul><li>Live dashboard during the show</li><li>Connection rate as your new north-star metric</li><li>Board-ready exports the morning after</li></ul>
+      </div>
+    </div>
+    <div class="payoff-close">
+      <h2>
+        <span class="rv"><span>For the first time ever, your attendees can</span></span>
+        <span class="rv"><span>turn their extended network into <b>opportunity</b>.</span></span>
+      </h2>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 12. POST EVENT ============ -->
+<section id="post">
+  <div class="narrow">
+    <div class="grid">
+      <div>
+        <div class="eyebrow fu">Post event</div>
+        <h2 class="fu">Everyone gets their personal <b>'In Orbit' report</b>.</h2>
+        <p class="body fu" style="margin-top:30px">It feels like a gift, so they post it — putting your event back in front of thousands of feeds, <b style="color:var(--white)">for free</b>. Every share is next year's marketing, done by this year's attendees.</p>
+        <div class="chips fu">
+          <span class="chip">Personalised &amp; bespoke</span><span class="chip">Built to share</span><span class="chip">Organic reach for next year</span>
+        </div>
+      </div>
+      <div class="fu">
+        <div class="report-mock">
+          <div class="rl">In Orbit · Summit '26 · Greta M.</div>
+          <div class="head">You made <b class="odo" data-value="59">59</b> connections across 11 sectors.</div>
+          <div class="bars" id="reportBars">
+            <div class="bar"><span>1 degree</span><div class="tr"><i data-w="92%"></i></div><b>59</b></div>
+            <div class="bar"><span>2 degrees</span><div class="tr"><i data-w="68%"></i></div><b>1.4k</b></div>
+            <div class="bar"><span>3 degrees</span><div class="tr"><i data-w="45%"></i></div><b>12k</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 13. THE PROOF ============ -->
+<section id="proof">
+  <div class="narrow">
+    <div class="eyebrow fu">The Proof</div>
+    <h2 class="fu">We let the data do the <b>talking</b>.</h2>
+    <div style="margin-top:70px">
+      <div class="proof-row c-blue fu"><div class="num odo" data-value="3.37">3.37</div><p>average introductions between any two of <b style="color:var(--white)">15,693 strangers</b>. Six degrees of separation, shrunk to three.</p></div>
+      <div class="proof-row c-green fu"><div class="num odo" data-value="173,910">173,910</div><p>first-time connections made through Orbit — each one logged, mutual, and kept.</p></div>
+      <div class="proof-row c-red fu"><div class="num"><span class="odo" data-value="95">95</span>%</div><p>of connections crossed sector lines. Orbit doesn't just deepen your bubble — it breaks it.</p></div>
+      <div class="proof-row c-teal fu"><div class="num"><span class="odo" data-value="4">4</span>×</div><p>more connections for attendees who start early. The network rewards the first movers.</p></div>
+      <div class="proof-row c-orange fu"><div class="num"><span class="odo" data-value="100">100</span>+%</div><p>more social interaction in the weeks after the event. The room keeps working after the lights go down.</p></div>
+    </div>
+    <p class="proof-foot fu">* From live Orbit analysis of 414,102 badge scans across real shows.</p>
+  </div>
+</section>
+
+<!-- ============ 14. WHERE IT WORKS ============ -->
+<section id="where">
+  <div class="narrow">
+    <div class="eyebrow fu">Where it works</div>
+    <h2 class="fu" style="max-width:22ch">50 or 500,000 attendees. <b>Same stack, same speed.</b></h2>
+    <div class="hours">
+      <div class="hour fu"><canvas data-p="0.16"></canvas><div class="tag">Hour 1</div><div class="cap">First scans. Strangers become nodes.</div></div>
+      <div class="hour fu"><canvas data-p="0.5"></canvas><div class="tag">Hour 3</div><div class="cap">Clusters form. Sectors start crossing.</div></div>
+      <div class="hour fu"><canvas data-p="1"></canvas><div class="tag">Hour 6</div><div class="cap">A dense, glowing map of the room.</div></div>
+    </div>
+  </div>
+  <div class="marquee">
+    <div class="track" id="mqTrack">
+      <span>Conferences <em>●</em></span><span>Summits <em>●</em></span><span>Trade shows <em>●</em></span><span>Corporate offsites <em>●</em></span><span>Retreats <em>●</em></span><span>Member communities <em>●</em></span>
+    </div>
+  </div>
+  <div class="narrow">
+    <h3 class="fu" style="margin-bottom:44px;font-size:clamp(1.6rem,2.6vw,2.4rem)">The cost of doing <b>nothing</b>.</h3>
+    <div class="compare fu">
+      <div class="without">
+        <div class="hd">Without Orbit</div>
+        <ul>
+          <li><i>✗</i> Business cards into the void</li>
+          <li><i>✗</i> "Great to meet you" — forgotten by Monday</li>
+          <li><i>✗</i> Sponsors guessing at footfall</li>
+          <li><i>✗</i> No proof the event worked</li>
+          <li><i>✗</i> Next year's ticket: a leap of faith</li>
+        </ul>
+      </div>
+      <div class="with">
+        <div class="hd">With Orbit</div>
+        <ul>
+          <li><i>✓</i> Notes that turn into deals</li>
+          <li><i>✓</i> Every connection kept, searchable, warm</li>
+          <li><i>✓</i> Sponsors see exactly who they reached</li>
+          <li><i>✓</i> Connection rate as a headline metric</li>
+          <li><i>✓</i> Next year's ticket: an obvious yes</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 15. PRICING ============ -->
+<section id="pricing">
+  <div class="narrow">
+    <div class="eyebrow fu">Commercial model</div>
+    <h2 class="fu">Three different <b>use-cases</b>.</h2>
+    <div class="prices">
+      <div class="price fu">
+        <div class="idx">01</div>
+        <h3>Platform Integration</h3>
+        <p class="use">For events that already run an app — Orbit plugs into your existing stack and lights it up.</p>
+        <div class="fee">Per-event fee</div>
+      </div>
+      <div class="price fu">
+        <div class="idx">02</div>
+        <h3>Full Infrastructure</h3>
+        <p class="use">For events with no networking tech — cards, matching, visualisation and reports, end to end.</p>
+        <div class="fee">Integration + licence</div>
+      </div>
+      <div class="price fu">
+        <div class="idx">03</div>
+        <h3>Annual Subscription</h3>
+        <p class="use">For organisations, agencies and venues running a portfolio of events across the year.</p>
+        <div class="fee">Portfolio licence</div>
+      </div>
+    </div>
+    <div class="addon fu">
+      <div>
+        <div class="t">+ Interactive <b>Visualisation Experience</b></div>
+        <p>The flagship branded LED moment — fully sponsorable, endlessly filmed, the centrepiece of the floor.</p>
+      </div>
+      <a class="btn magnetic" href="#contact">Ask about the add-on</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 16. CONTACT ============ -->
+<section id="contact">
+  <div class="narrow">
+    <div class="grid">
+      <div>
+        <div class="eyebrow fu">Contact</div>
+        <h2 class="fu">Give your attendees the tools they need to find the <b>people they need</b>.</h2>
+        <p class="mail fu">orbit@<a href="mailto:orbit@studioex.co">studioex.co</a> — or use the form. We reply within a day.</p>
+      </div>
+      <form class="fu" onsubmit="event.preventDefault();this.innerHTML='<h3 style=\'padding:60px 0\'>Thank you — we\'ll be in touch. <b>Welcome to Orbit.</b></h3>'">
+        <div class="field"><label>Full name</label><input type="text" required></div>
+        <div class="field"><label>Role</label><input type="text"></div>
+        <div class="field"><label>Company</label><input type="text"></div>
+        <div class="field"><label>Email</label><input type="email" required></div>
+        <div class="field"><label>How can we help?</label>
+          <select><option>Book a demo</option><option>Discovery call</option><option>ROI walkthrough</option><option>Run a pilot</option></select>
+        </div>
+        <button class="btn primary magnetic" type="submit">Send →</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 17. CLOSING ============ -->
+<section id="closing" class="full-bleed">
+  <canvas id="closeCanvas"></canvas>
+  <div class="inner">
+    <h2>
+      <span class="rv"><span>The best networking tool is the one you</span></span>
+      <span class="rv"><span><b>forget you're using</b>, then</span></span>
+      <span class="rv"><span><b>can't live without</b>.</span></span>
+    </h2>
+    <a class="btn primary magnetic" href="#contact">Run Orbit at your next event</a>
+  </div>
+</section>
+
+<!-- ============ 18. FOOTER ============ -->
+<footer>
+  <div class="foot-grid">
+    <div>
+      <a class="logo" href="#hero" style="margin-bottom:20px;display:inline-flex">
+        <svg viewBox="0 0 30 30" fill="none"><circle cx="15" cy="15" r="4.5" fill="#F5C518"/><ellipse cx="15" cy="15" rx="13" ry="6.5" stroke="#F5F4F0" stroke-width="1.4" transform="rotate(-24 15 15)"/><circle cx="26" cy="9.5" r="2" fill="#F5F4F0"/></svg>
+        Orbit
+      </a>
+      <p style="color:var(--grey);font-size:14px;max-width:34ch">The Event Networking Experience. One scan turns two strangers into a connection.</p>
+    </div>
+    <div>
+      <h4>System</h4>
+      <ul><li><a href="#reveal">What is Orbit</a></li><li><a href="#how">How it works</a></li><li><a href="#live">Live visualisation</a></li><li><a href="#proof">The proof</a></li></ul>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <ul><li><a href="#contact">About</a></li><li><a href="#pricing">Pricing</a></li><li><a href="#contact">Contact</a></li></ul>
+    </div>
+    <div>
+      <h4>Reach us</h4>
+      <ul><li><a href="mailto:orbit@studioex.co">orbit@studioex.co</a></li><li><a href="#">LinkedIn</a></li><li><a href="#">Instagram</a></li></ul>
+    </div>
+  </div>
+  <div class="foot-base">
+    <span>© 2026 Studio EX — A Six Degrees product</span>
+    <span>orbit.thesixdegrees.co</span>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script>
+/* ================================================================
+   ORBIT — motion & graph engine
+================================================================ */
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (REDUCED) document.documentElement.classList.add('reduced');
+const MOBILE = matchMedia('(max-width: 700px)').matches;
+gsap.registerPlugin(ScrollTrigger);
+
+/* ---------- smooth scroll ---------- */
+let lenis = null;
+if (!REDUCED && typeof Lenis !== 'undefined') {
+  lenis = new Lenis({ lerp: 0.09, wheelMultiplier: 0.95 });
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.lagSmoothing(0);
+  document.addEventListener('visibilitychange', () => gsap.ticker.wake());
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) { e.preventDefault(); lenis.scrollTo(t, { offset: -60 }); }
+    });
+  });
+}
+
+/* ---------- nav solid on scroll + sticky CTA ---------- */
+const nav = document.getElementById('nav');
+const sticky = document.getElementById('stickyCta');
+ScrollTrigger.create({
+  start: 80, end: 'max',
+  onUpdate: self => {
+    nav.classList.toggle('solid', self.scroll() > 80);
+    sticky.classList.toggle('on', self.scroll() > innerHeight * 0.7);
+  }
+});
+
+/* ---------- magnetic buttons ---------- */
+if (!REDUCED && !MOBILE) {
+  document.querySelectorAll('.magnetic').forEach(el => {
+    el.addEventListener('mousemove', e => {
+      const r = el.getBoundingClientRect();
+      gsap.to(el, { x: (e.clientX - r.left - r.width / 2) * 0.25, y: (e.clientY - r.top - r.height / 2) * 0.35, duration: 0.4 });
+    });
+    el.addEventListener('mouseleave', () => gsap.to(el, { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1,0.4)' }));
+  });
+}
+
+/* ---------- line reveals ---------- */
+document.querySelectorAll('.rv > span').forEach(sp => {
+  if (REDUCED) return;
+  const parentSec = sp.closest('section');
+  const siblings = [...parentSec.querySelectorAll('.rv > span')];
+  gsap.to(sp, {
+    y: 0, duration: 1.2, ease: 'power4.out',
+    delay: siblings.indexOf(sp) * 0.12,
+    scrollTrigger: { trigger: sp.closest('.rv'), start: 'top 88%' }
+  });
+});
+
+/* ---------- fade-up ---------- */
+document.querySelectorAll('.fu').forEach(el => {
+  if (REDUCED) return;
+  gsap.to(el, {
+    opacity: 1, y: 0, duration: 1.1, ease: 'power3.out',
+    scrollTrigger: { trigger: el, start: 'top 88%' }
+  });
+});
+
+/* ================================================================
+   ODOMETER — rolling digit columns
+================================================================ */
+function buildOdometer(el) {
+  const val = el.dataset.value;
+  el.innerHTML = '';
+  const cols = [];
+  for (const ch of val) {
+    if (/[0-9]/.test(ch)) {
+      const col = document.createElement('span'); col.className = 'col';
+      const stack = document.createElement('span'); stack.className = 'stack';
+      for (let d = 0; d <= 9; d++) { const s = document.createElement('span'); s.textContent = d; stack.appendChild(s); }
+      col.appendChild(stack); el.appendChild(col);
+      cols.push({ stack, target: +ch });
+    } else {
+      const s = document.createElement('span'); s.className = 'static'; s.textContent = ch; el.appendChild(s);
+    }
+  }
+  el._play = () => {
+    cols.forEach((c, i) => {
+      setTimeout(() => { c.stack.style.transform = `translateY(-${c.target}em)`; }, i * 110);
+    });
+  };
+  el._reset = () => cols.forEach(c => c.stack.style.transform = 'translateY(0)');
+  if (REDUCED) el._play();
+}
+document.querySelectorAll('.odo').forEach(el => {
+  buildOdometer(el);
+  if (!REDUCED) ScrollTrigger.create({
+    trigger: el, start: 'top 90%', once: true,
+    onEnter: () => el._play()
+  });
+});
+
+/* live counter keeps ticking upward */
+const liveCount = document.getElementById('liveCount');
+if (liveCount && !REDUCED) {
+  let n = 4271;
+  setInterval(() => {
+    if (document.hidden) return;
+    n += Math.floor(Math.random() * 3) + 1;
+    liveCount.dataset.value = n.toLocaleString('en-US');
+    buildOdometer(liveCount);
+    requestAnimationFrame(() => liveCount._play());
+  }, 3800);
+}
+
+/* ================================================================
+   QR mock — deterministic pattern
+================================================================ */
+(() => {
+  const svg = document.getElementById('qrSvg');
+  if (!svg) return;
+  let seed = 42;
+  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  let cells = '';
+  const finder = (x, y) => `<rect x="${x}" y="${y}" width="7" height="7" fill="#050507"/><rect x="${x+1}" y="${y+1}" width="5" height="5" fill="#fff"/><rect x="${x+2}" y="${y+2}" width="3" height="3" fill="#050507"/>`;
+  for (let y = 0; y < 29; y++) for (let x = 0; x < 29; x++) {
+    const inFinder = (x < 8 && y < 8) || (x > 20 && y < 8) || (x < 8 && y > 20);
+    if (!inFinder && rnd() > 0.52) cells += `<rect x="${x}" y="${y}" width="1" height="1" fill="#050507"/>`;
+  }
+  svg.innerHTML = cells + finder(0, 0) + finder(22, 0) + finder(0, 22);
+})();
+
+/* ================================================================
+   NETWORK GRAPH ENGINE — sector-coloured nodes, density on demand
+================================================================ */
+const SPECTRUM = ['#3B6FF6', '#2ECC71', '#E74C3C', '#1ABC9C', '#E67E22', '#8E7CFF', '#F5C518'];
+
+class Net {
+  constructor(canvas, opts = {}) {
+    this.cv = canvas;
+    this.ctx = canvas.getContext('2d');
+    this.n = MOBILE ? Math.floor((opts.n || 90) * 0.55) : (opts.n || 90);
+    this.k = opts.k || 3;
+    this.progress = opts.progress ?? 1;
+    this.dim = opts.dim ?? 1;
+    this.drift = opts.drift ?? 0.14;
+    this.pulses = [];
+    this.hover = null;
+    this.resize();
+    this.seedNodes(opts.seed || 1);
+    this.buildEdges();
+    new ResizeObserver(() => { this.resize(); this.layout(); }).observe(canvas);
+  }
+  resize() {
+    const r = this.cv.getBoundingClientRect();
+    this.w = Math.max(r.width, 10); this.h = Math.max(r.height, 10);
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    this.cv.width = this.w * dpr; this.cv.height = this.h * dpr;
+    this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  seedNodes(seed) {
+    let s = seed;
+    const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
+    this.nodes = [];
+    for (let i = 0; i < this.n; i++) {
+      this.nodes.push({
+        u: 0.06 + rnd() * 0.88, v: 0.08 + rnd() * 0.84,
+        r: 1.6 + rnd() * 2.6,
+        c: SPECTRUM[Math.floor(rnd() * SPECTRUM.length)],
+        ph: rnd() * Math.PI * 2, sp: 0.3 + rnd() * 0.7,
+        born: rnd()   // ordering for progressive appearance
+      });
+    }
+    this.layout();
+  }
+  layout() { this.nodes.forEach(nd => { nd.x = nd.u * this.w; nd.y = nd.v * this.h; }); }
+  buildEdges() {
+    this.edges = [];
+    this.nodes.forEach((a, i) => {
+      const near = this.nodes.map((b, j) => ({ j, d: (a.u - b.u) ** 2 + (a.v - b.v) ** 2 }))
+        .filter(o => o.j !== i).sort((p, q) => p.d - q.d).slice(0, this.k);
+      near.forEach(o => { if (i < o.j) this.edges.push({ a: i, b: o.j, born: Math.max(this.nodes[i].born, this.nodes[o.j].born) }); });
+    });
+    this.edges.sort((a, b) => a.born - b.born);
+  }
+  tick(t) {
+    const { ctx, w, h } = this;
+    ctx.clearRect(0, 0, w, h);
+    const p = this.progress;
+    const vis = i => this.nodes[i].born <= p;
+    ctx.globalAlpha = this.dim;
+    // edges
+    ctx.lineWidth = 1;
+    for (const e of this.edges) {
+      if (e.born > p) break;
+      const A = this.nodes[e.a], B = this.nodes[e.b];
+      const ax = A.x + Math.sin(t * A.sp + A.ph) * this.drift * 14, ay = A.y + Math.cos(t * A.sp * 0.8 + A.ph) * this.drift * 14;
+      const bx = B.x + Math.sin(t * B.sp + B.ph) * this.drift * 14, by = B.y + Math.cos(t * B.sp * 0.8 + B.ph) * this.drift * 14;
+      A._dx = ax; A._dy = ay; B._dx = bx; B._dy = by;
+      const grad = ctx.createLinearGradient(ax, ay, bx, by);
+      grad.addColorStop(0, A.c + '33'); grad.addColorStop(1, B.c + '33');
+      ctx.strokeStyle = grad;
+      ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(bx, by); ctx.stroke();
+    }
+    // travelling lights
+    if (!REDUCED) {
+      if (Math.random() < 0.06 && this.pulses.length < 7) {
+        const live = this.edges.filter(e => e.born <= p);
+        if (live.length) this.pulses.push({ e: live[Math.floor(Math.random() * live.length)], t: 0 });
+      }
+      this.pulses = this.pulses.filter(pl => pl.t < 1);
+      for (const pl of this.pulses) {
+        pl.t += 0.02;
+        const A = this.nodes[pl.e.a], B = this.nodes[pl.e.b];
+        const x = (A._dx ?? A.x) + ((B._dx ?? B.x) - (A._dx ?? A.x)) * pl.t;
+        const y = (A._dy ?? A.y) + ((B._dy ?? B.y) - (A._dy ?? A.y)) * pl.t;
+        ctx.fillStyle = '#F5C518';
+        ctx.shadowColor = '#F5C518'; ctx.shadowBlur = 8;
+        ctx.beginPath(); ctx.arc(x, y, 1.6, 0, 7); ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+    }
+    // nodes
+    for (let i = 0; i < this.nodes.length; i++) {
+      const nd = this.nodes[i];
+      if (!vis(i)) continue;
+      const x = nd._dx ?? (nd.x + Math.sin(t * nd.sp + nd.ph) * this.drift * 14);
+      const y = nd._dy ?? (nd.y + Math.cos(t * nd.sp * 0.8 + nd.ph) * this.drift * 14);
+      nd._px = x; nd._py = y;
+      const hot = this.hover === i;
+      ctx.fillStyle = hot ? '#F5C518' : nd.c;
+      ctx.shadowColor = hot ? '#F5C518' : nd.c;
+      ctx.shadowBlur = hot ? 22 : 7;
+      ctx.beginPath(); ctx.arc(x, y, hot ? nd.r + 3 : nd.r, 0, 7); ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+    ctx.globalAlpha = 1;
+  }
+}
+
+/* central animation loop for all graphs */
+const nets = [];
+function addNet(canvas, opts) { const n = new Net(canvas, opts); nets.push(n); return n; }
+
+/* ---------- reveal bg graph ---------- */
+const revealNet = addNet(document.getElementById('revealCanvas'), { n: 130, k: 3, seed: 7, progress: REDUCED ? 1 : 0, dim: 0.9 });
+if (!REDUCED) ScrollTrigger.create({
+  trigger: '#reveal', start: 'top 80%', end: 'bottom top', scrub: 0.5,
+  onUpdate: s => revealNet.progress = 0.25 + s.progress * 0.75
+});
+
+/* ---------- journey pinned graph ---------- */
+const journeyNet = addNet(document.getElementById('journeyCanvas'), { n: 150, k: 3, seed: 21, progress: REDUCED ? 1 : 0.1 });
+const jSteps = [...document.querySelectorAll('#jSteps .j-step')];
+const jNum = document.getElementById('jNum');
+const jTrack = document.getElementById('jTrack');
+if (!REDUCED) {
+  ScrollTrigger.create({
+    trigger: '#journeyPin', start: 'top top', end: '+=3200', pin: true, scrub: 0.4,
+    onUpdate: s => {
+      const p = s.progress;
+      journeyNet.progress = 0.1 + p * 0.9;
+      jTrack.style.width = (p * 100) + '%';
+      const idx = Math.min(5, Math.floor(p * 6));
+      jSteps.forEach((el, i) => el.classList.toggle('on', i === idx));
+      jNum.textContent = String(idx + 1).padStart(2, '0');
+    }
+  });
+} else {
+  jSteps.forEach((el, i) => el.classList.toggle('on', i === 0));
+}
+
+/* ---------- how-it-works pinned step rail ---------- */
+const howSteps = [...document.querySelectorAll('#howSteps .step')];
+if (!REDUCED) {
+  ScrollTrigger.create({
+    trigger: '#how', start: 'top 60%', end: 'bottom 55%', scrub: 0.4,
+    onUpdate: s => {
+      const idx = Math.min(3, Math.floor(s.progress * 4.4));
+      howSteps.forEach((el, i) => el.classList.toggle('on', i <= idx));
+    }
+  });
+} else howSteps.forEach(el => el.classList.add('on'));
+
+/* ---------- live viz graph over "venue" ---------- */
+addNet(document.getElementById('liveCanvas'), { n: 120, k: 3, seed: 33, progress: 1, dim: 0.55, drift: 0.22 });
+
+/* ---------- match mini path ---------- */
+let matchMiniDraw = null;
+(() => {
+  const cv = document.getElementById('matchMini');
+  if (!cv) return;
+  const ctx = cv.getContext('2d');
+  function draw(t) {
+    const r = cv.getBoundingClientRect();
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    cv.width = r.width * dpr; cv.height = r.height * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const w = r.width, h = r.height, cy = h / 2;
+    const pts = [
+      { x: 30, y: cy, c: '#F5C518', lbl: 'You', big: true },
+      { x: w * 0.42, y: cy - 22, c: '#8E7CFF', lbl: 'Maya K.' },
+      { x: w - 40, y: cy - 8, c: '#1ABC9C', lbl: 'Buyer ×3', big: true },
+    ];
+    ctx.clearRect(0, 0, w, h);
+    ctx.setLineDash([4, 5]); ctx.lineDashOffset = REDUCED ? 0 : -t * 18;
+    ctx.strokeStyle = 'rgba(245,244,240,.4)'; ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y);
+    ctx.quadraticCurveTo(w * 0.32, cy - 34, pts[1].x, pts[1].y);
+    ctx.quadraticCurveTo(w * 0.66, cy - 30, pts[2].x, pts[2].y);
+    ctx.stroke(); ctx.setLineDash([]);
+    for (const p of pts) {
+      ctx.fillStyle = p.c; ctx.shadowColor = p.c; ctx.shadowBlur = 12;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.big ? 7 : 5, 0, 7); ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = '#8A8F98'; ctx.font = '10px "Space Mono"';
+      ctx.textAlign = 'center'; ctx.fillText(p.lbl, p.x, p.y + 24);
+    }
+  }
+  matchMiniDraw = draw;
+})();
+
+/* goal chips: pick two */
+document.getElementById('goalChips')?.addEventListener('click', e => {
+  const chip = e.target.closest('.goal-chip');
+  if (!chip) return;
+  const sel = [...document.querySelectorAll('.goal-chip.sel')];
+  if (chip.classList.contains('sel')) chip.classList.remove('sel');
+  else { if (sel.length >= 2) sel[0].classList.remove('sel'); chip.classList.add('sel'); }
+});
+
+/* ---------- installation: hover-to-ignite ---------- */
+const installNet = addNet(document.getElementById('installCanvas'), { n: 110, k: 3, seed: 55, progress: 1, drift: 0.1 });
+(() => {
+  const stage = document.querySelector('#install .stage');
+  const card = document.getElementById('nodeCard');
+  const names = ['Ava Lindqvist', 'Marcus Chen', 'Priya Nair', 'Tomás Vega', 'Nia Okafor', 'Jonas Weber', 'Sofia Marino', 'Dan Whitfield', 'Yuki Tanaka', 'Lena Kovač'];
+  const roles = ['Retail buyer · Nordics', 'Founder · ClimateTech', 'Head of Partnerships', 'VC · Seed stage', 'Creative director', 'CTO · Logistics', 'Brand lead · FMCG', 'Sales director', 'Product designer', 'Events · Global'];
+  stage.addEventListener('mousemove', e => {
+    const r = stage.getBoundingClientRect();
+    const mx = e.clientX - r.left, my = e.clientY - r.top;
+    let best = -1, bd = 34 * 34;
+    installNet.nodes.forEach((nd, i) => {
+      const d = ((nd._px ?? nd.x) - mx) ** 2 + ((nd._py ?? nd.y) - my) ** 2;
+      if (d < bd) { bd = d; best = i; }
+    });
+    installNet.hover = best === -1 ? null : best;
+    if (best !== -1) {
+      const nd = installNet.nodes[best];
+      card.querySelector('.nm').textContent = names[best % names.length];
+      card.querySelector('.rl').textContent = roles[best % roles.length];
+      card.querySelector('.cn').textContent = 5 + (best * 7) % 38;
+      card.querySelector('.fl').textContent = `09:${String(10 + best % 49).padStart(2, '0')}`;
+      card.querySelector('.ll').textContent = `16:${String(best % 59).padStart(2, '0')}`;
+      card.style.left = Math.min(mx + 18, r.width - 240) + 'px';
+      card.style.top = Math.max(my - 90, 12) + 'px';
+      card.classList.add('on');
+    } else card.classList.remove('on');
+  });
+  stage.addEventListener('mouseleave', () => { installNet.hover = null; card.classList.remove('on'); });
+})();
+
+/* ---------- hour cards ---------- */
+document.querySelectorAll('.hour canvas').forEach((cv, i) => {
+  addNet(cv, { n: 80, k: 3, seed: 61 + i * 13, progress: +cv.dataset.p, drift: 0.1 });
+});
+
+/* ---------- report bars ---------- */
+ScrollTrigger.create({
+  trigger: '#reportBars', start: 'top 85%', once: true,
+  onEnter: () => document.querySelectorAll('#reportBars .tr i').forEach(el => el.style.width = el.dataset.w)
+});
+if (REDUCED) document.querySelectorAll('#reportBars .tr i').forEach(el => el.style.width = el.dataset.w);
+
+/* ---------- marquee duplicate ---------- */
+(() => {
+  const tr = document.getElementById('mqTrack');
+  tr.innerHTML += tr.innerHTML;
+})();
+
+/* ================================================================
+   HERO — particle sphere assembling from scatter
+================================================================ */
+const heroSim = (() => {
+  const cv = document.getElementById('heroCanvas');
+  const ctx = cv.getContext('2d');
+  const N = MOBILE ? 400 : 850;
+  let w, h, cx, cy, R;
+  let pts = [];
+  function resize() {
+    w = cv.clientWidth; h = cv.clientHeight;
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    cv.width = w * dpr; cv.height = h * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    cx = w * (MOBILE ? 0.5 : 0.68); cy = h * 0.42; R = Math.min(w, h) * 0.33;
+  }
+  resize();
+  addEventListener('resize', resize);
+  let s = 99;
+  const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  for (let i = 0; i < N; i++) {
+    // fibonacci sphere target
+    const k = i + 0.5;
+    const phi = Math.acos(1 - 2 * k / N);
+    const theta = Math.PI * (1 + Math.sqrt(5)) * k;
+    pts.push({
+      phi, theta,
+      sx: rnd() * 2 - 0.5, sy: rnd() * 2 - 0.5,  // scattered start (viewport fractions)
+      a: 0,   // assembly 0→1
+      d: rnd() * 0.55,  // per-particle delay
+      c: rnd() < 0.86 ? '#F5F4F0' : SPECTRUM[Math.floor(rnd() * SPECTRUM.length)]
+    });
+  }
+  let assembly = REDUCED ? 1 : 0;
+  if (!REDUCED) gsap.to({ v: 0 }, { v: 1, duration: 3.2, ease: 'power2.inOut', onUpdate() { assembly = this.targets()[0].v; } });
+  function tick(t) {
+    ctx.clearRect(0, 0, w, h);
+    const rot = REDUCED ? 0 : t * 0.12;
+    for (const p of pts) {
+      const local = Math.min(1, Math.max(0, (assembly - p.d) / 0.45));
+      const e = 1 - Math.pow(1 - local, 3);
+      // sphere point rotated
+      const sinp = Math.sin(p.phi);
+      const x3 = sinp * Math.cos(p.theta + rot), y3 = Math.cos(p.phi), z3 = sinp * Math.sin(p.theta + rot);
+      const tx = cx + x3 * R, ty = cy + y3 * R * 0.94;
+      const x = p.sx * w + (tx - p.sx * w) * e;
+      const y = p.sy * h + (ty - p.sy * h) * e;
+      const depth = (z3 + 1) / 2;
+      ctx.globalAlpha = (0.14 + depth * 0.72) * (0.25 + e * 0.75);
+      ctx.fillStyle = p.c;
+      const rr = 0.7 + depth * 1.5;
+      ctx.fillRect(x - rr / 2, y - rr / 2, rr, rr);
+    }
+    ctx.globalAlpha = 1;
+  }
+  return { tick, cv };
+})();
+
+/* ================================================================
+   GLOBE — rotating point-sphere with connection arcs
+================================================================ */
+const globeSim = (() => {
+  const cv = document.getElementById('globeCanvas');
+  const ctx = cv.getContext('2d');
+  let w, h, cx, cy, R;
+  function resize() {
+    w = cv.clientWidth; h = cv.clientHeight;
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    cv.width = w * dpr; cv.height = h * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    cx = w / 2; cy = h * 0.55; R = Math.min(w, h) * 0.42;
+  }
+  resize(); addEventListener('resize', resize);
+  let s = 7;
+  const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  const dots = [];
+  const NDOTS = MOBILE ? 350 : 700;
+  for (let i = 0; i < NDOTS; i++) {
+    const k = i + 0.5;
+    const phi = Math.acos(1 - 2 * k / NDOTS);
+    const theta = Math.PI * (1 + Math.sqrt(5)) * k;
+    // keep ~55% to fake continents-ish clumping
+    if (rnd() < 0.62) dots.push({ phi, theta });
+  }
+  // arcs between random dot pairs
+  const arcs = [];
+  for (let i = 0; i < 9; i++) {
+    arcs.push({
+      a: dots[Math.floor(rnd() * dots.length)],
+      b: dots[Math.floor(rnd() * dots.length)],
+      c: SPECTRUM[i % SPECTRUM.length],
+      t: rnd(), sp: 0.15 + rnd() * 0.2
+    });
+  }
+  const p3 = (d, rot) => {
+    const sinp = Math.sin(d.phi);
+    return { x: sinp * Math.cos(d.theta + rot), y: Math.cos(d.phi), z: sinp * Math.sin(d.theta + rot) };
+  };
+  const proj = v => ({ x: cx + v.x * R, y: cy + v.y * R, z: v.z });
+  function slerpElev(A, B, t, lift) {
+    // normalized linear interp + lift, good enough visually
+    let x = A.x + (B.x - A.x) * t, y = A.y + (B.y - A.y) * t, z = A.z + (B.z - A.z) * t;
+    const len = Math.hypot(x, y, z) || 1;
+    const f = (1 + lift * Math.sin(Math.PI * t)) / len;
+    return { x: x * f, y: y * f, z: z * f };
+  }
+  function tick(t) {
+    ctx.clearRect(0, 0, w, h);
+    const rot = REDUCED ? 0.4 : t * 0.07;
+    for (const d of dots) {
+      const v = p3(d, rot), pr = proj(v);
+      if (v.z < -0.15) continue;
+      const depth = (v.z + 1) / 2;
+      ctx.globalAlpha = 0.08 + depth * 0.5;
+      ctx.fillStyle = '#B8BCC4';
+      ctx.fillRect(pr.x, pr.y, 1.4, 1.4);
+    }
+    for (const arc of arcs) {
+      if (!REDUCED) arc.t += arc.sp * 0.008;
+      if (arc.t > 1.4) { arc.t = 0; arc.a = dots[Math.floor(Math.random() * dots.length)]; arc.b = dots[Math.floor(Math.random() * dots.length)]; }
+      const head = Math.min(1, arc.t), tail = Math.max(0, arc.t - 0.35);
+      const A = p3(arc.a, rot), B = p3(arc.b, rot);
+      ctx.strokeStyle = arc.c; ctx.lineWidth = 1.3; ctx.globalAlpha = 0.8;
+      ctx.beginPath();
+      let started = false;
+      for (let i = 0; i <= 32; i++) {
+        const tt = tail + (head - tail) * (i / 32);
+        const v = slerpElev(A, B, tt, 0.28), pr = proj(v);
+        if (v.z < -0.3) { started = false; continue; }
+        if (!started) { ctx.moveTo(pr.x, pr.y); started = true; } else ctx.lineTo(pr.x, pr.y);
+      }
+      ctx.stroke();
+      // head glow
+      const hv = slerpElev(A, B, head, 0.28), hp = proj(hv);
+      if (hv.z > -0.3) {
+        ctx.fillStyle = arc.c; ctx.shadowColor = arc.c; ctx.shadowBlur = 10;
+        ctx.beginPath(); ctx.arc(hp.x, hp.y, 2.2, 0, 7); ctx.fill(); ctx.shadowBlur = 0;
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
+  return { tick, cv };
+})();
+
+/* ================================================================
+   CLOSING — slow particle field
+================================================================ */
+const closeSim = (() => {
+  const cv = document.getElementById('closeCanvas');
+  const ctx = cv.getContext('2d');
+  let w, h;
+  function resize() {
+    w = cv.clientWidth; h = cv.clientHeight;
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    cv.width = w * dpr; cv.height = h * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resize(); addEventListener('resize', resize);
+  let s = 3;
+  const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  const stars = Array.from({ length: MOBILE ? 90 : 200 }, () => ({
+    x: rnd(), y: rnd(), r: 0.4 + rnd() * 1.4, ph: rnd() * 7, sp: 0.2 + rnd() * 0.5,
+    c: rnd() < 0.9 ? '#F5F4F0' : '#F5C518'
+  }));
+  function tick(t) {
+    ctx.clearRect(0, 0, w, h);
+    for (const st of stars) {
+      const drift = REDUCED ? 0 : Math.sin(t * st.sp + st.ph) * 6;
+      ctx.globalAlpha = 0.25 + 0.5 * Math.abs(Math.sin(t * st.sp * 0.7 + st.ph));
+      ctx.fillStyle = st.c;
+      ctx.beginPath(); ctx.arc(st.x * w + drift, st.y * h + drift * 0.6, st.r, 0, 7); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+  return { tick, cv };
+})();
+
+/* ================================================================
+   MASTER RAF — only draw what's on screen
+================================================================ */
+const visible = new Set();
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => e.isIntersecting ? visible.add(e.target) : visible.delete(e.target));
+}, { rootMargin: '120px' });
+[heroSim.cv, globeSim.cv, closeSim.cv, document.getElementById('matchMini'), ...nets.map(n => n.cv)].forEach(c => c && io.observe(c));
+
+let last = 0;
+function loop(ms) {
+  requestAnimationFrame(loop);
+  if (lenis) lenis.raf(ms);
+  if (REDUCED && last) return;           // draw one static frame under reduced motion
+  const t = ms / 1000;
+  if (visible.has(heroSim.cv)) heroSim.tick(t);
+  if (visible.has(globeSim.cv)) globeSim.tick(t);
+  if (visible.has(closeSim.cv)) closeSim.tick(t);
+  const mm = document.getElementById('matchMini');
+  if (matchMiniDraw && visible.has(mm)) matchMiniDraw(t);
+  for (const n of nets) if (visible.has(n.cv)) n.tick(t);
+  last = ms;
+}
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
