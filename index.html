@@ -218,7 +218,7 @@ nav.solid{background:rgba(5,5,7,.82);backdrop-filter:blur(14px);border-bottom-co
 .j-num{font-family:var(--mono);font-size:clamp(6rem,14vw,13rem);line-height:1;color:var(--yellow)}
 .j-steps{position:relative;min-height:230px}
 .j-step{position:absolute;inset:0;opacity:0;transform:translateY(24px);transition:opacity .5s,transform .5s;pointer-events:none}
-.j-step.on{opacity:1;transform:none}
+.j-step.on{opacity:1;transform:none;pointer-events:auto}
 .j-step h3{font-size:clamp(1.8rem,3.4vw,3rem);margin-bottom:16px}
 .j-step p{color:var(--grey-l);max-width:46ch}
 .j-track{position:absolute;left:var(--pad);right:var(--pad);bottom:46px;height:1px;background:rgba(245,244,240,.12);z-index:2}
@@ -503,6 +503,35 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
 .wc-dot{width:7px;height:7px;border-radius:50%;background:rgba(245,244,240,.2);cursor:pointer;transition:background .25s,transform .25s}
 .wc-dot.on{background:var(--yellow);transform:scale(1.25)}
 
+/* connection-card mock (how it works) */
+.conn-mock{background:linear-gradient(160deg,#0d1220,#05050a);border:1px solid rgba(245,244,240,.12);padding:26px;max-width:400px;margin:-12px auto 0;transform:rotate(1.4deg);box-shadow:0 30px 70px rgba(0,0,0,.55);position:relative}
+.cm-label{font-family:var(--mono);font-size:10px;letter-spacing:.26em;color:var(--grey);text-transform:uppercase;margin-bottom:12px}
+.cm-person{display:flex;gap:14px;align-items:center;margin-bottom:18px}
+.cm-avatar{width:42px;height:42px;border-radius:50%;background:var(--n-violet);display:grid;place-items:center;font-family:var(--mono);font-size:12px;color:var(--white);flex:none}
+.cm-name{font-family:var(--serif);font-weight:600;font-size:1.2rem;line-height:1.1}
+.cm-meta{font-size:12px;color:var(--grey);margin-top:3px}
+.cm-note{font-size:14px;color:var(--grey-l);font-style:italic;border-left:2px solid var(--yellow);padding-left:14px;line-height:1.55}
+
+/* payoff product mocks */
+.rep-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:16px}
+.rep-kind{font-family:var(--mono);font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--grey)}
+.rep-name{font-family:var(--serif);font-weight:600;font-size:1.1rem;white-space:nowrap}
+.payoff-mock{border:1px solid rgba(245,244,240,.1);background:rgba(10,14,26,.55);padding:16px;margin-bottom:24px}
+.payoff.c1 .payoff-mock{border-top:2px solid var(--n-blue)}
+.payoff.c2 .payoff-mock{border-top:2px solid var(--n-orange)}
+.payoff.c3 .payoff-mock{border-top:2px solid var(--n-green)}
+.mock-tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mock-tile{border:1px solid rgba(245,244,240,.08);padding:10px}
+.mock-tile b{display:block;font-family:var(--serif);font-weight:700;font-size:1.3rem;line-height:1.1}
+.payoff.c2 .mock-tile b{color:var(--n-orange)}
+.payoff.c3 .mock-tile b{color:var(--n-green)}
+.mock-tile span{font-family:var(--mono);font-size:8.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--grey);display:block;margin-top:4px}
+.io-arch{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);background:var(--yellow);padding:5px 10px;margin-bottom:12px;font-weight:700}
+.io-stats{display:flex;gap:16px;font-family:var(--mono);font-size:10px;color:var(--grey);margin-bottom:14px;list-style:none;flex-wrap:wrap}
+.io-stats b{color:var(--white);font-size:14px;display:block}
+.mock-bars{display:flex;gap:4px;align-items:flex-end;height:44px}
+.mock-bars span{flex:1;background:var(--n-blue);opacity:.75}
+
 /* fade-up util */
 .fu{opacity:0;transform:translateY(40px)}
 .reduced .fu{opacity:1!important;transform:none!important}
@@ -686,7 +715,7 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
           </div>
           <div class="step">
             <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 21s-7-4.6-7-10a7 7 0 0 1 14 0c0 5.4-7 10-7 10z"/><circle cx="12" cy="11" r="2.5"/></svg></div>
-            <div><h3>Remember</h3><p>Add a note in three seconds. "Retail buyer, loved the demo, intro to Sara."</p></div>
+            <div><h3>Remember</h3><p>Meet hundreds, remember every one. A three-second note attaches to the person — not to a business card that dies in a drawer.</p></div>
           </div>
           <div class="step">
             <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg></div>
@@ -706,6 +735,15 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
           <div class="phrase">wonderful purple chinchilla</div>
           <div class="lbl">Pin</div>
           <div class="pin odo" data-value="4271" data-pad="0000">4271</div>
+        </div>
+        <div class="conn-mock">
+          <div class="cm-label">Your connections</div>
+          <div class="cm-person">
+            <div class="cm-avatar">PB</div>
+            <div><div class="cm-name">Priya Bair</div><div class="cm-meta">Brand · Mumbai · scanned 14:32</div></div>
+          </div>
+          <div class="cm-label">Your note</div>
+          <p class="cm-note">"Met at the AI panel. Wants a Q3 pilot — intro her to Devi before Friday."</p>
         </div>
       </div>
     </div>
@@ -808,22 +846,41 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
   <div class="narrow">
     <div class="eyebrow fu">One pipeline, three payoffs</div>
     <h2 class="fu">Everyone leaves with <b>more</b>.</h2>
+    <p class="body fu" style="margin-top:22px">Three products. One scan feed. Everyone with a stake in the room leaves with their own <b style="color:var(--white)">designed data product</b> — not a contact dump.</p>
     <div class="payoffs">
       <div class="payoff c1 fu">
-        <div class="ring"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg></div>
-        <div class="lbl">Attendees</div>
+        <div class="rep-head"><span class="rep-kind">Attendees</span><span class="rep-name">'In Orbit' recap</span></div>
+        <div class="payoff-mock">
+          <div class="io-arch">The Hub</div>
+          <ul class="io-stats"><li><b>24</b>connections</li><li><b>6</b>badges</li><li><b>2pm</b>peak hour</li></ul>
+          <div class="mock-bars"><span style="height:40%"></span><span style="height:62%"></span><span style="height:55%"></span><span style="height:88%"></span><span style="height:70%"></span><span style="height:48%"></span><span style="height:80%"></span></div>
+        </div>
         <h3>Every connection, kept</h3>
         <ul><li>Every person you met, with your own notes attached</li><li>A wrapped-style report that does your follow-up for you</li><li>A warm path to the people you missed</li></ul>
       </div>
       <div class="payoff c2 fu">
-        <div class="ring"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-6h6v6"/></svg></div>
-        <div class="lbl">Exhibitors &amp; Sponsors</div>
+        <div class="rep-head"><span class="rep-kind">Exhibitors &amp; Sponsors</span><span class="rep-name">Reach report</span></div>
+        <div class="payoff-mock">
+          <div class="mock-tiles">
+            <div class="mock-tile"><b>Top 8%</b><span>stand gravity vs show</span></div>
+            <div class="mock-tile"><b>14</b><span>sectors reached</span></div>
+            <div class="mock-tile"><b>11am</b><span>peak attraction</span></div>
+            <div class="mock-tile"><b>+22%</b><span>vs show fingerprint</span></div>
+          </div>
+        </div>
         <h3>Who your stand reached</h3>
         <ul><li>A named list of everyone your stand reached</li><li>ROI your board can read in one page</li><li>Benchmarks and exactly what to fix next show</li></ul>
       </div>
       <div class="payoff c3 fu">
-        <div class="ring"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M4 20V10M10 20V4M16 20v-8"/><path d="M2 20h20"/></svg></div>
-        <div class="lbl">Hosts &amp; Organisers</div>
+        <div class="rep-head"><span class="rep-kind">Hosts &amp; Organisers</span><span class="rep-name">Observatory report</span></div>
+        <div class="payoff-mock">
+          <div class="mock-tiles">
+            <div class="mock-tile"><b>3.37</b><span>avg degrees apart</span></div>
+            <div class="mock-tile"><b>95.2%</b><span>cross-category scans</span></div>
+            <div class="mock-tile"><b>64.4%</b><span>crossed a border</span></div>
+            <div class="mock-tile"><b>2,587</b><span>peak 10-min window</span></div>
+          </div>
+        </div>
         <h3>The whole map</h3>
         <ul><li>A live dashboard while the show runs</li><li>The retention number that sells next year's tickets</li><li>A sponsorable data asset you own</li></ul>
       </div>
