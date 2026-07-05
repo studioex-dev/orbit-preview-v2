@@ -450,8 +450,8 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
 .j-more{display:inline-block;margin-top:22px;background:none;border:0;cursor:pointer;font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--yellow);padding:0}
 .j-more:hover{text-decoration:underline}
 @media(max-width:900px){.j-grid{grid-template-columns:auto 1fr}.j-vis{display:none}}
-#jModal{position:fixed;inset:0;z-index:250;background:rgba(5,5,7,.94);display:none;align-items:center;justify-content:center;padding:24px}
-#jModal.open{display:flex}
+#jModal,#eModal{position:fixed;inset:0;z-index:250;background:rgba(5,5,7,.94);display:none;align-items:center;justify-content:center;padding:24px}
+#jModal.open,#eModal.open{display:flex}
 .jm-panel{max-width:840px;width:100%;max-height:86vh;overflow:auto;border:1px solid rgba(245,244,240,.16);background:linear-gradient(165deg,#0b101e,#06060b);padding:clamp(28px,4vw,56px);position:relative}
 .jm-close{position:absolute;top:18px;right:20px;background:none;border:1px solid rgba(245,244,240,.25);color:var(--white);font-family:var(--mono);font-size:11px;letter-spacing:.18em;padding:8px 14px;cursor:pointer}
 .jm-close:hover{border-color:var(--yellow);color:var(--yellow)}
@@ -532,6 +532,54 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
 .mock-bars{display:flex;gap:4px;align-items:flex-end;height:44px}
 .mock-bars span{flex:1;background:var(--n-blue);opacity:.75}
 
+/* orbits strip (past & upcoming events) */
+.orbits-strip{padding:clamp(54px,7vh,92px) var(--pad);border-bottom:1px solid rgba(245,244,240,.07)}
+.orbits-strip .eyebrow{margin-bottom:44px}
+.orbit-line{display:flex;justify-content:space-between;gap:18px;position:relative;flex-wrap:nowrap}
+.orbit-line::before{content:"";position:absolute;left:0;right:0;top:5px;height:1px;background:linear-gradient(90deg,transparent,rgba(245,244,240,.16) 10%,rgba(245,244,240,.16) 62%,rgba(245,197,24,.55))}
+.oe{position:relative;padding-top:24px;min-width:0}
+.oe i{position:absolute;top:0;left:2px;width:11px;height:11px;border-radius:50%;background:var(--grey-d);box-shadow:0 0 0 4px #050507}
+.oe.past i{background:var(--grey-l)}
+.oe.next i{background:var(--yellow);box-shadow:0 0 0 4px #050507,0 0 16px rgba(245,197,24,.75);animation:pulse 2.2s infinite}
+.oe{flex:1;display:flex;flex-direction:column}
+.oe-logo{height:38px;display:flex;align-items:flex-start;margin-bottom:4px}
+.oe-logo img{max-height:100%;max-width:82%;filter:brightness(0) invert(.96);opacity:.9}
+.fomo-mark{font-family:var(--sans);font-weight:900;font-size:25px;letter-spacing:-.02em;line-height:.82;color:var(--white)}
+.fomo-mark small{display:block;font-size:8.5px;font-weight:700;letter-spacing:.01em;margin-top:3px}
+.parasol-mark{border:1.5px solid var(--white);padding:6px 10px 5px 13px;font-family:var(--sans);font-weight:800;font-size:12.5px;letter-spacing:.3em;color:var(--white);align-self:flex-start}
+.parasol-mark sup{font-size:7px;letter-spacing:0}
+.oe-card{border:1px solid rgba(245,244,240,.12);padding:18px 16px 14px;background:linear-gradient(180deg,rgba(13,18,32,.35),transparent);transition:border-color .3s,transform .3s;cursor:pointer;flex:1;display:flex;flex-direction:column;gap:9px;min-height:150px}
+.oe:hover .oe-card{transform:translateY(-4px)}
+.oe.t-conf:hover .oe-card{border-color:var(--n-blue)}
+.oe.t-art:hover .oe-card{border-color:var(--n-red)}
+.oe.t-music:hover .oe-card{border-color:var(--n-violet)}
+.oe-tag{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase}
+.oe-tag svg{width:12px;height:12px;flex:none}
+.t-conf .oe-tag{color:var(--n-blue)}
+.t-art .oe-tag{color:var(--n-red)}
+.t-music .oe-tag{color:var(--n-violet)}
+.oe-y{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--grey)}
+.oe-n{font-family:var(--serif);font-weight:600;font-size:clamp(1.02rem,1.25vw,1.22rem);color:var(--grey-l);line-height:1.18}
+.oe.next .oe-n{color:var(--white)}
+.oe-more{margin-top:auto;font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--yellow);opacity:0;transition:opacity .3s}
+.oe:hover .oe-more{opacity:1}
+.em-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;margin-bottom:14px;display:flex;gap:14px;flex-wrap:wrap;padding-right:100px}
+.em-kicker .k-cat.t-conf{color:var(--n-blue)}
+.em-kicker .k-cat.t-art{color:var(--n-red)}
+.em-kicker .k-cat.t-music{color:var(--n-violet)}
+.em-kicker .k-meta{color:var(--grey)}
+#eModal .mock-tiles{grid-template-columns:repeat(3,1fr);margin:20px 0 24px}
+#eModal .mock-tile b{color:var(--yellow)}
+.em-link{display:inline-flex;margin-top:18px;font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--yellow);border-bottom:1px solid rgba(245,197,24,.4);padding-bottom:2px}
+.em-link:hover{border-bottom-color:var(--yellow)}
+@media(max-width:900px){
+  .orbit-line{flex-direction:column;gap:24px}
+  .orbit-line::before{left:7px;right:auto;top:0;bottom:0;width:1px;height:auto;background:linear-gradient(180deg,rgba(245,244,240,.16),rgba(245,197,24,.55))}
+  .oe{padding-top:0;padding-left:32px}
+  .oe i{top:4px}
+  #eModal .mock-tiles{grid-template-columns:1fr 1fr}
+}
+
 /* fade-up util */
 .fu{opacity:0;transform:translateY(40px)}
 .reduced .fu{opacity:1!important;transform:none!important}
@@ -585,6 +633,30 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
   <div class="hero-hint" id="heroHint">[ Click a node ]</div>
   <div class="hero-meta"><span class="dot"></span> Connections made across all events · <span class="odo" id="heroTally" data-value="173,910">173,910</span></div>
 </section>
+
+<!-- ============ ORBITS STRIP ============ -->
+<section id="orbits" class="orbits-strip">
+  <div class="narrow">
+    <div class="eyebrow grey fu">Past &amp; upcoming orbits</div>
+    <div class="orbit-line fu">
+      <div class="oe past t-conf" data-evt="0"><i></i><div class="oe-card"><div class="oe-logo"><img src="ev/crg.svg" alt="Creative Research Group"></div><span class="oe-tag"><svg viewBox="0 0 12 12" fill="currentColor"><rect x="1" y="7" width="2.4" height="4"/><rect x="4.8" y="4" width="2.4" height="7"/><rect x="8.6" y="1" width="2.4" height="10"/></svg> Conference</span><span class="oe-n">Creative Research Group</span><span class="oe-y">Apr 2025 · Hackney, LDN</span><span class="oe-more">Details →</span></div></div>
+      <div class="oe past t-art" data-evt="1"><i></i><div class="oe-card"><div class="oe-logo"><span class="fomo-mark">FOMO<small>A Group Art Show</small></span></div><span class="oe-tag"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor"><rect x="1.5" y="1.5" width="9" height="9"/><circle cx="6" cy="6" r="2" fill="currentColor" stroke="none"/></svg> Art &amp; Ent.</span><span class="oe-n">FOMO 001</span><span class="oe-y">Dec 2025 · Marylebone, LDN</span><span class="oe-more">Details →</span></div></div>
+      <div class="oe past t-conf" data-evt="2"><i></i><div class="oe-card"><div class="oe-logo"><img src="ev/lew.svg" alt="London Experience Week"></div><span class="oe-tag"><svg viewBox="0 0 12 12" fill="currentColor"><rect x="1" y="7" width="2.4" height="4"/><rect x="4.8" y="4" width="2.4" height="7"/><rect x="8.6" y="1" width="2.4" height="10"/></svg> Summit</span><span class="oe-n">WXO — LXW26</span><span class="oe-y">Apr 2026 · Ministry of Sound</span><span class="oe-more">Details →</span></div></div>
+      <div class="oe past t-art" data-evt="3"><i></i><div class="oe-card"><div class="oe-logo"><span class="fomo-mark">FOMO<small>A Group Art Show</small></span></div><span class="oe-tag"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor"><rect x="1.5" y="1.5" width="9" height="9"/><circle cx="6" cy="6" r="2" fill="currentColor" stroke="none"/></svg> Art &amp; Ent.</span><span class="oe-n">FOMO 002</span><span class="oe-y">2026 · London</span><span class="oe-more">Details →</span></div></div>
+      <div class="oe next t-conf" data-evt="4"><i></i><div class="oe-card"><div class="oe-logo"><img src="ev/eema.svg" alt="EEMA India"></div><span class="oe-tag"><svg viewBox="0 0 12 12" fill="currentColor"><rect x="1" y="7" width="2.4" height="4"/><rect x="4.8" y="4" width="2.4" height="7"/><rect x="8.6" y="1" width="2.4" height="10"/></svg> Summit</span><span class="oe-n">EEMAGINE 2026</span><span class="oe-y">2026 · India</span><span class="oe-more">Details →</span></div></div>
+      <div class="oe next t-music" data-evt="5"><i></i><div class="oe-card"><div class="oe-logo"><span class="parasol-mark">PARASOL<sup>®</sup></span></div><span class="oe-tag"><svg viewBox="0 0 12 12" fill="currentColor"><circle cx="3.4" cy="9.4" r="2"/><rect x="4.6" y="1" width="1.6" height="8"/><path d="M6.2 1c2.6.4 4 1.6 4.4 3.4-1.4-1-2.8-1.4-4.4-1.4z"/></svg> Music</span><span class="oe-n">Parasol®</span><span class="oe-y">2026 · Shoreditch, LDN</span><span class="oe-more">Details →</span></div></div>
+    </div>
+  </div>
+</section>
+
+<div id="eModal">
+  <div class="jm-panel">
+    <button class="jm-close" id="emClose">Close ✕</button>
+    <div class="em-kicker" id="emKicker"></div>
+    <h3 id="emTitle"></h3>
+    <div id="emBody"></div>
+  </div>
+</div>
 
 <!-- ============ 3. STAKES / GLOBE ============ -->
 <section id="stakes" class="full-bleed">
@@ -1608,6 +1680,48 @@ const installNet = addNet(document.getElementById('installCanvas'), { n: 110, k:
 document.querySelectorAll('.hour canvas').forEach((cv, i) => {
   addNet(cv, { n: 80, k: 3, seed: 61 + i * 13, progress: +cv.dataset.p, drift: 0.1 });
 });
+
+/* ---------- orbits strip: event cards ---------- */
+const EVENTS = [
+  { cat: 'Conference', cls: 't-conf', name: 'Creative Research Group', meta: 'April 2025 · Hackney, London · Past orbit',
+    stats: [['500', 'attendees'], ['3', 'days'], ['3', 'industries mixing']],
+    body: ["A not-for-profit platform for emerging creatives, entrepreneurs and industry veterans — CRG's Hackney gathering brought around 500 people together for three days of creative networking and ideas.", 'Stalls and stands from fashion, art and music events, panel talks, and cross-disciplinary connections everywhere you looked.'] },
+  { cat: 'Art & Entertainment', cls: 't-art', name: 'FOMO 001 — A Group Art Show', meta: 'December 2025 · Baker Street, Marylebone · Past orbit',
+    stats: [['50+', 'artists'], ['800+', 'attendees'], ['1', 'unforgettable opening night']],
+    body: ['A group art show in the heart of central London. Fifty-plus artists took over Baker Street with beautiful art, live music and DJs — and a crowd that turned an opening night into a network.'] },
+  { cat: 'Summit', cls: 't-conf', name: 'WXO — London Experience Week 2026', meta: 'April 2026 · Ministry of Sound, London · Past orbit',
+    stats: [['700+', 'experience leaders'], ['28', 'countries'], ['140+', 'expert speakers']],
+    body: ["The World Experience Organisation's annual global gathering for the people building the Experience Economy — case studies, curated conversations and behind-the-scenes tours of London's most ambitious experiences.", 'Orbit ran the networking layer across the whole week: every scan, every connection, every report.'],
+    link: { href: 'https://londonexperienceweek.com/', label: 'londonexperienceweek.com →' } },
+  { cat: 'Art & Entertainment', cls: 't-art', name: 'FOMO 002', meta: '2026 · London · Past orbit',
+    stats: [['60+', 'artists'], ['150', 'artworks'], ['1,000', 'attendees over 3 days']],
+    body: ['The sequel to FOMO 001, bigger in every direction — three days, sixty-plus artists, a hundred and fifty artworks.', 'And all of it under Orbit: every visitor, artist and artwork part of one live, measurable network.'] },
+  { cat: 'Summit', cls: 't-conf', name: 'EEMAGINE 2026', meta: '2026 · India · Upcoming',
+    stats: [['1,000', 'delegates expected'], ['1,000+', 'EEMA member companies'], ['100+', 'cities represented']],
+    body: ["EEMAGINE is the flagship annual convention of EEMA — the non-profit body of India's events and experiential-marketing industry, spanning more than a thousand companies across a hundred-plus cities.", 'In 2026, Orbit brings the networking layer to one of the largest event-industry gatherings in the world.'],
+    link: { href: 'https://www.eemaindia.com/', label: 'eemaindia.com →' } },
+  { cat: 'Music', cls: 't-music', name: 'Parasol®', meta: '2026 · Shoreditch, London · Upcoming',
+    stats: null,
+    body: ['Parasol is a music events company bringing crowds together around sound — and in 2026 they bring Orbit to a Shoreditch show.', 'The lineup, the room and the crowd as one live network: find the people who move to the same things you do.'] },
+];
+const eModal = document.getElementById('eModal');
+function openEM(i) {
+  const d = EVENTS[i];
+  document.getElementById('emKicker').innerHTML = '<span class="k-cat ' + d.cls + '">' + d.cat + '</span><span class="k-meta">' + d.meta + '</span>';
+  document.getElementById('emTitle').textContent = d.name;
+  let html = '';
+  if (d.stats) html += '<div class="mock-tiles">' + d.stats.map(x => '<div class="mock-tile"><b>' + x[0] + '</b><span>' + x[1] + '</span></div>').join('') + '</div>';
+  html += d.body.map(x => '<p>' + x + '</p>').join('');
+  if (d.link) html += '<a class="em-link" href="' + d.link.href + '" target="_blank" rel="noopener">' + d.link.label + '</a>';
+  document.getElementById('emBody').innerHTML = html;
+  eModal.classList.add('open');
+  if (lenis) lenis.stop();
+}
+function closeEM() { eModal.classList.remove('open'); if (lenis) lenis.start(); }
+document.querySelectorAll('.oe[data-evt]').forEach(el => el.addEventListener('click', () => openEM(+el.dataset.evt)));
+document.getElementById('emClose').addEventListener('click', closeEM);
+eModal.addEventListener('click', e => { if (e.target === eModal) closeEM(); });
+addEventListener('keydown', e => { if (e.key === 'Escape') closeEM(); });
 
 /* ---------- wrapped carousel ---------- */
 (() => {
