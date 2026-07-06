@@ -2034,6 +2034,9 @@ const globeSim = (() => {
     [[-34,173],[-37,175],[-40,176],[-42,174],[-44,171],[-46,167],[-45,170],[-43,173],[-40,175],[-37,178],[-34,173]]
   ];
   const contPts = CONTINENTS.map(line => line.map(([la, lo]) => ({ phi: (90 - la) * Math.PI / 180, theta: lo * Math.PI / 180 })));
+  const closed = CONTINENTS.filter(l => l[0][0] === l[l.length - 1][0] && l[0][1] === l[l.length - 1][1]);
+  const asiaFill = CONTINENTS[7].concat([...CONTINENTS[8]].reverse());
+  const fillPts = [...closed, asiaFill].map(line => line.map(([la, lo]) => ({ phi: (90 - la) * Math.PI / 180, theta: lo * Math.PI / 180 })));
   const proj = v => ({ x: cx + v.x * R, y: cy + v.y * R, z: v.z });
   function slerpElev(A, B, t, lift) {
     // normalized linear interp + lift, good enough visually
@@ -2045,17 +2048,35 @@ const globeSim = (() => {
   function tick(t) {
     ctx.clearRect(0, 0, w, h);
     const rot = REDUCED ? 0.4 : t * 0.07;
+    // ocean: shaded sphere disc
+    const og = ctx.createRadialGradient(cx - R * 0.25, cy - R * 0.28, R * 0.15, cx, cy, R);
+    og.addColorStop(0, 'rgba(32,58,118,.30)');
+    og.addColorStop(1, 'rgba(12,22,48,.10)');
+    ctx.fillStyle = og;
+    ctx.beginPath(); ctx.arc(cx, cy, R, 0, 7); ctx.fill();
+    // landmasses: shaded fills
+    ctx.fillStyle = 'rgba(45,85,170,.17)';
+    for (const line of fillPts) {
+      ctx.beginPath(); let stF = false;
+      for (const d of line) {
+        const v = p3(d, rot);
+        if (v.z < 0.03) continue;
+        const pr = proj(v);
+        if (!stF) { ctx.moveTo(pr.x, pr.y); stF = true; } else ctx.lineTo(pr.x, pr.y);
+      }
+      if (stF) { ctx.closePath(); ctx.fill(); }
+    }
     for (const d of dots) {
       const v = p3(d, rot), pr = proj(v);
       if (v.z < -0.15) continue;
       const depth = (v.z + 1) / 2;
-      ctx.globalAlpha = 0.16 + depth * 0.6;
-      ctx.fillStyle = '#B8BCC4';
-      ctx.fillRect(pr.x, pr.y, 1.9, 1.9);
+      ctx.globalAlpha = 0.25 + depth * 0.72;
+      ctx.fillStyle = '#D8DDE8';
+      ctx.fillRect(pr.x, pr.y, 2.2, 2.2);
     }
     // faint landmass outlines
     // engineering graticule
-    ctx.strokeStyle = 'rgba(60,105,205,.13)';
+    ctx.strokeStyle = 'rgba(70,115,220,.18)';
     ctx.lineWidth = 1;
     for (let la = -60; la <= 60; la += 30) {
       ctx.beginPath(); let st = false;
@@ -2075,8 +2096,8 @@ const globeSim = (() => {
       }
       ctx.stroke();
     }
-    ctx.strokeStyle = 'rgba(80,130,235,.48)';
-    ctx.lineWidth = 1.2;
+    ctx.strokeStyle = 'rgba(115,165,255,.8)';
+    ctx.lineWidth = 1.4;
     ctx.lineJoin = 'round';
     for (const line of contPts) {
       ctx.beginPath();
