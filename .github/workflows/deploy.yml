@@ -1,0 +1,56 @@
+name: Deploy to AWS (in-orbit.co)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-inorbit
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check deploy config
+        id: cfg
+        env:
+          KEY: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          BUCKET: ${{ secrets.S3_BUCKET }}
+        run: |
+          if [ -n "$KEY" ] && [ -n "$BUCKET" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::AWS deploy secrets not set yet - skipping deploy. Add the 5 repo secrets to enable it."
+          fi
+
+      - name: Configure AWS credentials
+        if: steps.cfg.outputs.ready == 'true'
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Sync site to S3
+        if: steps.cfg.outputs.ready == 'true'
+        run: |
+          aws s3 sync . "s3://${{ secrets.S3_BUCKET }}/" \
+            --exclude ".git/*" \
+            --exclude ".github/*" \
+            --exclude "*.md"
+
+      - name: Invalidate CloudFront cache
+        if: steps.cfg.outputs.ready == 'true'
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id "${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}" \
+            --paths "/*"
