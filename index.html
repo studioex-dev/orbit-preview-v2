@@ -245,14 +245,11 @@ nav.solid{background:rgba(5,5,7,.82);backdrop-filter:blur(14px);border-bottom-co
 
 /* ---------- Live viz ---------- */
 #live{padding:0;min-height:110vh;display:flex;align-items:center;overflow:hidden}
-.venue{position:absolute;inset:0;background:
-  radial-gradient(ellipse 90% 55% at 50% 108%,rgba(59,111,246,.16),transparent 60%),
-  radial-gradient(ellipse 60% 40% at 78% 0%,rgba(142,124,255,.10),transparent 60%),
-  linear-gradient(#07080f,#050507)}
-.venue::after{content:"";position:absolute;inset:auto 0 0 0;height:38%;background:
-  repeating-linear-gradient(90deg,transparent 0 120px,rgba(245,244,240,.028) 120px 121px),
-  repeating-linear-gradient(0deg,transparent 0 60px,rgba(245,244,240,.028) 60px 61px);
-  transform:perspective(700px) rotateX(58deg);transform-origin:bottom;opacity:.8}
+.venue{position:absolute;inset:0;overflow:hidden}
+.venue .ph-img{filter:grayscale(.16) contrast(1.06) brightness(.44)}
+.venue::after{content:"";position:absolute;inset:0;z-index:1;background:
+  linear-gradient(90deg,rgba(5,5,7,.9) 0%,rgba(5,5,7,.55) 42%,rgba(5,5,7,.25) 72%,rgba(5,5,7,.55) 100%),
+  linear-gradient(0deg,rgba(5,5,7,.8),transparent 45%)}
 #liveCanvas{position:absolute;inset:0;width:100%;height:100%}
 #live .wrap{z-index:2;width:100%;padding:120px var(--pad)}
 #live .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(40px,6vw,100px);align-items:end}
@@ -306,6 +303,8 @@ nav.solid{background:rgba(5,5,7,.82);backdrop-filter:blur(14px);border-bottom-co
 @media(max-width:900px){.payoffs{grid-template-columns:1fr}}
 
 /* ---------- Post event ---------- */
+#post{position:relative;overflow:hidden}
+#post .narrow{position:relative;z-index:2}
 #post .grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,110px);align-items:center}
 .report-mock{border:1px solid rgba(245,244,240,.12);background:linear-gradient(165deg,#0c1120,#06060c);padding:clamp(26px,3vw,44px);box-shadow:0 40px 100px rgba(0,0,0,.55)}
 .report-mock .rl{font-family:var(--mono);font-size:10px;letter-spacing:.26em;color:var(--yellow);text-transform:uppercase;margin-bottom:22px}
@@ -402,6 +401,8 @@ nav.solid{background:rgba(5,5,7,.82);backdrop-filter:blur(14px);border-bottom-co
 
 /* ---------- Closing ---------- */
 #closing{min-height:92vh;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden}
+#closing .ph-img{filter:grayscale(.24) contrast(1.05) brightness(.4)}
+#closing .ph-scrim{position:absolute;inset:0;z-index:1;background:radial-gradient(ellipse 72% 72% at 50% 46%,rgba(5,5,7,.42),rgba(5,5,7,.82))}
 #closeCanvas{position:absolute;inset:0;width:100%;height:100%;opacity:.55}
 #closing .inner{position:relative;z-index:2}
 #closing h2{font-size:clamp(2.2rem,5vw,4.8rem);max-width:24ch;margin:0 auto 54px}
@@ -597,6 +598,22 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
   #eModal .mock-tiles{grid-template-columns:1fr 1fr}
 }
 
+/* ---------- curated event photography ---------- */
+.ph-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;filter:grayscale(.18) contrast(1.05) brightness(.5)}
+.ph-grain{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.35;mix-blend-mode:overlay;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:140px 140px}
+.reduced .ph-grain{display:none}
+
+/* problem -> payoff photo band */
+.photo-band{position:relative;min-height:68vh;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding:clamp(80px,12vh,140px) var(--pad)}
+.photo-band .ph-img{filter:grayscale(.22) contrast(1.05) brightness(.46)}
+.photo-band::after{content:"";position:absolute;inset:0;z-index:1;background:radial-gradient(ellipse 82% 74% at 50% 50%,rgba(5,5,7,.4),rgba(5,5,7,.84))}
+.photo-band .pb-inner{position:relative;z-index:2;max-width:26ch}
+.photo-band h2{font-size:clamp(1.7rem,3.4vw,3.2rem)}
+
+/* generic full-bleed section photo bg */
+.sect-bg{filter:grayscale(.2) contrast(1.04) brightness(.42);opacity:.55}
+.sect-scrim{position:absolute;inset:0;z-index:1}
+
 /* fade-up util */
 .fu{opacity:0;transform:translateY(40px)}
 .reduced .fu{opacity:1!important;transform:none!important}
@@ -717,12 +734,17 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
         <p>The most valuable people are the ones just outside your network — and until now there has never been a way to identify them, or a warm introduction to reach them.</p>
       </div>
     </div>
-    <div class="problem-close">
-      <h2>
-        <span class="rv"><span>Networking is the reason they came.</span></span>
-        <span class="rv"><span>Yet it's the part <b>nobody is capitalising on</b>.</span></span>
-      </h2>
-    </div>
+  </div>
+</section>
+
+<section class="photo-band">
+  <img class="ph-img" src="img/human.jpg" alt="Attendees connecting at a WXO event" loading="lazy" decoding="async">
+  <span class="ph-grain"></span>
+  <div class="pb-inner">
+    <h2>
+      <span class="rv"><span>Networking is the reason they came.</span></span>
+      <span class="rv"><span>Yet it's the part <b>nobody is capitalising on</b>.</span></span>
+    </h2>
   </div>
 </section>
 
@@ -881,7 +903,7 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
 
 <!-- ============ 9. LIVE VISUALISATION ============ -->
 <section id="live" class="full-bleed">
-  <div class="venue"></div>
+  <div class="venue"><img class="ph-img" src="img/live-crowd.jpg" alt="Attendees networking under the live network visualisation at WXO" loading="lazy" decoding="async"><span class="ph-grain"></span></div>
   <canvas id="liveCanvas"></canvas>
   <div class="wrap">
     <div class="eyebrow fu">Live visualisation</div>
@@ -990,6 +1012,8 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
 
 <!-- ============ 12. POST EVENT ============ -->
 <section id="post">
+  <img class="ph-img sect-bg" src="img/share.jpg" alt="An attendee filming to share at a WXO event" loading="lazy" decoding="async">
+  <span class="sect-scrim" style="background:linear-gradient(90deg,rgba(5,5,7,.92),rgba(5,5,7,.72) 55%,rgba(5,5,7,.9))"></span>
   <div class="narrow">
     <div class="grid">
       <div>
@@ -1142,7 +1166,9 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
 
 <!-- ============ 17. CLOSING ============ -->
 <section id="closing" class="full-bleed">
+  <img class="ph-img" src="img/closing.jpg" alt="A packed session at a WXO event" loading="lazy" decoding="async">
   <canvas id="closeCanvas"></canvas>
+  <span class="ph-scrim"></span>
   <div class="inner">
     <h2>
       <span class="rv"><span>The best networking tool is the one you</span></span>
