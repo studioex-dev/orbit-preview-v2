@@ -246,11 +246,11 @@ nav.solid{background:rgba(5,5,7,.82);backdrop-filter:blur(14px);border-bottom-co
 /* ---------- Live viz ---------- */
 #live{padding:0;min-height:110vh;display:flex;align-items:center;overflow:hidden}
 .venue{position:absolute;inset:0;overflow:hidden}
-.venue .ph-img{filter:grayscale(.16) contrast(1.06) brightness(.44)}
+.venue .ph-img{filter:contrast(1.03) brightness(.72)}
 .venue::after{content:"";position:absolute;inset:0;z-index:1;background:
-  linear-gradient(90deg,rgba(5,5,7,.9) 0%,rgba(5,5,7,.55) 42%,rgba(5,5,7,.25) 72%,rgba(5,5,7,.55) 100%),
-  linear-gradient(0deg,rgba(5,5,7,.8),transparent 45%)}
-#liveCanvas{position:absolute;inset:0;width:100%;height:100%}
+  linear-gradient(90deg,rgba(5,5,7,.86) 0%,rgba(5,5,7,.5) 38%,rgba(5,5,7,.16) 66%,rgba(5,5,7,.52) 100%),
+  linear-gradient(0deg,rgba(5,5,7,.74),transparent 42%)}
+#liveCanvas{position:absolute;inset:0;width:100%;height:100%;opacity:.5}
 #live .wrap{z-index:2;width:100%;padding:120px var(--pad)}
 #live .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(40px,6vw,100px);align-items:end}
 .live-list{list-style:none;margin-top:40px;display:flex;flex-direction:column;gap:14px}
@@ -562,11 +562,14 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
 .fomo-mark small{display:block;font-size:8.5px;font-weight:700;letter-spacing:.01em;margin-top:3px}
 .parasol-mark{border:1.5px solid var(--white);padding:6px 10px 5px 13px;font-family:var(--sans);font-weight:800;font-size:12.5px;letter-spacing:.3em;color:var(--white);align-self:flex-start}
 .parasol-mark sup{font-size:7px;letter-spacing:0}
-.oe-card{position:relative;border:1px solid rgba(245,244,240,.12);padding:18px 16px 14px;background:linear-gradient(180deg,rgba(13,18,32,.35),transparent);transition:border-color .3s,transform .3s;cursor:pointer;flex:1;display:flex;flex-direction:column;gap:9px;min-height:150px}
+.oe-card{position:relative;overflow:hidden;border:1px solid rgba(245,244,240,.12);padding:18px 16px 14px;background:linear-gradient(180deg,rgba(13,18,32,.35),transparent);transition:border-color .3s,transform .3s;cursor:pointer;flex:1;display:flex;flex-direction:column;gap:9px;min-height:150px}
 .oe:hover .oe-card{transform:translateY(-4px)}
 .oe.t-conf:hover .oe-card{border-color:var(--n-blue)}
 .oe.t-art:hover .oe-card{border-color:var(--n-red)}
 .oe.t-music:hover .oe-card{border-color:var(--n-violet)}
+.oe-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.14;filter:grayscale(.28) brightness(.7);transition:opacity .35s}
+.oe:hover .oe-photo{opacity:.32}
+.oe-card>*:not(.oe-photo){position:relative;z-index:1}
 .oe-idx{position:absolute;top:12px;right:14px;font-family:var(--mono);font-size:10px;letter-spacing:.15em;color:var(--grey-d)}
 .oe-tag{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase}
 .oe-tag svg{width:12px;height:12px;flex:none}
@@ -673,9 +676,9 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
     <div class="eyebrow grey fu">Past &amp; upcoming orbits</div>
     <div class="orbit-line fu">
       <div class="oe past t-conf" data-evt="0"><i></i><div class="oe-card"><span class="oe-idx">01</span><div class="oe-logo"><img src="ev/crg.svg" alt="Creative Research Group"></div><span class="oe-tag"><svg viewBox="0 0 12 12" fill="currentColor"><rect x="1" y="7" width="2.4" height="4"/><rect x="4.8" y="4" width="2.4" height="7"/><rect x="8.6" y="1" width="2.4" height="10"/></svg> Conference</span><span class="oe-n">Creative Research Group</span><span class="oe-y">Apr 2025 · Hackney, LDN</span><span class="oe-more">Details →</span></div></div>
-      <div class="oe past t-art" data-evt="1"><i></i><div class="oe-card"><span class="oe-idx">02</span><div class="oe-logo"><span class="fomo-mark">FOMO<small>A Group Art Show</small></span></div><span class="oe-tag"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor"><rect x="1.5" y="1.5" width="9" height="9"/><circle cx="6" cy="6" r="2" fill="currentColor" stroke="none"/></svg> Art &amp; Ent.</span><span class="oe-n">FOMO 001</span><span class="oe-y">Dec 2025 · Marylebone, LDN</span><span class="oe-more">Details →</span></div></div>
-      <div class="oe past t-conf" data-evt="2"><i></i><div class="oe-card"><span class="oe-idx">03</span><div class="oe-logo"><img src="ev/lew.svg" alt="London Experience Week"></div><span class="oe-tag"><svg viewBox="0 0 12 12" fill="currentColor"><rect x="1" y="7" width="2.4" height="4"/><rect x="4.8" y="4" width="2.4" height="7"/><rect x="8.6" y="1" width="2.4" height="10"/></svg> Summit</span><span class="oe-n">WXO — LXW26</span><span class="oe-y">Apr 2026 · Ministry of Sound</span><span class="oe-more">Details →</span></div></div>
-      <div class="oe past t-art" data-evt="3"><i></i><div class="oe-card"><span class="oe-idx">04</span><div class="oe-logo"><span class="fomo-mark">FOMO<small>A Group Art Show</small></span></div><span class="oe-tag"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor"><rect x="1.5" y="1.5" width="9" height="9"/><circle cx="6" cy="6" r="2" fill="currentColor" stroke="none"/></svg> Art &amp; Ent.</span><span class="oe-n">FOMO 002</span><span class="oe-y">2026 · London</span><span class="oe-more">Details →</span></div></div>
+      <div class="oe past t-art" data-evt="1"><i></i><div class="oe-card"><img class="oe-photo" src="img/card-fomo1.jpg" alt="" loading="lazy" decoding="async"><span class="oe-idx">02</span><div class="oe-logo"><span class="fomo-mark">FOMO<small>A Group Art Show</small></span></div><span class="oe-tag"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor"><rect x="1.5" y="1.5" width="9" height="9"/><circle cx="6" cy="6" r="2" fill="currentColor" stroke="none"/></svg> Art &amp; Ent.</span><span class="oe-n">FOMO 001</span><span class="oe-y">Dec 2025 · Marylebone, LDN</span><span class="oe-more">Details →</span></div></div>
+      <div class="oe past t-conf" data-evt="2"><i></i><div class="oe-card"><img class="oe-photo" src="img/card-wxo.jpg" alt="" loading="lazy" decoding="async"><span class="oe-idx">03</span><div class="oe-logo"><img src="ev/lew.svg" alt="London Experience Week"></div><span class="oe-tag"><svg viewBox="0 0 12 12" fill="currentColor"><rect x="1" y="7" width="2.4" height="4"/><rect x="4.8" y="4" width="2.4" height="7"/><rect x="8.6" y="1" width="2.4" height="10"/></svg> Summit</span><span class="oe-n">WXO — LXW26</span><span class="oe-y">Apr 2026 · Ministry of Sound</span><span class="oe-more">Details →</span></div></div>
+      <div class="oe past t-art" data-evt="3"><i></i><div class="oe-card"><img class="oe-photo" src="img/card-fomo2.jpg" alt="" loading="lazy" decoding="async"><span class="oe-idx">04</span><div class="oe-logo"><span class="fomo-mark">FOMO<small>A Group Art Show</small></span></div><span class="oe-tag"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor"><rect x="1.5" y="1.5" width="9" height="9"/><circle cx="6" cy="6" r="2" fill="currentColor" stroke="none"/></svg> Art &amp; Ent.</span><span class="oe-n">FOMO 002</span><span class="oe-y">2026 · London</span><span class="oe-more">Details →</span></div></div>
       <div class="oe next t-conf" data-evt="4"><i></i><div class="oe-card"><span class="oe-idx">05</span><div class="oe-logo"><img src="ev/eema.svg" alt="EEMA India"></div><span class="oe-tag"><svg viewBox="0 0 12 12" fill="currentColor"><rect x="1" y="7" width="2.4" height="4"/><rect x="4.8" y="4" width="2.4" height="7"/><rect x="8.6" y="1" width="2.4" height="10"/></svg> Summit</span><span class="oe-n">EEMAGINE 2026</span><span class="oe-y">2026 · India</span><span class="oe-more">Details →</span></div></div>
       <div class="oe next t-music" data-evt="5"><i></i><div class="oe-card"><span class="oe-idx">06</span><div class="oe-logo"><span class="parasol-mark">PARASOL<sup>®</sup></span></div><span class="oe-tag"><svg viewBox="0 0 12 12" fill="currentColor"><circle cx="3.4" cy="9.4" r="2"/><rect x="4.6" y="1" width="1.6" height="8"/><path d="M6.2 1c2.6.4 4 1.6 4.4 3.4-1.4-1-2.8-1.4-4.4-1.4z"/></svg> Music</span><span class="oe-n">Parasol®</span><span class="oe-y">2026 · Shoreditch, LDN</span><span class="oe-more">Details →</span></div></div>
     </div>
@@ -903,7 +906,7 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
 
 <!-- ============ 9. LIVE VISUALISATION ============ -->
 <section id="live" class="full-bleed">
-  <div class="venue"><img class="ph-img" src="img/live-crowd.jpg" alt="Attendees networking under the live network visualisation at WXO" loading="lazy" decoding="async"><span class="ph-grain"></span></div>
+  <div class="venue"><img class="ph-img" src="img/live-network.jpg" alt="The live Orbit network visualisation at LXW26 — 340 people, 949 connections" loading="lazy" decoding="async"></div>
   <canvas id="liveCanvas"></canvas>
   <div class="wrap">
     <div class="eyebrow fu">Live visualisation</div>
