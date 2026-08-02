@@ -1154,15 +1154,16 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
         <h2 class="fu">Give your attendees the tools they need to find the <b>people they need</b>.</h2>
         <p class="mail fu">info@<a href="mailto:info@in-orbit.co">in-orbit.co</a> — or use the form. We reply within a day.</p>
       </div>
-      <form class="fu" onsubmit="event.preventDefault();this.innerHTML='<h3 style=\'padding:60px 0\'>Thank you — we\'ll be in touch. <b>Welcome to Orbit.</b></h3>'">
-        <div class="field"><label>Full name</label><input type="text" required></div>
-        <div class="field"><label>Role</label><input type="text"></div>
-        <div class="field"><label>Company</label><input type="text"></div>
-        <div class="field"><label>Email</label><input type="email" required></div>
+      <form id="contactForm" class="fu">
+        <div class="field"><label>Full name</label><input type="text" name="name" required></div>
+        <div class="field"><label>Role</label><input type="text" name="role"></div>
+        <div class="field"><label>Company</label><input type="text" name="company"></div>
+        <div class="field"><label>Email</label><input type="email" name="email" required></div>
         <div class="field"><label>How can we help?</label>
-          <select><option>Book a demo</option><option>Discovery call</option><option>ROI walkthrough</option><option>Run a pilot</option></select>
+          <select name="help"><option>Book a demo</option><option>Discovery call</option><option>ROI walkthrough</option><option>Run a pilot</option></select>
         </div>
-        <button class="btn primary magnetic" type="submit">Send →</button>
+        <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+        <button class="btn primary magnetic" type="submit">Send &rarr;</button>
       </form>
     </div>
   </div>
@@ -2113,6 +2114,36 @@ function loop(ms) {
   last = ms;
 }
 requestAnimationFrame(loop);
+</script>
+<script>
+/* contact form -> emails info@in-orbit.co via Formsubmit (no backend) */
+(function(){
+  var f=document.getElementById('contactForm');
+  if(!f) return;
+  f.addEventListener('submit', function(e){
+    e.preventDefault();
+    var btn=f.querySelector('button[type=submit]'); var orig=btn.innerHTML;
+    var fd=new FormData(f); var data={};
+    fd.forEach(function(v,k){ data[k]=v; });
+    if(data._honey){ return; }                 // bot trap
+    data._subject='New Orbit enquiry \u2014 '+(data.company||data.name||'website');
+    data._template='table';
+    data._captcha='false';
+    btn.innerHTML='Sending\u2026'; btn.disabled=true;
+    fetch('https://formsubmit.co/ajax/info@in-orbit.co',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify(data)
+    }).then(function(r){ if(!r.ok) throw 0; return r.json(); })
+      .then(function(){ f.innerHTML='<h3 style="padding:60px 0">Thank you \u2014 we\'ll be in touch. <b>Welcome to Orbit.</b></h3>'; })
+      .catch(function(){
+        btn.innerHTML=orig; btn.disabled=false;
+        var m=f.querySelector('.form-err');
+        if(!m){ m=document.createElement('p'); m.className='form-err'; m.style.cssText='color:#E74C3C;font-size:13px;margin-top:16px'; f.appendChild(m); }
+        m.innerHTML='Sorry \u2014 something went wrong. Please email <a href="mailto:info@in-orbit.co" style="color:var(--yellow)">info@in-orbit.co</a> directly.';
+      });
+  });
+})();
 </script>
 </body>
 </html>
