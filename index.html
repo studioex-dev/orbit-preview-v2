@@ -610,8 +610,9 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
 .photo-band{position:relative;min-height:68vh;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding:clamp(80px,12vh,140px) var(--pad)}
 .photo-band .ph-img{filter:grayscale(.22) contrast(1.05) brightness(.46)}
 .photo-band::after{content:"";position:absolute;inset:0;z-index:1;background:radial-gradient(ellipse 82% 74% at 50% 50%,rgba(5,5,7,.4),rgba(5,5,7,.84))}
-.photo-band .pb-inner{position:relative;z-index:2;max-width:26ch}
-.photo-band h2{font-size:clamp(1.7rem,3.4vw,3.2rem)}
+.photo-band .pb-inner{position:relative;z-index:2;max-width:none}
+.photo-band h2{font-size:clamp(1.3rem,2.9vw,2.7rem);white-space:nowrap}
+@media(max-width:680px){.photo-band h2{white-space:normal;font-size:1.4rem}.photo-band .pb-inner{max-width:24ch;margin:0 auto}}
 
 /* generic full-bleed section photo bg */
 .sect-bg{filter:grayscale(.2) contrast(1.04) brightness(.42);opacity:.55}
