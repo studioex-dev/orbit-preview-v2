@@ -174,11 +174,13 @@ nav.solid{background:rgba(5,5,7,.82);backdrop-filter:blur(14px);border-bottom-co
 #revealCanvas{position:absolute;inset:0;width:100%;height:100%;opacity:.5}
 #reveal .wrap{z-index:2}
 #reveal h2{font-size:clamp(2rem,4.3vw,4.4rem);max-width:30ch;margin:0 auto}
-.angles{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,3vw,56px);margin-top:clamp(80px,10vh,130px);text-align:left}
+.angles{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(22px,2.4vw,44px);margin-top:clamp(80px,10vh,130px);text-align:left}
+@media(max-width:1000px){.angles{grid-template-columns:1fr 1fr}}
 .angle{padding-top:26px;border-top:2px solid var(--grey-d)}
 .angle.blue{border-top-color:var(--n-blue)}
 .angle.red{border-top-color:var(--n-red)}
 .angle.yellow{border-top-color:var(--yellow)}
+.angle.green{border-top-color:var(--n-green)}
 .angle .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.26em;color:var(--grey-l);margin-bottom:16px}
 .angle p{color:var(--grey);font-size:15.5px}
 .angle p b{color:var(--white);font-weight:600}
@@ -210,6 +212,8 @@ nav.solid{background:rgba(5,5,7,.82);backdrop-filter:blur(14px);border-bottom-co
 .card-mock .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.26em;color:var(--grey);text-transform:uppercase;margin-bottom:8px}
 .card-mock .phrase{font-family:var(--serif);font-size:clamp(1.2rem,1.7vw,1.55rem);font-weight:600;margin-bottom:26px}
 .card-mock .pin{font-family:var(--mono);font-size:clamp(2rem,3vw,2.8rem);color:var(--yellow);letter-spacing:.28em}
+.card-mock .card-wallet{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--n-teal);margin-top:20px;line-height:1.6}
+.hero-pillars{margin-top:28px;font-family:var(--mono);font-size:clamp(9.5px,.85vw,11px);letter-spacing:.16em;text-transform:uppercase;color:var(--grey)}
 @media(max-width:900px){#how .grid{grid-template-columns:1fr}}
 
 /* ---------- Journey ---------- */
@@ -366,7 +370,11 @@ nav.solid{background:rgba(5,5,7,.82);backdrop-filter:blur(14px);border-bottom-co
 @media(max-width:900px){.compare{grid-template-columns:1fr}}
 
 /* ---------- Pricing ---------- */
-.prices{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(18px,2vw,32px);margin-top:64px}
+.prices{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(18px,2vw,32px);margin-top:64px}
+.price .p-tag{display:inline-flex;align-self:flex-start;font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;padding:6px 15px;border-radius:100px;border:1px solid;margin-bottom:26px}
+.price .p-sub{font-family:var(--serif);font-weight:600;font-size:1.08rem;margin:-2px 0 18px}
+.price.c-bespoke .p-tag,.price.c-bespoke .p-sub{color:var(--n-teal)} .price.c-bespoke .p-tag{border-color:rgba(26,188,156,.5)} .price.c-bespoke:hover{border-color:var(--n-teal)}
+.price.c-license .p-tag,.price.c-license .p-sub{color:var(--n-blue)} .price.c-license .p-tag{border-color:rgba(59,111,246,.5)} .price.c-license:hover{border-color:var(--n-blue)}
 .price{border:1px solid rgba(245,244,240,.12);padding:clamp(28px,3vw,46px);display:flex;flex-direction:column;min-height:380px;transition:border-color .3s,transform .3s;background:linear-gradient(180deg,rgba(13,18,32,.3),transparent)}
 .price:hover{border-color:var(--yellow);transform:translateY(-6px)}
 .price .idx{font-family:var(--mono);font-size:13px;color:var(--yellow);letter-spacing:.2em;margin-bottom:22px}
@@ -665,6 +673,7 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
       <span class="rv"><span><b>your network</b>.</span></span>
     </h1>
     <p class="sub rv"><span>Enhancing the most important part of networking, <b>the human touch</b>. No app. No account. Just a smart system that captures the value of the networking in your room.</span></p>
+    <div class="hero-pillars rv"><span>Event Networking Infrastructure &nbsp;·&nbsp; Data &amp; Intelligence Reporting &nbsp;·&nbsp; Smart Mobile Business Card</span></div>
   </div>
   <div class="scroll-hint">Scroll</div>
   <div class="hero-hint" id="heroHint">[ Click a node ]</div>
@@ -773,7 +782,11 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
       </div>
       <div class="angle yellow fu">
         <div class="lbl">Action</div>
-        <p>'In Orbit' reports hand attendees, exhibitors and organisers <b>the data they need</b> — to meet the people they want, and to report on the experience they had. Your event becomes an opportunity.</p>
+        <p>'In Orbit' reports hand attendees, exhibitors and organisers <b>the data they need</b> — to meet the people they want, and to report on the experience they had.</p>
+      </div>
+      <div class="angle green fu">
+        <div class="lbl">Continuity</div>
+        <p>The smart business card <b>doesn't expire</b>. It saves to your attendees' phone wallet and keeps working all year — your event's network, compounding.</p>
       </div>
     </div>
   </div>
@@ -856,6 +869,7 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
           <div class="phrase">wonderful purple chinchilla</div>
           <div class="lbl">Pin</div>
           <div class="pin odo" data-value="4271" data-pad="0000">4271</div>
+          <div class="card-wallet">Saves to your phone wallet · never expires · works all year</div>
         </div>
         <div class="conn-mock">
           <div class="cm-label">Your connections</div>
@@ -1114,31 +1128,27 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
 <section id="pricing">
   <div class="narrow">
     <div class="eyebrow fu">Commercial model</div>
-    <h2 class="fu">Three different <b>use-cases</b>.</h2>
+    <h2 class="fu">Designed to make your event unforgettable — <b>whatever the size</b>.</h2>
     <div class="prices">
-      <div class="price fu">
-        <div class="idx">01</div>
-        <h3>Platform Integration</h3>
-        <p class="use">For events that already run an app — Orbit plugs into your existing stack and lights it up.</p>
+      <div class="price c-bespoke fu">
+        <span class="p-tag">Make a statement</span>
+        <h3>Bespoke</h3>
+        <div class="p-sub">The full custom experience</div>
+        <p class="use">We build a networking experience suited to your exact requirements and brand — designed, delivered and run end to end.</p>
         <div class="fee">Per-event fee</div>
       </div>
-      <div class="price fu">
-        <div class="idx">02</div>
-        <h3>Full Infrastructure</h3>
-        <p class="use">For events with no networking tech — cards, matching, visualisation and reports, end to end.</p>
-        <div class="fee">Integration + licence</div>
-      </div>
-      <div class="price fu">
-        <div class="idx">03</div>
-        <h3>Annual Subscription</h3>
-        <p class="use">For organisations, agencies and venues running a portfolio of events across the year.</p>
-        <div class="fee">Portfolio licence</div>
+      <div class="price c-license fu">
+        <span class="p-tag">Infrastructure</span>
+        <h3>License</h3>
+        <div class="p-sub">Hands-off networking experience</div>
+        <p class="use">You run the show, we provide the tech. Smart cards, matching, live visualisation and reports — with add-ons available.</p>
+        <div class="fee">Licence fee</div>
       </div>
     </div>
     <div class="addon fu">
       <div>
         <div class="t">+ Interactive <b>Visualisation Experience</b></div>
-        <p>The flagship branded LED moment — fully sponsorable, endlessly filmed, the centrepiece of the floor.</p>
+        <p>A large LED or projected visualisation of the networking at your event — the flagship branded moment, endlessly filmed. A premium, fully sponsorable add-on.</p>
       </div>
       <a class="btn magnetic" href="#contact">Ask about the add-on</a>
     </div>
