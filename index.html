@@ -400,14 +400,15 @@ nav.solid{background:rgba(5,5,7,.82);backdrop-filter:blur(14px);border-bottom-co
 #contact .grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(50px,7vw,130px)}
 .field{margin-bottom:38px}
 .field label{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--grey);margin-bottom:10px}
-.field input,.field select{
+.field input,.field select,.field textarea{
   width:100%;background:transparent;border:0;border-bottom:1px solid var(--grey-d);
   color:var(--white);font-family:var(--sans);font-size:17px;padding:10px 0;outline:0;
   transition:border-color .3s;border-radius:0;appearance:none;
 }
+.field textarea{resize:vertical;min-height:56px;line-height:1.5}
 .field select{cursor:pointer}
 .field select option{background:var(--ink2);color:var(--white)}
-.field input:focus,.field select:focus{border-bottom-color:var(--yellow)}
+.field input:focus,.field select:focus,.field textarea:focus{border-bottom-color:var(--yellow)}
 #contact .mail{font-family:var(--mono);font-size:13px;color:var(--grey);margin-top:44px;letter-spacing:.08em}
 #contact .mail a{color:var(--yellow)}
 @media(max-width:900px){#contact .grid{grid-template-columns:1fr}}
@@ -1199,7 +1200,7 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
         <h3>License</h3>
         <div class="p-sub">Hands-off networking experience</div>
         <p class="use">You run the show, we provide the tech. Smart cards, matching, live visualisation and reports — with add-ons available.</p>
-        <div class="fee"><span class="fee-num">From £200</span><span class="fee-note">Per event · POA</span></div>
+        <div class="fee"><span class="fee-num">From £50</span><span class="fee-note">Per event · POA</span></div>
       </div>
     </div>
     <div class="addon fu">
@@ -1230,6 +1231,7 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
         <div class="field"><label>How can we help?</label>
           <select name="help"><option>Book a demo</option><option>Discovery call</option><option>ROI walkthrough</option><option>Run a pilot</option></select>
         </div>
+        <div class="field"><label>Message</label><textarea name="message" rows="4" placeholder="Tell us about your event…"></textarea></div>
         <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
         <button class="btn primary magnetic" type="submit">Send &rarr;</button>
       </form>
