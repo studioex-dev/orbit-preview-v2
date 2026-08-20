@@ -667,66 +667,77 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
 .compound-beat p b{color:var(--white);font-weight:600}
 @media(max-width:900px){#compound .grid{grid-template-columns:1fr}}
 
-/* ---------- industries / event types (cards) ---------- */
+/* ---------- industries / event categories ---------- */
 #industries{background:linear-gradient(180deg,var(--ink),rgba(10,14,26,.55) 50%,var(--ink))}
 .ind-list{
-  display:grid;grid-template-columns:repeat(4,1fr);align-items:start;
-  gap:clamp(12px,1.5vw,20px);margin-top:56px;
+  display:grid;grid-template-columns:repeat(2,1fr);align-items:start;
+  gap:clamp(14px,1.6vw,22px);margin-top:56px;
 }
 .ind{
   border:1px solid rgba(245,244,240,.12);
   background:linear-gradient(180deg,rgba(13,18,32,.45),rgba(13,18,32,0));
   transition:border-color .3s,transform .3s,background .3s;
 }
-.ind:hover{transform:translateY(-4px);background:linear-gradient(180deg,rgba(13,18,32,.75),rgba(13,18,32,.1))}
+.ind:hover{transform:translateY(-4px);background:linear-gradient(180deg,rgba(13,18,32,.78),rgba(13,18,32,.1))}
 .ind.k-corp:hover,.ind.k-corp.open{border-color:var(--n-blue)}
 .ind.k-live:hover,.ind.k-live.open{border-color:var(--n-red)}
 .ind.k-priv:hover,.ind.k-priv.open{border-color:var(--n-violet)}
 .ind.k-ong:hover,.ind.k-ong.open{border-color:var(--n-green)}
 .ind-head{
   width:100%;background:none;border:0;cursor:pointer;text-align:left;color:inherit;
-  font-family:inherit;display:flex;flex-direction:column;gap:12px;
-  padding:20px 18px;min-height:158px;
+  font-family:inherit;display:flex;flex-direction:column;gap:13px;
+  padding:clamp(20px,2.2vw,30px);
 }
 .ind-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
 .ind-num{font-family:var(--mono);font-size:10.5px;letter-spacing:.15em;color:var(--grey-d)}
 .ind-kind{
   font-family:var(--mono);font-size:9px;letter-spacing:.19em;text-transform:uppercase;
-  align-self:flex-start;padding:5px 11px;border:1px solid currentColor;border-radius:100px;opacity:.85;
+  align-self:flex-start;padding:5px 12px;border:1px solid currentColor;border-radius:100px;opacity:.9;
 }
 .k-corp .ind-kind{color:var(--n-blue)}
 .k-live .ind-kind{color:var(--n-red)}
 .k-priv .ind-kind{color:var(--n-violet)}
 .k-ong  .ind-kind{color:var(--n-green)}
 .ind-name{
-  font-family:var(--serif);font-weight:600;line-height:1.18;
-  font-size:clamp(1.02rem,1.22vw,1.26rem);margin-top:auto;transition:color .25s;
+  font-family:var(--serif);font-weight:600;line-height:1.15;
+  font-size:clamp(1.3rem,2vw,1.85rem);transition:color .25s;
 }
 .ind:hover .ind-name,.ind.open .ind-name{color:var(--yellow)}
-.ind-plus{position:relative;width:13px;height:13px;flex:none;margin-top:2px}
+.ind-teaser{
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--grey);line-height:1.75;
+}
+.ind-plus{position:relative;width:14px;height:14px;flex:none;margin-top:1px}
 .ind-plus::before,.ind-plus::after{
   content:"";position:absolute;left:50%;top:50%;background:var(--grey);
   transition:transform .35s,background .25s;
 }
-.ind-plus::before{width:13px;height:1.5px;transform:translate(-50%,-50%)}
-.ind-plus::after{width:1.5px;height:13px;transform:translate(-50%,-50%)}
+.ind-plus::before{width:14px;height:1.5px;transform:translate(-50%,-50%)}
+.ind-plus::after{width:1.5px;height:14px;transform:translate(-50%,-50%)}
 .ind.open .ind-plus::after{transform:translate(-50%,-50%) rotate(90deg)}
 .ind.open .ind-plus::before,.ind.open .ind-plus::after{background:var(--yellow)}
-.ind-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .42s cubic-bezier(.16,1,.3,1)}
+.ind-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s cubic-bezier(.16,1,.3,1)}
 .ind.open .ind-panel{grid-template-rows:1fr}
 .ind-panel>div{overflow:hidden}
-.ind-copy{padding:0 18px 22px}
-.ind-copy p{color:var(--grey-l);font-size:14.2px;line-height:1.6}
-.ind-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+.ind-copy{padding:0 clamp(20px,2.2vw,30px) clamp(24px,2.4vw,30px)}
+.ind-copy>p{color:var(--grey-l);font-size:15px;line-height:1.62;max-width:52ch}
+.ind-lbl{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--grey-d);margin:24px 0 12px;padding-top:16px;border-top:1px solid rgba(245,244,240,.1);
+}
+.ind-chips{display:flex;flex-wrap:wrap;gap:7px}
 .ind-chips span{
-  font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;
-  color:var(--grey);padding:5px 10px;border:1px solid rgba(245,244,240,.14);
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--grey-l);padding:6px 11px;border:1px solid rgba(245,244,240,.15);
 }
-@media(max-width:1080px){.ind-list{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:560px){
-  .ind-list{grid-template-columns:1fr}
-  .ind-head{min-height:0;padding:18px 16px}
-}
+.ind-ben{list-style:none;display:flex;flex-direction:column;gap:9px}
+.ind-ben li{position:relative;padding-left:19px;color:var(--grey-l);font-size:14.5px;line-height:1.55}
+.ind-ben li::before{content:"";position:absolute;left:0;top:.55em;width:8px;height:2px;background:currentColor}
+.k-corp .ind-ben li::before{background:var(--n-blue)}
+.k-live .ind-ben li::before{background:var(--n-red)}
+.k-priv .ind-ben li::before{background:var(--n-violet)}
+.k-ong  .ind-ben li::before{background:var(--n-green)}
+@media(max-width:820px){.ind-list{grid-template-columns:1fr}}
 .reduced .ind-panel{transition:none}
 
 /* fade-up util */
@@ -833,89 +844,61 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
       <div class="ind k-corp fu">
         <button class="ind-head" type="button" aria-expanded="false" aria-controls="indp-1">
           <span class="ind-top"><span class="ind-num">01</span><span class="ind-plus" aria-hidden="true"></span></span>
-          <span class="ind-kind">Corporate</span>
-          <span class="ind-name">Conferences &amp; Summits</span>
+          <span class="ind-kind">9 event types</span>
+          <span class="ind-name">Corporate &amp; MICE</span>
+          <span class="ind-teaser">Conferences &middot; Summits &middot; Trade shows &middot; Expos &middot; +5 more</span>
         </button>
         <div class="ind-panel" id="indp-1" role="region"><div><div class="ind-copy">
-          <p>Orbit plugs straight into the registration and badges you already run. Delegates are matched on what they actually came for, and the room connects live on the big screen.</p>
-          <div class="ind-chips"><span>Delegate matching</span><span>Live visualisation</span><span>Organiser dashboard</span></div>
+          <p>Orbit plugs into the registration, badges and scan system you already run &mdash; no new hardware, no extra queues, nothing to download.</p>
+          <div class="ind-lbl">Event types</div>
+          <div class="ind-chips"><span>Conferences</span><span>Summits</span><span>Trade shows</span><span>Expos</span><span>Incentives</span><span>Away days</span><span>Client days</span><span>Product launches</span><span>AGMs</span></div>
+          <div class="ind-lbl">What you get</div>
+          <ul class="ind-ben"><li>Delegates matched on what they came for, not job titles</li><li>Exhibitors get named reach data, benchmarked against the floor</li><li>Board-ready proof of connection rate and ROI</li><li>The retention number that sells next year&rsquo;s tickets</li></ul>
         </div></div></div>
       </div>
-      <div class="ind k-corp fu">
+      <div class="ind k-live fu">
         <button class="ind-head" type="button" aria-expanded="false" aria-controls="indp-2">
           <span class="ind-top"><span class="ind-num">02</span><span class="ind-plus" aria-hidden="true"></span></span>
-          <span class="ind-kind">Corporate</span>
-          <span class="ind-name">Corporate &amp; MICE</span>
+          <span class="ind-kind">7 event types</span>
+          <span class="ind-name">Live &amp; Entertainment</span>
+          <span class="ind-teaser">Festivals &middot; Concerts &middot; Tours &middot; Brand activations &middot; +3 more</span>
         </button>
         <div class="ind-panel" id="indp-2" role="region"><div><div class="ind-copy">
-          <p>Incentives, internal summits and away days. Orbit breaks up the cliques &mdash; mapping who genuinely mixed across teams, offices and seniority.</p>
-          <div class="ind-chips"><span>Cross-team mixing</span><span>Engagement data</span><span>Board-ready export</span></div>
-        </div></div></div>
-      </div>
-      <div class="ind k-corp fu">
-        <button class="ind-head" type="button" aria-expanded="false" aria-controls="indp-3">
-          <span class="ind-top"><span class="ind-num">03</span><span class="ind-plus" aria-hidden="true"></span></span>
-          <span class="ind-kind">Corporate</span>
-          <span class="ind-name">Trade Shows &amp; Expos</span>
-        </button>
-        <div class="ind-panel" id="indp-3" role="region"><div><div class="ind-copy">
-          <p>Every stand gets its own reach data: who they pulled, from which sectors, hour by hour, benchmarked against the floor.</p>
-          <div class="ind-chips"><span>Stand reach reports</span><span>Sector breakdown</span><span>Exhibitor ROI</span></div>
-        </div></div></div>
-      </div>
-      <div class="ind k-live fu">
-        <button class="ind-head" type="button" aria-expanded="false" aria-controls="indp-4">
-          <span class="ind-top"><span class="ind-num">04</span><span class="ind-plus" aria-hidden="true"></span></span>
-          <span class="ind-kind">Live</span>
-          <span class="ind-name">Festivals</span>
-        </button>
-        <div class="ind-panel" id="indp-4" role="region"><div><div class="ind-copy">
-          <p>A big-screen moment the crowd takes part in. People scan to join the map, find themselves in it, and share it.</p>
-          <div class="ind-chips"><span>Crowd installation</span><span>Social amplification</span><span>Dwell &amp; peak data</span></div>
-        </div></div></div>
-      </div>
-      <div class="ind k-live fu">
-        <button class="ind-head" type="button" aria-expanded="false" aria-controls="indp-5">
-          <span class="ind-top"><span class="ind-num">05</span><span class="ind-plus" aria-hidden="true"></span></span>
-          <span class="ind-kind">Live</span>
-          <span class="ind-name">Concerts &amp; Tours</span>
-        </button>
-        <div class="ind-panel" id="indp-5" role="region"><div><div class="ind-copy">
-          <p>Fans connect around the acts they love, and artists get real data on who showed up for them &mdash; venue by venue.</p>
-          <div class="ind-chips"><span>Fan engagement</span><span>Artist cards</span><span>Venue-by-venue data</span></div>
+          <p>A big-screen moment the crowd takes part in &mdash; and the audience data that usually walks straight out of the door.</p>
+          <div class="ind-lbl">Event types</div>
+          <div class="ind-chips"><span>Festivals</span><span>Concerts</span><span>Tours</span><span>Brand activations</span><span>Club nights</span><span>Arena shows</span><span>Sponsor zones</span></div>
+          <div class="ind-lbl">What you get</div>
+          <ul class="ind-ben"><li>An installation people gather around, film and post</li><li>Real audience data: who came, when they peaked, what pulled them</li><li>A sponsorable branded moment with measurable dwell time</li><li>Organic reach that keeps working after the last set</li></ul>
         </div></div></div>
       </div>
       <div class="ind k-priv fu">
-        <button class="ind-head" type="button" aria-expanded="false" aria-controls="indp-6">
-          <span class="ind-top"><span class="ind-num">06</span><span class="ind-plus" aria-hidden="true"></span></span>
-          <span class="ind-kind">Private</span>
-          <span class="ind-name">Weddings &amp; Private Events</span>
+        <button class="ind-head" type="button" aria-expanded="false" aria-controls="indp-3">
+          <span class="ind-top"><span class="ind-num">03</span><span class="ind-plus" aria-hidden="true"></span></span>
+          <span class="ind-kind">6 event types</span>
+          <span class="ind-name">Private &amp; Celebrations</span>
+          <span class="ind-teaser">Weddings &middot; Birthdays &middot; Anniversaries &middot; Private dinners &middot; +2 more</span>
         </button>
-        <div class="ind-panel" id="indp-6" role="region"><div><div class="ind-copy">
-          <p>Two families in one room and nobody knows each other. Guests scan to connect, and the couple keeps a map of everyone who met.</p>
-          <div class="ind-chips"><span>Guest connections</span><span>Table mixing</span><span>Keepsake report</span></div>
-        </div></div></div>
-      </div>
-      <div class="ind k-live fu">
-        <button class="ind-head" type="button" aria-expanded="false" aria-controls="indp-7">
-          <span class="ind-top"><span class="ind-num">07</span><span class="ind-plus" aria-hidden="true"></span></span>
-          <span class="ind-kind">Live</span>
-          <span class="ind-name">Brand Activations</span>
-        </button>
-        <div class="ind-panel" id="indp-7" role="region"><div><div class="ind-copy">
-          <p>A branded, sponsorable installation that earns real dwell time and captures genuine audience data &mdash; not another email form.</p>
-          <div class="ind-chips"><span>Branded moment</span><span>Sponsorable</span><span>Audience capture</span></div>
+        <div class="ind-panel" id="indp-3" role="region"><div><div class="ind-copy">
+          <p>Two families in one room and nobody knows each other. Orbit makes the introductions without anyone feeling managed.</p>
+          <div class="ind-lbl">Event types</div>
+          <div class="ind-chips"><span>Weddings</span><span>Birthdays</span><span>Anniversaries</span><span>Private dinners</span><span>Receptions</span><span>Milestone parties</span></div>
+          <div class="ind-lbl">What you get</div>
+          <ul class="ind-ben"><li>Guests connect &mdash; and actually remember who they met</li><li>Tables and sides mix, visibly, on the night</li><li>A keepsake map of everyone who came and everyone who met</li><li>Shared back to the whole guest list afterwards</li></ul>
         </div></div></div>
       </div>
       <div class="ind k-ong fu">
-        <button class="ind-head" type="button" aria-expanded="false" aria-controls="indp-8">
-          <span class="ind-top"><span class="ind-num">08</span><span class="ind-plus" aria-hidden="true"></span></span>
-          <span class="ind-kind">Ongoing</span>
-          <span class="ind-name">Member Communities</span>
+        <button class="ind-head" type="button" aria-expanded="false" aria-controls="indp-4">
+          <span class="ind-top"><span class="ind-num">04</span><span class="ind-plus" aria-hidden="true"></span></span>
+          <span class="ind-kind">7 event types</span>
+          <span class="ind-name">Communities &amp; Membership</span>
+          <span class="ind-teaser">Member clubs &middot; Networks &middot; Meetup series &middot; Alumni groups &middot; +3 more</span>
         </button>
-        <div class="ind-panel" id="indp-8" role="region"><div><div class="ind-copy">
-          <p>Recurring meetups compound. The same card keeps working all year, so the network grows between events instead of resetting.</p>
-          <div class="ind-chips"><span>Year-round card</span><span>Compounding network</span><span>Retention data</span></div>
+        <div class="ind-panel" id="indp-4" role="region"><div><div class="ind-copy">
+          <p>Recurring events compound. The same card keeps working all year, so your network grows between meetups instead of resetting each time.</p>
+          <div class="ind-lbl">Event types</div>
+          <div class="ind-chips"><span>Member clubs</span><span>Networks</span><span>Meetup series</span><span>Alumni groups</span><span>Coworking</span><span>Trade bodies</span><span>Chapters</span></div>
+          <div class="ind-lbl">What you get</div>
+          <ul class="ind-ben"><li>One card that works across every event you run</li><li>See which members are connecting &mdash; and which are drifting</li><li>Warm introductions between members, year-round</li><li>Retention and engagement data for your board</li></ul>
         </div></div></div>
       </div>
     </div>
