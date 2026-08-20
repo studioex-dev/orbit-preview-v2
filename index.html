@@ -667,6 +667,51 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
 .compound-beat p b{color:var(--white);font-weight:600}
 @media(max-width:900px){#compound .grid{grid-template-columns:1fr}}
 
+/* ---------- industries / event types ---------- */
+#industries{background:linear-gradient(180deg,var(--ink),rgba(10,14,26,.5) 50%,var(--ink))}
+.ind-list{margin-top:56px;border-top:1px solid rgba(245,244,240,.13)}
+.ind{border-bottom:1px solid rgba(245,244,240,.13)}
+.ind-head{
+  width:100%;background:none;border:0;cursor:pointer;text-align:left;color:inherit;
+  display:flex;align-items:center;gap:20px;padding:24px 4px;
+  font-family:inherit;transition:padding-left .3s;
+}
+.ind-head:hover{padding-left:12px}
+.ind-num{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--grey-d);flex:none;width:26px}
+.ind-name{
+  font-family:var(--serif);font-weight:600;font-size:clamp(1.15rem,1.9vw,1.65rem);
+  line-height:1.2;flex:1;transition:color .25s;
+}
+.ind-head:hover .ind-name,.ind.open .ind-name{color:var(--yellow)}
+.ind-kind{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--grey);flex:none;padding:5px 12px;border:1px solid rgba(245,244,240,.16);border-radius:100px;
+}
+.ind-plus{position:relative;width:15px;height:15px;flex:none}
+.ind-plus::before,.ind-plus::after{
+  content:"";position:absolute;background:var(--grey-l);transition:transform .35s,background .25s;
+  left:50%;top:50%;
+}
+.ind-plus::before{width:15px;height:1.5px;transform:translate(-50%,-50%)}
+.ind-plus::after{width:1.5px;height:15px;transform:translate(-50%,-50%)}
+.ind.open .ind-plus::after{transform:translate(-50%,-50%) rotate(90deg)}
+.ind.open .ind-plus::before,.ind.open .ind-plus::after{background:var(--yellow)}
+.ind-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .42s cubic-bezier(.16,1,.3,1)}
+.ind.open .ind-panel{grid-template-rows:1fr}
+.ind-panel>div{overflow:hidden}
+.ind-copy{padding:0 4px 30px 46px;max-width:70ch}
+.ind-copy p{color:var(--grey-l);font-size:15.5px;line-height:1.62}
+.ind-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.ind-chips span{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--grey);padding:6px 12px;border:1px solid rgba(245,244,240,.14);
+}
+@media(max-width:700px){
+  .ind-kind{display:none}
+  .ind-copy{padding-left:30px}
+}
+.reduced .ind-panel{transition:none}
+
 /* fade-up util */
 .fu{opacity:0;transform:translateY(40px)}
 .reduced .fu{opacity:1!important;transform:none!important}
@@ -758,6 +803,113 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
       <span class="rv"><span>Those who succeed have a</span></span>
       <span class="rv"><span><b>reason to come back</b>.</span></span>
     </h2>
+  </div>
+</section>
+
+<!-- ============ INDUSTRIES / EVENT TYPES ============ -->
+<section id="industries">
+  <div class="narrow">
+    <div class="eyebrow fu">What we run Orbit at</div>
+    <h2 class="fu">If people gather, <b>Orbit works</b>.</h2>
+    <p class="body fu" style="margin-top:26px">From a 50-guest wedding to a 50,000-person festival &mdash; the same system, adapted to your room. Open one to see how it works there.</p>
+    <div class="ind-list">
+      <div class="ind fu">
+        <button class="ind-head" type="button" aria-expanded="false" aria-controls="indp-1">
+          <span class="ind-num">01</span>
+          <span class="ind-name">Conferences &amp; Summits</span>
+          <span class="ind-kind">Corporate</span>
+          <span class="ind-plus" aria-hidden="true"></span>
+        </button>
+        <div class="ind-panel" id="indp-1" role="region"><div><div class="ind-copy">
+          <p>Orbit plugs straight into the registration and badges you already run. Delegates are matched on what they actually came for, the room connects live on the big screen, and everyone leaves with their own report.</p>
+          <div class="ind-chips"><span>Delegate matching</span><span>Live visualisation</span><span>Organiser dashboard</span></div>
+        </div></div></div>
+      </div>
+      <div class="ind fu">
+        <button class="ind-head" type="button" aria-expanded="false" aria-controls="indp-2">
+          <span class="ind-num">02</span>
+          <span class="ind-name">Corporate &amp; MICE</span>
+          <span class="ind-kind">Corporate</span>
+          <span class="ind-plus" aria-hidden="true"></span>
+        </button>
+        <div class="ind-panel" id="indp-2" role="region"><div><div class="ind-copy">
+          <p>Incentives, internal summits, client days and away days. Orbit breaks up the cliques &mdash; it maps who genuinely mixed across teams, offices and seniority, and hands you the proof the day worked.</p>
+          <div class="ind-chips"><span>Cross-team mixing</span><span>Engagement data</span><span>Board-ready export</span></div>
+        </div></div></div>
+      </div>
+      <div class="ind fu">
+        <button class="ind-head" type="button" aria-expanded="false" aria-controls="indp-3">
+          <span class="ind-num">03</span>
+          <span class="ind-name">Trade Shows &amp; Expos</span>
+          <span class="ind-kind">Corporate</span>
+          <span class="ind-plus" aria-hidden="true"></span>
+        </button>
+        <div class="ind-panel" id="indp-3" role="region"><div><div class="ind-copy">
+          <p>Every stand gets its own reach data: who they pulled, from which sectors, hour by hour, benchmarked against the rest of the floor. The evidence exhibitors need to rebook.</p>
+          <div class="ind-chips"><span>Stand reach reports</span><span>Sector breakdown</span><span>Exhibitor ROI</span></div>
+        </div></div></div>
+      </div>
+      <div class="ind fu">
+        <button class="ind-head" type="button" aria-expanded="false" aria-controls="indp-4">
+          <span class="ind-num">04</span>
+          <span class="ind-name">Festivals</span>
+          <span class="ind-kind">Live</span>
+          <span class="ind-plus" aria-hidden="true"></span>
+        </button>
+        <div class="ind-panel" id="indp-4" role="region"><div><div class="ind-copy">
+          <p>A big-screen moment the crowd takes part in. People scan to join the map, find themselves in it, and share it &mdash; turning your audience into your marketing.</p>
+          <div class="ind-chips"><span>Crowd installation</span><span>Social amplification</span><span>Dwell &amp; peak data</span></div>
+        </div></div></div>
+      </div>
+      <div class="ind fu">
+        <button class="ind-head" type="button" aria-expanded="false" aria-controls="indp-5">
+          <span class="ind-num">05</span>
+          <span class="ind-name">Concerts &amp; Tours</span>
+          <span class="ind-kind">Live</span>
+          <span class="ind-plus" aria-hidden="true"></span>
+        </button>
+        <div class="ind-panel" id="indp-5" role="region"><div><div class="ind-copy">
+          <p>Fans connect around the acts they love, and artists get real data on who showed up for them &mdash; venue by venue, night after night.</p>
+          <div class="ind-chips"><span>Fan engagement</span><span>Artist cards</span><span>Venue-by-venue data</span></div>
+        </div></div></div>
+      </div>
+      <div class="ind fu">
+        <button class="ind-head" type="button" aria-expanded="false" aria-controls="indp-6">
+          <span class="ind-num">06</span>
+          <span class="ind-name">Weddings &amp; Private Events</span>
+          <span class="ind-kind">Private</span>
+          <span class="ind-plus" aria-hidden="true"></span>
+        </button>
+        <div class="ind-panel" id="indp-6" role="region"><div><div class="ind-copy">
+          <p>Two families in one room and nobody knows each other. Guests scan to connect, and the couple keeps a map of everyone who came &mdash; and everyone who met.</p>
+          <div class="ind-chips"><span>Guest connections</span><span>Table mixing</span><span>Keepsake report</span></div>
+        </div></div></div>
+      </div>
+      <div class="ind fu">
+        <button class="ind-head" type="button" aria-expanded="false" aria-controls="indp-7">
+          <span class="ind-num">07</span>
+          <span class="ind-name">Brand Activations</span>
+          <span class="ind-kind">Live</span>
+          <span class="ind-plus" aria-hidden="true"></span>
+        </button>
+        <div class="ind-panel" id="indp-7" role="region"><div><div class="ind-copy">
+          <p>A branded, sponsorable installation that earns real dwell time and captures genuine audience data &mdash; instead of another email capture form.</p>
+          <div class="ind-chips"><span>Branded moment</span><span>Sponsorable</span><span>Audience capture</span></div>
+        </div></div></div>
+      </div>
+      <div class="ind fu">
+        <button class="ind-head" type="button" aria-expanded="false" aria-controls="indp-8">
+          <span class="ind-num">08</span>
+          <span class="ind-name">Member Communities</span>
+          <span class="ind-kind">Ongoing</span>
+          <span class="ind-plus" aria-hidden="true"></span>
+        </button>
+        <div class="ind-panel" id="indp-8" role="region"><div><div class="ind-copy">
+          <p>Recurring meetups compound. The same card keeps working all year, so the network grows between events instead of resetting every time.</p>
+          <div class="ind-chips"><span>Year-round card</span><span>Compounding network</span><span>Retention data</span></div>
+        </div></div></div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1384,6 +1536,23 @@ ScrollTrigger.create({
     nav.classList.toggle('solid', self.scroll() > 80);
     sticky.classList.toggle('on', self.scroll() > innerHeight * 0.7);
   }
+});
+
+/* ---------- industries accordion ---------- */
+document.querySelectorAll('.ind-head').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var row = btn.parentElement;
+    var open = row.classList.contains('open');
+    document.querySelectorAll('.ind.open').forEach(function (r) {
+      r.classList.remove('open');
+      r.querySelector('.ind-head').setAttribute('aria-expanded', 'false');
+    });
+    if (!open) {
+      row.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+    }
+    if (typeof ScrollTrigger !== 'undefined') setTimeout(function () { ScrollTrigger.refresh(); }, 450);
+  });
 });
 
 /* ---------- magnetic buttons ---------- */
