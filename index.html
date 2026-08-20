@@ -667,48 +667,65 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
 .compound-beat p b{color:var(--white);font-weight:600}
 @media(max-width:900px){#compound .grid{grid-template-columns:1fr}}
 
-/* ---------- industries / event types ---------- */
-#industries{background:linear-gradient(180deg,var(--ink),rgba(10,14,26,.5) 50%,var(--ink))}
-.ind-list{margin-top:56px;border-top:1px solid rgba(245,244,240,.13)}
-.ind{border-bottom:1px solid rgba(245,244,240,.13)}
+/* ---------- industries / event types (cards) ---------- */
+#industries{background:linear-gradient(180deg,var(--ink),rgba(10,14,26,.55) 50%,var(--ink))}
+.ind-list{
+  display:grid;grid-template-columns:repeat(4,1fr);align-items:start;
+  gap:clamp(12px,1.5vw,20px);margin-top:56px;
+}
+.ind{
+  border:1px solid rgba(245,244,240,.12);
+  background:linear-gradient(180deg,rgba(13,18,32,.45),rgba(13,18,32,0));
+  transition:border-color .3s,transform .3s,background .3s;
+}
+.ind:hover{transform:translateY(-4px);background:linear-gradient(180deg,rgba(13,18,32,.75),rgba(13,18,32,.1))}
+.ind.k-corp:hover,.ind.k-corp.open{border-color:var(--n-blue)}
+.ind.k-live:hover,.ind.k-live.open{border-color:var(--n-red)}
+.ind.k-priv:hover,.ind.k-priv.open{border-color:var(--n-violet)}
+.ind.k-ong:hover,.ind.k-ong.open{border-color:var(--n-green)}
 .ind-head{
   width:100%;background:none;border:0;cursor:pointer;text-align:left;color:inherit;
-  display:flex;align-items:center;gap:20px;padding:24px 4px;
-  font-family:inherit;transition:padding-left .3s;
+  font-family:inherit;display:flex;flex-direction:column;gap:12px;
+  padding:20px 18px;min-height:158px;
 }
-.ind-head:hover{padding-left:12px}
-.ind-num{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--grey-d);flex:none;width:26px}
-.ind-name{
-  font-family:var(--serif);font-weight:600;font-size:clamp(1.15rem,1.9vw,1.65rem);
-  line-height:1.2;flex:1;transition:color .25s;
-}
-.ind-head:hover .ind-name,.ind.open .ind-name{color:var(--yellow)}
+.ind-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.ind-num{font-family:var(--mono);font-size:10.5px;letter-spacing:.15em;color:var(--grey-d)}
 .ind-kind{
-  font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--grey);flex:none;padding:5px 12px;border:1px solid rgba(245,244,240,.16);border-radius:100px;
+  font-family:var(--mono);font-size:9px;letter-spacing:.19em;text-transform:uppercase;
+  align-self:flex-start;padding:5px 11px;border:1px solid currentColor;border-radius:100px;opacity:.85;
 }
-.ind-plus{position:relative;width:15px;height:15px;flex:none}
+.k-corp .ind-kind{color:var(--n-blue)}
+.k-live .ind-kind{color:var(--n-red)}
+.k-priv .ind-kind{color:var(--n-violet)}
+.k-ong  .ind-kind{color:var(--n-green)}
+.ind-name{
+  font-family:var(--serif);font-weight:600;line-height:1.18;
+  font-size:clamp(1.02rem,1.22vw,1.26rem);margin-top:auto;transition:color .25s;
+}
+.ind:hover .ind-name,.ind.open .ind-name{color:var(--yellow)}
+.ind-plus{position:relative;width:13px;height:13px;flex:none;margin-top:2px}
 .ind-plus::before,.ind-plus::after{
-  content:"";position:absolute;background:var(--grey-l);transition:transform .35s,background .25s;
-  left:50%;top:50%;
+  content:"";position:absolute;left:50%;top:50%;background:var(--grey);
+  transition:transform .35s,background .25s;
 }
-.ind-plus::before{width:15px;height:1.5px;transform:translate(-50%,-50%)}
-.ind-plus::after{width:1.5px;height:15px;transform:translate(-50%,-50%)}
+.ind-plus::before{width:13px;height:1.5px;transform:translate(-50%,-50%)}
+.ind-plus::after{width:1.5px;height:13px;transform:translate(-50%,-50%)}
 .ind.open .ind-plus::after{transform:translate(-50%,-50%) rotate(90deg)}
 .ind.open .ind-plus::before,.ind.open .ind-plus::after{background:var(--yellow)}
 .ind-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .42s cubic-bezier(.16,1,.3,1)}
 .ind.open .ind-panel{grid-template-rows:1fr}
 .ind-panel>div{overflow:hidden}
-.ind-copy{padding:0 4px 30px 46px;max-width:70ch}
-.ind-copy p{color:var(--grey-l);font-size:15.5px;line-height:1.62}
-.ind-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.ind-copy{padding:0 18px 22px}
+.ind-copy p{color:var(--grey-l);font-size:14.2px;line-height:1.6}
+.ind-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
 .ind-chips span{
-  font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--grey);padding:6px 12px;border:1px solid rgba(245,244,240,.14);
+  font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--grey);padding:5px 10px;border:1px solid rgba(245,244,240,.14);
 }
-@media(max-width:700px){
-  .ind-kind{display:none}
-  .ind-copy{padding-left:30px}
+@media(max-width:1080px){.ind-list{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){
+  .ind-list{grid-template-columns:1fr}
+  .ind-head{min-height:0;padding:18px 16px}
 }
 .reduced .ind-panel{transition:none}
 
@@ -813,99 +830,91 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
     <h2 class="fu">If people gather, <b>Orbit works</b>.</h2>
     <p class="body fu" style="margin-top:26px">From a 50-guest wedding to a 50,000-person festival &mdash; the same system, adapted to your room. Open one to see how it works there.</p>
     <div class="ind-list">
-      <div class="ind fu">
+      <div class="ind k-corp fu">
         <button class="ind-head" type="button" aria-expanded="false" aria-controls="indp-1">
-          <span class="ind-num">01</span>
-          <span class="ind-name">Conferences &amp; Summits</span>
+          <span class="ind-top"><span class="ind-num">01</span><span class="ind-plus" aria-hidden="true"></span></span>
           <span class="ind-kind">Corporate</span>
-          <span class="ind-plus" aria-hidden="true"></span>
+          <span class="ind-name">Conferences &amp; Summits</span>
         </button>
         <div class="ind-panel" id="indp-1" role="region"><div><div class="ind-copy">
-          <p>Orbit plugs straight into the registration and badges you already run. Delegates are matched on what they actually came for, the room connects live on the big screen, and everyone leaves with their own report.</p>
+          <p>Orbit plugs straight into the registration and badges you already run. Delegates are matched on what they actually came for, and the room connects live on the big screen.</p>
           <div class="ind-chips"><span>Delegate matching</span><span>Live visualisation</span><span>Organiser dashboard</span></div>
         </div></div></div>
       </div>
-      <div class="ind fu">
+      <div class="ind k-corp fu">
         <button class="ind-head" type="button" aria-expanded="false" aria-controls="indp-2">
-          <span class="ind-num">02</span>
-          <span class="ind-name">Corporate &amp; MICE</span>
+          <span class="ind-top"><span class="ind-num">02</span><span class="ind-plus" aria-hidden="true"></span></span>
           <span class="ind-kind">Corporate</span>
-          <span class="ind-plus" aria-hidden="true"></span>
+          <span class="ind-name">Corporate &amp; MICE</span>
         </button>
         <div class="ind-panel" id="indp-2" role="region"><div><div class="ind-copy">
-          <p>Incentives, internal summits, client days and away days. Orbit breaks up the cliques &mdash; it maps who genuinely mixed across teams, offices and seniority, and hands you the proof the day worked.</p>
+          <p>Incentives, internal summits and away days. Orbit breaks up the cliques &mdash; mapping who genuinely mixed across teams, offices and seniority.</p>
           <div class="ind-chips"><span>Cross-team mixing</span><span>Engagement data</span><span>Board-ready export</span></div>
         </div></div></div>
       </div>
-      <div class="ind fu">
+      <div class="ind k-corp fu">
         <button class="ind-head" type="button" aria-expanded="false" aria-controls="indp-3">
-          <span class="ind-num">03</span>
-          <span class="ind-name">Trade Shows &amp; Expos</span>
+          <span class="ind-top"><span class="ind-num">03</span><span class="ind-plus" aria-hidden="true"></span></span>
           <span class="ind-kind">Corporate</span>
-          <span class="ind-plus" aria-hidden="true"></span>
+          <span class="ind-name">Trade Shows &amp; Expos</span>
         </button>
         <div class="ind-panel" id="indp-3" role="region"><div><div class="ind-copy">
-          <p>Every stand gets its own reach data: who they pulled, from which sectors, hour by hour, benchmarked against the rest of the floor. The evidence exhibitors need to rebook.</p>
+          <p>Every stand gets its own reach data: who they pulled, from which sectors, hour by hour, benchmarked against the floor.</p>
           <div class="ind-chips"><span>Stand reach reports</span><span>Sector breakdown</span><span>Exhibitor ROI</span></div>
         </div></div></div>
       </div>
-      <div class="ind fu">
+      <div class="ind k-live fu">
         <button class="ind-head" type="button" aria-expanded="false" aria-controls="indp-4">
-          <span class="ind-num">04</span>
-          <span class="ind-name">Festivals</span>
+          <span class="ind-top"><span class="ind-num">04</span><span class="ind-plus" aria-hidden="true"></span></span>
           <span class="ind-kind">Live</span>
-          <span class="ind-plus" aria-hidden="true"></span>
+          <span class="ind-name">Festivals</span>
         </button>
         <div class="ind-panel" id="indp-4" role="region"><div><div class="ind-copy">
-          <p>A big-screen moment the crowd takes part in. People scan to join the map, find themselves in it, and share it &mdash; turning your audience into your marketing.</p>
+          <p>A big-screen moment the crowd takes part in. People scan to join the map, find themselves in it, and share it.</p>
           <div class="ind-chips"><span>Crowd installation</span><span>Social amplification</span><span>Dwell &amp; peak data</span></div>
         </div></div></div>
       </div>
-      <div class="ind fu">
+      <div class="ind k-live fu">
         <button class="ind-head" type="button" aria-expanded="false" aria-controls="indp-5">
-          <span class="ind-num">05</span>
-          <span class="ind-name">Concerts &amp; Tours</span>
+          <span class="ind-top"><span class="ind-num">05</span><span class="ind-plus" aria-hidden="true"></span></span>
           <span class="ind-kind">Live</span>
-          <span class="ind-plus" aria-hidden="true"></span>
+          <span class="ind-name">Concerts &amp; Tours</span>
         </button>
         <div class="ind-panel" id="indp-5" role="region"><div><div class="ind-copy">
-          <p>Fans connect around the acts they love, and artists get real data on who showed up for them &mdash; venue by venue, night after night.</p>
+          <p>Fans connect around the acts they love, and artists get real data on who showed up for them &mdash; venue by venue.</p>
           <div class="ind-chips"><span>Fan engagement</span><span>Artist cards</span><span>Venue-by-venue data</span></div>
         </div></div></div>
       </div>
-      <div class="ind fu">
+      <div class="ind k-priv fu">
         <button class="ind-head" type="button" aria-expanded="false" aria-controls="indp-6">
-          <span class="ind-num">06</span>
-          <span class="ind-name">Weddings &amp; Private Events</span>
+          <span class="ind-top"><span class="ind-num">06</span><span class="ind-plus" aria-hidden="true"></span></span>
           <span class="ind-kind">Private</span>
-          <span class="ind-plus" aria-hidden="true"></span>
+          <span class="ind-name">Weddings &amp; Private Events</span>
         </button>
         <div class="ind-panel" id="indp-6" role="region"><div><div class="ind-copy">
-          <p>Two families in one room and nobody knows each other. Guests scan to connect, and the couple keeps a map of everyone who came &mdash; and everyone who met.</p>
+          <p>Two families in one room and nobody knows each other. Guests scan to connect, and the couple keeps a map of everyone who met.</p>
           <div class="ind-chips"><span>Guest connections</span><span>Table mixing</span><span>Keepsake report</span></div>
         </div></div></div>
       </div>
-      <div class="ind fu">
+      <div class="ind k-live fu">
         <button class="ind-head" type="button" aria-expanded="false" aria-controls="indp-7">
-          <span class="ind-num">07</span>
-          <span class="ind-name">Brand Activations</span>
+          <span class="ind-top"><span class="ind-num">07</span><span class="ind-plus" aria-hidden="true"></span></span>
           <span class="ind-kind">Live</span>
-          <span class="ind-plus" aria-hidden="true"></span>
+          <span class="ind-name">Brand Activations</span>
         </button>
         <div class="ind-panel" id="indp-7" role="region"><div><div class="ind-copy">
-          <p>A branded, sponsorable installation that earns real dwell time and captures genuine audience data &mdash; instead of another email capture form.</p>
+          <p>A branded, sponsorable installation that earns real dwell time and captures genuine audience data &mdash; not another email form.</p>
           <div class="ind-chips"><span>Branded moment</span><span>Sponsorable</span><span>Audience capture</span></div>
         </div></div></div>
       </div>
-      <div class="ind fu">
+      <div class="ind k-ong fu">
         <button class="ind-head" type="button" aria-expanded="false" aria-controls="indp-8">
-          <span class="ind-num">08</span>
-          <span class="ind-name">Member Communities</span>
+          <span class="ind-top"><span class="ind-num">08</span><span class="ind-plus" aria-hidden="true"></span></span>
           <span class="ind-kind">Ongoing</span>
-          <span class="ind-plus" aria-hidden="true"></span>
+          <span class="ind-name">Member Communities</span>
         </button>
         <div class="ind-panel" id="indp-8" role="region"><div><div class="ind-copy">
-          <p>Recurring meetups compound. The same card keeps working all year, so the network grows between events instead of resetting every time.</p>
+          <p>Recurring meetups compound. The same card keeps working all year, so the network grows between events instead of resetting.</p>
           <div class="ind-chips"><span>Year-round card</span><span>Compounding network</span><span>Retention data</span></div>
         </div></div></div>
       </div>
