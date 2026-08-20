@@ -737,6 +737,18 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
 .k-live .ind-ben li::before{background:var(--n-red)}
 .k-priv .ind-ben li::before{background:var(--n-violet)}
 .k-ong  .ind-ben li::before{background:var(--n-green)}
+.ind-out{display:flex;flex-wrap:wrap;gap:8px}
+.ind-out span{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;
+  padding:7px 13px;border-radius:100px;border:1px solid;font-weight:700;
+}
+.o-yel{color:var(--yellow);border-color:rgba(245,197,24,.42);background:rgba(245,197,24,.10)}
+.o-grn{color:var(--n-green);border-color:rgba(46,204,113,.42);background:rgba(46,204,113,.10)}
+.o-blu{color:var(--n-blue);border-color:rgba(59,111,246,.45);background:rgba(59,111,246,.12)}
+.o-vio{color:var(--n-violet);border-color:rgba(142,124,255,.42);background:rgba(142,124,255,.10)}
+.o-tea{color:var(--n-teal);border-color:rgba(26,188,156,.42);background:rgba(26,188,156,.10)}
+.o-org{color:var(--n-orange);border-color:rgba(230,126,34,.42);background:rgba(230,126,34,.10)}
+.o-cor{color:var(--n-red);border-color:rgba(231,76,60,.42);background:rgba(231,76,60,.10)}
 @media(max-width:820px){.ind-list{grid-template-columns:1fr}}
 .reduced .ind-panel{transition:none}
 
@@ -854,21 +866,25 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
           <div class="ind-chips"><span>Conferences</span><span>Summits</span><span>Trade shows</span><span>Expos</span><span>Incentives</span><span>Away days</span><span>Client days</span><span>Product launches</span><span>AGMs</span></div>
           <div class="ind-lbl">What you get</div>
           <ul class="ind-ben"><li>Delegates matched on what they came for, not job titles</li><li>Exhibitors get named reach data, benchmarked against the floor</li><li>Board-ready proof of connection rate and ROI</li><li>The retention number that sells next year&rsquo;s tickets</li></ul>
+          <div class="ind-lbl">Outcomes</div>
+          <div class="ind-out"><span class="o-yel">Improved experience</span><span class="o-grn">Year-on-year retention</span><span class="o-blu">Sponsor &amp; exhibitor ROI</span><span class="o-tea">Audience intelligence</span></div>
         </div></div></div>
       </div>
       <div class="ind k-live fu">
         <button class="ind-head" type="button" aria-expanded="false" aria-controls="indp-2">
           <span class="ind-top"><span class="ind-num">02</span><span class="ind-plus" aria-hidden="true"></span></span>
-          <span class="ind-kind">7 event types</span>
+          <span class="ind-kind">9 event types</span>
           <span class="ind-name">Live &amp; Entertainment</span>
-          <span class="ind-teaser">Festivals &middot; Concerts &middot; Tours &middot; Brand activations &middot; +3 more</span>
+          <span class="ind-teaser">Festivals &middot; Concerts &middot; Art shows &middot; Art fairs &middot; +5 more</span>
         </button>
         <div class="ind-panel" id="indp-2" role="region"><div><div class="ind-copy">
           <p>A big-screen moment the crowd takes part in &mdash; and the audience data that usually walks straight out of the door.</p>
           <div class="ind-lbl">Event types</div>
-          <div class="ind-chips"><span>Festivals</span><span>Concerts</span><span>Tours</span><span>Brand activations</span><span>Club nights</span><span>Arena shows</span><span>Sponsor zones</span></div>
+          <div class="ind-chips"><span>Festivals</span><span>Concerts</span><span>Tours</span><span>Art shows</span><span>Art fairs</span><span>Brand activations</span><span>Club nights</span><span>Arena shows</span><span>Sponsor zones</span></div>
           <div class="ind-lbl">What you get</div>
-          <ul class="ind-ben"><li>An installation people gather around, film and post</li><li>Real audience data: who came, when they peaked, what pulled them</li><li>A sponsorable branded moment with measurable dwell time</li><li>Organic reach that keeps working after the last set</li></ul>
+          <ul class="ind-ben"><li>An installation people gather around, film and post</li><li>Real audience data: who came, when they peaked, what pulled them</li><li>A sponsorable branded moment with measurable dwell time</li><li>Artists and artworks carry their own cards, so the engagement data goes back to them</li><li>Organic reach that keeps working after the last set</li></ul>
+          <div class="ind-lbl">Outcomes</div>
+          <div class="ind-out"><span class="o-org">Higher engagement</span><span class="o-vio">Increased organic marketing</span><span class="o-blu">Sponsor ROI</span><span class="o-tea">Audience intelligence</span></div>
         </div></div></div>
       </div>
       <div class="ind k-priv fu">
@@ -884,6 +900,8 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
           <div class="ind-chips"><span>Weddings</span><span>Birthdays</span><span>Anniversaries</span><span>Private dinners</span><span>Receptions</span><span>Milestone parties</span></div>
           <div class="ind-lbl">What you get</div>
           <ul class="ind-ben"><li>Guests connect &mdash; and actually remember who they met</li><li>Tables and sides mix, visibly, on the night</li><li>A keepsake map of everyone who came and everyone who met</li><li>Shared back to the whole guest list afterwards</li></ul>
+          <div class="ind-lbl">Outcomes</div>
+          <div class="ind-out"><span class="o-yel">Improved experience</span><span class="o-tea">Effortless introductions</span><span class="o-cor">Lasting connections</span></div>
         </div></div></div>
       </div>
       <div class="ind k-ong fu">
@@ -899,6 +917,8 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
           <div class="ind-chips"><span>Member clubs</span><span>Networks</span><span>Meetup series</span><span>Alumni groups</span><span>Coworking</span><span>Trade bodies</span><span>Chapters</span></div>
           <div class="ind-lbl">What you get</div>
           <ul class="ind-ben"><li>One card that works across every event you run</li><li>See which members are connecting &mdash; and which are drifting</li><li>Warm introductions between members, year-round</li><li>Retention and engagement data for your board</li></ul>
+          <div class="ind-lbl">Outcomes</div>
+          <div class="ind-out"><span class="o-grn">Year-on-year retention</span><span class="o-org">Higher engagement</span><span class="o-cor">Lasting connections</span><span class="o-tea">Member intelligence</span></div>
         </div></div></div>
       </div>
     </div>
