@@ -1004,7 +1004,7 @@ body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(
 <nav id="nav">
   <a class="logo" href="#hero">
     <svg viewBox="0 0 30 30" fill="none"><circle cx="15" cy="15" r="4.5" fill="#3B6FF6"/><ellipse cx="15" cy="15" rx="13" ry="6.5" stroke="#F5F4F0" stroke-width="1.4" transform="rotate(-24 15 15)"/><circle cx="26" cy="9.5" r="2" fill="#F5F4F0"/></svg>
-    Orbit <small>by Studio EX</small>
+    Orbit
   </a>
   <div class="nav-links">
     <span class="only-network"><a href="#reveal">What it is</a></span>
@@ -1033,31 +1033,31 @@ body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(
 <section id="gateway" class="full-bleed">
   <canvas id="gwCanvas"></canvas>
   <div class="gw-in">
-    <div class="gw-mark">Orbit — by Studio EX</div>
-    <h1>Live events run on conversations.<br>We turn them into <b>data you can use</b>.</h1>
-    <p class="gw-sub">Orbit is the layer that captures what actually happens in a room — who met whom, who stopped at your stand, and what it was worth. <b>No app. No account. No hardware to hire.</b> One scan, on any phone, at any event.</p>
+    <div class="gw-mark">Orbit</div>
+    <h1>Live events run on conversations.<br>We turn them into <b>data</b>.</h1>
+    <p class="gw-sub">One scan. Any phone. Any event. <b>No app, no account, no hardware.</b></p>
     <div class="gw-inds">
       <span>Conferences</span><span>Trade shows</span><span>Summits</span><span>Expos</span><span>Festivals</span><span>Weddings</span><span>Art fairs</span><span>Member communities</span>
     </div>
 
-    <div class="gw-ask">What brings you here?<i></i></div>
+    <div class="gw-ask">What are you here for?<i></i></div>
     <div class="gw-choice">
       <button type="button" class="gw-card c-network" data-go="network">
-        <span class="gw-k">I host, organise or run events</span>
+        <span class="gw-k">I host or organise events</span>
         <h3>Orbit</h3>
         <span class="gw-d">The Smart Networking Experience</span>
-        <p>Turn the networking in your room into a live spectacle, a better experience for every attendee, and a data asset you own — with reports for your sponsors, exhibitors and board.</p>
+        <p>Make the networking in your room visible — and prove what it was worth.</p>
         <span class="gw-go">Explore Orbit</span>
       </button>
       <button type="button" class="gw-card c-stand" data-go="stand">
-        <span class="gw-k">I exhibit at someone else's event</span>
+        <span class="gw-k">I exhibit at other people's events</span>
         <h3>Orbit <em>Stand</em></h3>
         <span class="gw-d">The Smart Lead Experience</span>
-        <p>Lead capture that runs on your visitor's phone. Your reps carry a QR code, not a rented scanner — and qualify the conversation while it is still happening.</p>
+        <p>Your visitor's phone becomes your lead scanner. No hire, no app.</p>
         <span class="gw-go">Explore Orbit Stand</span>
       </button>
     </div>
-    <p class="gw-note">Same infrastructure underneath. Pick the one you need — you can switch any time.</p>
+    <p class="gw-note">Same infrastructure underneath. Switch any time.</p>
   </div>
 </section>
 
@@ -1699,7 +1699,7 @@ body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(
       <span class="rv"><span>Don't scan the badge.</span></span>
       <span class="rv"><span>Let the badge <b>scan you</b>.</span></span>
     </h1>
-    <p class="sub rv"><span>Lead capture that runs on your visitor's phone. Your reps carry a QR code, not a rented scanner — a visitor scans it, shares once, and your team qualifies the conversation <b>while it is still happening</b>.</span></p>
+    <p class="sub rv"><span>Your reps carry a QR code, not a rented scanner. <b>Qualify the lead before they leave the stand.</b></span></p>
     <div class="s-pillars rv"><span>Lead Capture &nbsp;·&nbsp; Instant Qualification &nbsp;·&nbsp; Live Dashboard &nbsp;·&nbsp; CRM Export</span></div>
   </div>
   <div class="scroll-hint">Scroll</div>
@@ -2084,7 +2084,7 @@ body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(
     </div>
   </div>
   <div class="foot-base">
-    <span>© 2026 Studio EX — A Six Degrees product</span>
+    <span>&copy; 2026 Orbit</span>
     <span>in-orbit.co</span>
   </div>
 </footer>
@@ -2485,6 +2485,165 @@ class Net {
 const nets = [];
 function addNet(canvas, opts) { if (!canvas) return null; const n = new Net(canvas, opts); nets.push(n); return n; }
 
+/* ================================================================
+   DATA STRINGS — bundled streams of records flowing across the frame.
+   mode 0 = fan out   (a room connecting to itself)
+   mode 1 = converge  (visitors arriving at one stand)
+================================================================ */
+const STRING_PAL = ['#3B6FF6', '#8E7CFF', '#1ABC9C', '#5C86FF', '#A46BFF'];
+
+class DataStrings {
+  constructor(cv, opts = {}) {
+    this.cv = cv;
+    this.ctx = cv.getContext('2d');
+    this.n = MOBILE ? Math.round((opts.n || 74) * 0.5) : (opts.n || 74);
+    this.m = this.target = opts.mode === 'converge' ? 1 : 0;
+    this.hub = opts.hub || { x: 0.78, y: 0.5 };
+    this.pal = opts.palette || STRING_PAL;
+    this.gain = opts.gain ?? 1;          /* overall opacity */
+    this.maskLeft = opts.maskLeft ?? 0;  /* fade the text side out, 0–1 of width */
+    this.t = 0;
+    let s = opts.seed || 3;
+    const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
+    /* strings travel in bundles — a ribbon reads as one flow of records,
+       where independent curves just read as noise */
+    const NB = opts.bundles || 7;
+    this.B = [];
+    for (let b = 0; b < NB; b++) {
+      this.B.push({
+        y0: 0.08 + (b / Math.max(NB - 1, 1)) * 0.84,
+        y1: 0.05 + rnd() * 0.9,
+        c1: 0.2 + rnd() * 0.2,
+        c2: 0.56 + rnd() * 0.24,
+        w1: (rnd() - 0.5) * 0.5,
+        w2: (rnd() - 0.5) * 0.55,
+        hy: (rnd() - 0.5) * 0.34,
+        fan: (rnd() - 0.5) * 1,        /* spreads the entry as it converges */
+        col: this.pal[b % this.pal.length]
+      });
+    }
+    this.S = [];
+    for (let i = 0; i < this.n; i++) {
+      this.S.push({
+        b: this.B[i % NB],
+        dy0: (rnd() - 0.5) * 0.05,
+        dy1: (rnd() - 0.5) * 0.11,
+        dw1: (rnd() - 0.5) * 0.1,
+        dw2: (rnd() - 0.5) * 0.13,
+        dfan: (rnd() - 0.5) * 0.16,
+        dt: rnd(), sp: 0.05 + rnd() * 0.11,
+        r: 1 + rnd() * 1.9,
+        a: 0.2 + rnd() * 0.34,
+        nodes: [0.32 + rnd() * 0.16, 0.64 + rnd() * 0.18]
+      });
+    }
+    this.fit();
+    new ResizeObserver(() => this.fit()).observe(cv);
+  }
+  fit() {
+    const r = this.cv.getBoundingClientRect();
+    this.w = Math.max(r.width, 10); this.h = Math.max(r.height, 10);
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    this.cv.width = this.w * dpr; this.cv.height = this.h * dpr;
+    this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  setMode(v) { this.target = v; }
+  /* control points for one string at the current morph */
+  pts(st) {
+    const W = this.w, H = this.h, m = this.m, b = st.b;
+    const hx = W * this.hub.x, hy = H * this.hub.y;
+    const x0 = -W * 0.04;
+    const y0 = (b.y0 + st.dy0 + (b.fan + st.dfan) * m) * H;
+    const ex = W * 1.04, ey = (b.y1 + st.dy1) * H;
+    const x3 = ex + (hx - ex) * m, y3 = ey + (hy - ey) * m;
+    const x1 = W * b.c1, y1 = (b.y0 + st.dy0 + b.w1 + st.dw1) * H;
+    const sx2 = W * b.c2, sy2 = (b.y1 + st.dy1 + b.w2 + st.dw2) * H;
+    const cx2 = hx - W * 0.13, cy2 = hy + b.hy * H * 0.28;
+    return [x0, y0, x1, y1, sx2 + (cx2 - sx2) * m, sy2 + (cy2 - sy2) * m, x3, y3];
+  }
+  at(p, t) {
+    const u = 1 - t, a = u * u * u, b = 3 * u * u * t, c = 3 * u * t * t, d = t * t * t;
+    return [a * p[0] + b * p[2] + c * p[4] + d * p[6], a * p[1] + b * p[3] + c * p[5] + d * p[7]];
+  }
+  draw() {
+    const ctx = this.ctx, W = this.w, H = this.h;
+    /* a narrow canvas is nearly all copy — mask less of it, and dim instead */
+    const narrow = W < 760;
+    const g = this.gain * (narrow ? 0.7 : 1);
+    this.t += 0.004;
+    this.m += (this.target - this.m) * 0.05;
+    ctx.clearRect(0, 0, W, H);
+
+    for (const st of this.S) {
+      const p = this.pts(st);
+      ctx.strokeStyle = st.b.col;
+      ctx.globalAlpha = st.a * 0.85 * g;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(p[0], p[1]);
+      ctx.bezierCurveTo(p[2], p[3], p[4], p[5], p[6], p[7]);
+      ctx.stroke();
+      /* record markers sitting on the line */
+      ctx.globalAlpha = st.a * 1.5 * g;
+      ctx.fillStyle = st.b.col;
+      for (const nt of st.nodes) {
+        const q = this.at(p, nt);
+        ctx.beginPath(); ctx.arc(q[0], q[1], st.r * 0.55, 0, Math.PI * 2); ctx.fill();
+      }
+      /* the packet travelling the line */
+      const tt = (this.t * st.sp + st.dt) % 1;
+      const d = this.at(p, tt);
+      ctx.globalAlpha = (0.55 + 0.45 * Math.sin(tt * Math.PI)) * g;
+      ctx.beginPath(); ctx.arc(d[0], d[1], st.r, 0, Math.PI * 2); ctx.fill();
+    }
+
+    /* the stand itself, once the strings are converging */
+    if (this.m > 0.02) {
+      const hx = W * this.hub.x, hy = H * this.hub.y;
+      const glow = ctx.createRadialGradient(hx, hy, 0, hx, hy, 60);
+      glow.addColorStop(0, 'rgba(26,188,156,' + (this.m * 0.5).toFixed(3) + ')');
+      glow.addColorStop(1, 'rgba(26,188,156,0)');
+      ctx.fillStyle = glow;
+      ctx.globalAlpha = 1;
+      ctx.beginPath(); ctx.arc(hx, hy, 60, 0, Math.PI * 2); ctx.fill();
+      ctx.globalAlpha = this.m * 0.95 * g;
+      ctx.fillStyle = '#1ABC9C';
+      ctx.beginPath(); ctx.arc(hx, hy, 5 + Math.sin(this.t * 3) * 1.4, 0, Math.PI * 2); ctx.fill();
+      ctx.globalAlpha = this.m * 0.35 * g;
+      ctx.strokeStyle = '#1ABC9C';
+      ctx.beginPath(); ctx.arc(hx, hy, 17 + Math.sin(this.t * 3) * 5, 0, Math.PI * 2); ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+
+    /* ramp the copy side away so headlines stay readable over the flow */
+    const maskW = narrow ? this.maskLeft * 0.38 : this.maskLeft;
+    if (maskW > 0) {
+      const mw = W * maskW;
+      const ramp = ctx.createLinearGradient(0, 0, mw, 0);
+      ramp.addColorStop(0, 'rgba(0,0,0,1)');
+      ramp.addColorStop(0.55, 'rgba(0,0,0,0.82)');
+      ramp.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.fillStyle = ramp;
+      ctx.fillRect(0, 0, mw, H);
+      ctx.globalCompositeOperation = 'source-over';
+    }
+  }
+}
+
+const strings = [];
+function addStrings(canvas, opts) {
+  if (!canvas) return null;
+  const s = new DataStrings(canvas, opts);
+  strings.push(s);
+  return s;
+}
+if (!REDUCED) {
+  (function loop() { requestAnimationFrame(loop); strings.forEach(s => s.draw()); })();
+} else {
+  addEventListener('load', () => strings.forEach(s => s.draw()));
+}
+
 /* ---------- reveal bg graph ---------- */
 const revealNet = addNet(document.getElementById('revealCanvas'), { n: 130, k: 3, seed: 7, progress: REDUCED ? 1 : 0, dim: 0.9 });
 const cardNet = addNet(document.getElementById('cardNet'), { n: 140, k: 3, seed: 88, progress: REDUCED ? 1 : 0.2, dim: 0.85 });
@@ -2498,7 +2657,8 @@ if (!REDUCED) ScrollTrigger.create({
 });
 
 /* ---------- stand track graphs ---------- */
-const sHeroNet = addNet(document.getElementById('sHeroCanvas'), { n: 120, k: 3, seed: 34, progress: REDUCED ? 1 : 0.75, dim: 0.75, longEdges: 30 });
+const sHeroStrings = addStrings(document.getElementById('sHeroCanvas'),
+  { n: 108, mode: 'converge', seed: 34, hub: { x: 0.82, y: 0.46 }, gain: 1, maskLeft: 0.46 });
 const sRevealNet = addNet(document.getElementById('sRevealCanvas'), { n: 120, k: 3, seed: 12, progress: REDUCED ? 1 : 0, dim: 0.9 });
 if (!REDUCED) ScrollTrigger.create({
   trigger: '#s-reveal', start: 'top 80%', end: 'bottom top', scrub: 0.5,
@@ -3065,125 +3225,22 @@ requestAnimationFrame(loop);
 (function () {
   var cv = document.getElementById('gwCanvas');
   if (!cv) return;
-  var ctx = cv.getContext('2d');
-  var W = 0, H = 0, dpr = Math.min(devicePixelRatio || 1, 2);
-  var N = MOBILE ? 62 : 118;
-  var sd = 91;
-  var rnd = function () { return (sd = (sd * 16807) % 2147483647) / 2147483647; };
-
-  var nodes = [];
-  for (var i = 0; i < N; i++) {
-    nodes.push({
-      u: 0.04 + rnd() * 0.92, v: 0.08 + rnd() * 0.84,
-      ring: 1 + Math.floor(rnd() * 3),
-      ang: rnd() * Math.PI * 2,
-      r: 1.5 + rnd() * 2.4,
-      c: SPECTRUM[Math.floor(rnd() * SPECTRUM.length)],
-      ph: rnd() * Math.PI * 2, sp: 0.3 + rnd() * 0.7,
-      x: 0, y: 0
-    });
-  }
-  /* mesh edges: k-nearest in normalised space */
-  var edges = [];
-  nodes.forEach(function (a, ai) {
-    var near = nodes.map(function (b, bi) {
-      return { j: bi, d: (a.u - b.u) * (a.u - b.u) + (a.v - b.v) * (a.v - b.v) };
-    }).filter(function (o) { return o.j !== ai; }).sort(function (p, q) { return p.d - q.d; }).slice(0, 2);
-    near.forEach(function (o) { if (ai < o.j) edges.push([ai, o.j]); });
-  });
-
-  var morph = 0, target = 0, t = 0;
-  var mx = 0.5, my = 0.5;
-
-  function fit() {
-    var r = cv.getBoundingClientRect();
-    W = Math.max(r.width, 10); H = Math.max(r.height, 10);
-    cv.width = W * dpr; cv.height = H * dpr;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  }
-  fit();
-  new ResizeObserver(fit).observe(cv);
-  addEventListener('mousemove', function (e) {
-    mx = e.clientX / innerWidth; my = e.clientY / innerHeight;
-  }, { passive: true });
-
-  var hubX, hubY;
-  function draw() {
-    if (!document.body.contains(cv)) return;
-    requestAnimationFrame(draw);
-    t += 0.006;
-    morph += (target - morph) * 0.055;
-
-    ctx.clearRect(0, 0, W, H);
-    var px = (mx - 0.5) * 14, py = (my - 0.5) * 10;
-    hubX = W * 0.78 + px; hubY = H * 0.52 + py;
-    var span = Math.min(W, H) * 0.42;
-
-    for (var i = 0; i < nodes.length; i++) {
-      var nd = nodes[i];
-      var mxp = nd.u * W + Math.sin(t * nd.sp + nd.ph) * 9 + px;
-      var myp = nd.v * H + Math.cos(t * nd.sp + nd.ph) * 9 + py;
-      var rad = span * (0.24 + nd.ring * 0.26);
-      var a = nd.ang + t * 0.12 * (nd.ring % 2 ? 1 : -1);
-      var hxp = hubX + Math.cos(a) * rad;
-      var hyp = hubY + Math.sin(a) * rad * 0.62;
-      nd.x = mxp + (hxp - mxp) * morph;
-      nd.y = myp + (hyp - myp) * morph;
-    }
-
-    /* mesh edges fade out as we move to hub */
-    var meshA = (1 - morph) * 0.5;
-    if (meshA > 0.01) {
-      ctx.lineWidth = 1;
-      var maxLen = Math.min(W, H) * 0.42, maxSq = maxLen * maxLen;
-      for (var e = 0; e < edges.length; e++) {
-        var A = nodes[edges[e][0]], B = nodes[edges[e][1]];
-        var dx = A.x - B.x, dy = A.y - B.y, d2 = dx * dx + dy * dy;
-        if (d2 > maxSq) continue;
-        var fade = 1 - d2 / maxSq;
-        ctx.strokeStyle = 'rgba(120,150,220,' + (meshA * 0.55 * fade).toFixed(3) + ')';
-        ctx.beginPath(); ctx.moveTo(A.x, A.y); ctx.lineTo(B.x, B.y); ctx.stroke();
-      }
-    }
-    /* spokes fade in */
-    if (morph > 0.01) {
-      ctx.lineWidth = 1;
-      for (var s = 0; s < nodes.length; s++) {
-        var nn = nodes[s];
-        ctx.strokeStyle = 'rgba(26,188,156,' + (morph * 0.28).toFixed(3) + ')';
-        ctx.beginPath(); ctx.moveTo(nn.x, nn.y); ctx.lineTo(hubX, hubY); ctx.stroke();
-      }
-      ctx.beginPath();
-      ctx.arc(hubX, hubY, 5 + Math.sin(t * 2) * 1.2, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(26,188,156,' + (morph * 0.95).toFixed(3) + ')';
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(hubX, hubY, 16 + Math.sin(t * 2) * 4, 0, Math.PI * 2);
-      ctx.strokeStyle = 'rgba(26,188,156,' + (morph * 0.35).toFixed(3) + ')';
-      ctx.stroke();
-    }
-    for (var k = 0; k < nodes.length; k++) {
-      var q = nodes[k];
-      ctx.globalAlpha = 0.5 + 0.4 * Math.sin(t * q.sp + q.ph) * 0.4 + 0.25;
-      ctx.fillStyle = q.c;
-      ctx.beginPath(); ctx.arc(q.x, q.y, q.r, 0, Math.PI * 2); ctx.fill();
-    }
-    ctx.globalAlpha = 1;
-  }
-  if (!REDUCED) draw(); else { fit(); }
+  var field = addStrings(cv, { n: 124, mode: 'spread', seed: 91, hub: { x: 0.79, y: 0.23 }, gain: 1, maskLeft: 0.48 });
+  if (!field) return;
 
   if (!REDUCED && typeof gsap !== 'undefined') {
     gsap.from('#gateway .gw-mark, #gateway h1, #gateway .gw-sub, #gateway .gw-inds, #gateway .gw-ask, #gateway .gw-card, #gateway .gw-note',
       { opacity: 0, y: 28, duration: 1, ease: 'power3.out', stagger: 0.07, delay: 1.25 });
   }
 
-  /* hovering a choice card previews that product's shape */
+  /* hovering a choice card previews that product's shape:
+     Orbit fans the room out, Stand pulls everyone to one point */
   document.querySelectorAll('.gw-card').forEach(function (card) {
     var to = card.dataset.go === 'stand' ? 1 : 0;
-    card.addEventListener('mouseenter', function () { target = to; });
-    card.addEventListener('focus', function () { target = to; });
-    card.addEventListener('mouseleave', function () { target = 0; });
-    card.addEventListener('blur', function () { target = 0; });
+    card.addEventListener('mouseenter', function () { field.setMode(to); });
+    card.addEventListener('focus', function () { field.setMode(to); });
+    card.addEventListener('mouseleave', function () { field.setMode(0); });
+    card.addEventListener('blur', function () { field.setMode(0); });
   });
 })();
 
