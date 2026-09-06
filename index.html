@@ -35,6 +35,7 @@
   --grey-d:#4A4E57;
   --accent:#3B6FF6;
   --gold:#F5C518;
+  --stand:#A46BFF;   /* Orbit Stand — the lead-capture product */
   --n-blue:#3B6FF6;
   --n-green:#2ECC71;
   --n-red:#E74C3C;
@@ -767,12 +768,16 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
 body[data-product="network"] .prod-track[data-track="network"]{display:block}
 body[data-product="stand"]   .prod-track[data-track="stand"]{display:block}
 .only-stand{display:none!important}
+/* the per-product wrappers must not become flex items themselves, or the
+   unwrapped "About" link sits 6px lower than every other nav link */
+.nav-links > span{display:contents}
 body[data-product="stand"] .only-network{display:none!important}
 body[data-product="stand"] span.only-stand{display:inline!important}
 body[data-product="stand"] li.only-stand{display:list-item!important}
 body[data-product="stand"] div.only-stand,
 body[data-product="stand"] p.only-stand{display:block!important}
 body[data-product="stand"] .foot-grid ul.only-stand{display:flex!important}
+body[data-product="stand"] .nav-links > span.only-stand{display:contents!important}
 
 /* nav product switcher */
 .nav-switch{display:flex;gap:3px;padding:3px;border:1px solid rgba(245,244,240,.16);border-radius:100px;margin-right:14px}
@@ -841,9 +846,9 @@ body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(
 .gw-card h3{font-family:var(--serif);font-weight:700;font-size:clamp(1.5rem,2.4vw,2.1rem);line-height:1;letter-spacing:-.01em}
 .gw-card h3 em{font-style:normal;font-family:var(--mono);font-size:.44em;letter-spacing:.26em;text-transform:uppercase;color:var(--accent);vertical-align:middle;margin-left:8px}
 .gw-card .gw-d{font-family:var(--serif);font-weight:600;font-size:1rem;color:var(--accent)}
-.gw-card.c-stand .gw-d{color:var(--n-teal)}
-.gw-card.c-stand:hover,.gw-card.c-stand:focus-visible{border-color:var(--n-teal)}
-.gw-card.c-stand h3 em{color:var(--n-teal)}
+.gw-card.c-stand .gw-d{color:var(--stand)}
+.gw-card.c-stand:hover,.gw-card.c-stand:focus-visible{border-color:var(--stand)}
+.gw-card.c-stand h3 em{color:var(--stand)}
 .gw-card p{color:var(--grey-l);font-size:13.8px;line-height:1.55;margin-top:2px}
 .gw-card .gw-go{
   margin-top:11px;font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--white);
@@ -877,16 +882,16 @@ body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(
    ORBIT STAND — track styles
 ================================================================ */
 .stand-mark{font-family:var(--serif);font-weight:700;letter-spacing:-.01em}
-.stand-mark em{font-style:normal;font-family:var(--mono);font-size:.42em;letter-spacing:.3em;text-transform:uppercase;color:var(--n-teal);margin-left:10px;vertical-align:middle}
-.prod-track[data-track="stand"] .eyebrow{color:var(--n-teal)}
-.prod-track[data-track="stand"] .eyebrow::before{background:var(--n-teal)}
+.stand-mark em{font-style:normal;font-family:var(--mono);font-size:.42em;letter-spacing:.3em;text-transform:uppercase;color:var(--stand);margin-left:10px;vertical-align:middle}
+.prod-track[data-track="stand"] .eyebrow{color:var(--stand)}
+.prod-track[data-track="stand"] .eyebrow::before{background:var(--stand)}
 
 /* stand hero */
 #s-hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden;padding:110px 0 90px}
 #sHeroCanvas{position:absolute;inset:0;width:100%;height:100%;opacity:.62}
 #s-hero .wrap{position:relative;z-index:2;width:100%;max-width:1180px;margin:0 auto}
 #s-hero h1{font-family:var(--serif);font-weight:700;line-height:1.03;letter-spacing:-.02em;font-size:clamp(2.2rem,5.2vw,4.3rem);max-width:20ch}
-#s-hero h1 b{color:var(--n-teal);font-weight:700}
+#s-hero h1 b{color:var(--stand);font-weight:700}
 #s-hero .sub{margin-top:34px;max-width:50ch;font-size:clamp(16px,1.45vw,20px);color:var(--grey-l);line-height:1.6}
 #s-hero .sub b{color:var(--white);font-weight:600}
 .s-pillars{
@@ -901,25 +906,25 @@ body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(
 #s-reveal h2{font-size:clamp(2rem,4.3vw,4.4rem);max-width:30ch;margin:0 auto}
 
 /* stand problem cards reuse .problem-cards; tint the index */
-.prod-track[data-track="stand"] .problem-card .idx{color:var(--n-teal)}
+.prod-track[data-track="stand"] .problem-card .idx{color:var(--stand)}
 .s-punch{
   margin-top:42px;font-family:var(--serif);font-weight:700;font-size:clamp(1.3rem,2.3vw,1.95rem);
   line-height:1.25;color:var(--white);max-width:30ch;
 }
-.s-punch b{color:var(--n-teal)}
+.s-punch b{color:var(--stand)}
 
 /* the unlock — inversion table */
 .unlock{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2vw,26px);margin-top:52px}
 .un-col{border:1px solid rgba(245,244,240,.12);padding:clamp(22px,2.4vw,32px)}
 .un-col.bad{background:linear-gradient(180deg,rgba(231,76,60,.05),transparent)}
-.un-col.good{border-color:rgba(26,188,156,.42);background:linear-gradient(180deg,rgba(26,188,156,.07),transparent)}
+.un-col.good{border-color:rgba(164,107,255,.42);background:linear-gradient(180deg,rgba(164,107,255,.07),transparent)}
 .un-hd{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:22px;color:var(--grey)}
-.un-col.good .un-hd{color:var(--n-teal)}
+.un-col.good .un-hd{color:var(--stand)}
 .un-col ul{list-style:none;display:flex;flex-direction:column;gap:15px}
 .un-col li{position:relative;padding-left:26px;color:var(--grey-l);font-size:14.5px;line-height:1.55}
 .un-col li i{position:absolute;left:0;top:0;font-style:normal;font-size:13px}
 .un-col.bad li i{color:var(--n-red)}
-.un-col.good li i{color:var(--n-teal)}
+.un-col.good li i{color:var(--stand)}
 @media(max-width:820px){.unlock{grid-template-columns:1fr}}
 
 /* rep journey — 8 numbered steps */
@@ -929,8 +934,8 @@ body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(
   display:flex;flex-direction:column;gap:9px;transition:border-color .3s,transform .3s;
   background:linear-gradient(180deg,rgba(13,18,32,.3),transparent);
 }
-.rep-step:hover{border-color:var(--n-teal);transform:translateY(-5px)}
-.rep-step .rs-n{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--n-teal)}
+.rep-step:hover{border-color:var(--stand);transform:translateY(-5px)}
+.rep-step .rs-n{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--stand)}
 .rep-step h3{font-family:var(--serif);font-weight:600;font-size:1.12rem;line-height:1.2}
 .rep-step p{color:var(--grey);font-size:13.5px;line-height:1.55}
 @media(max-width:1000px){.rep-steps{grid-template-columns:repeat(2,1fr)}}
@@ -939,37 +944,37 @@ body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(
 /* outcomes — 6 cards */
 .outcomes{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.6vw,22px);margin-top:52px}
 .outcome{border:1px solid rgba(245,244,240,.12);padding:clamp(22px,2.2vw,30px);transition:border-color .3s,transform .3s}
-.outcome:hover{border-color:var(--n-teal);transform:translateY(-5px)}
+.outcome:hover{border-color:var(--stand);transform:translateY(-5px)}
 .outcome h3{font-family:var(--serif);font-weight:600;font-size:1.18rem;margin-bottom:11px}
 .outcome p{color:var(--grey);font-size:14px;line-height:1.6}
-.outcome .oc-i{width:26px;height:26px;margin-bottom:18px;color:var(--n-teal)}
+.outcome .oc-i{width:26px;height:26px;margin-bottom:18px;color:var(--stand)}
 .outcome .oc-i svg{width:100%;height:100%;stroke:currentColor;fill:none;stroke-width:1.4}
 @media(max-width:940px){.outcomes{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:600px){.outcomes{grid-template-columns:1fr}}
 
 /* end-of-day readout panel */
-.readout{margin-top:52px;border:1px solid rgba(26,188,156,.35);background:linear-gradient(180deg,rgba(13,18,32,.6),transparent);padding:clamp(22px,2.6vw,36px)}
+.readout{margin-top:52px;border:1px solid rgba(164,107,255,.35);background:linear-gradient(180deg,rgba(13,18,32,.6),transparent);padding:clamp(22px,2.6vw,36px)}
 .ro-top{display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap;margin-bottom:26px}
-.ro-ey{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--n-teal)}
+.ro-ey{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--stand)}
 .ro-day{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--grey)}
 .ro-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(245,244,240,.1)}
 .ro-cell{background:var(--ink);padding:20px 18px}
 .ro-cell b{display:block;font-family:var(--serif);font-weight:700;font-size:clamp(1.5rem,2.4vw,2.1rem);line-height:1;color:var(--white)}
-.ro-cell.hot b{color:var(--n-red)} .ro-cell.warm b{color:var(--n-orange)} .ro-cell.go b{color:var(--n-teal)}
+.ro-cell.hot b{color:var(--n-red)} .ro-cell.warm b{color:var(--n-orange)} .ro-cell.go b{color:var(--stand)}
 .ro-cell span{display:block;margin-top:9px;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey)}
 .ro-foot{margin-top:20px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--grey-d)}
 @media(max-width:820px){.ro-grid{grid-template-columns:repeat(2,1fr)}}
 
 /* stand pricing tints */
 .price.c-perShow .p-sub{color:var(--grey-l)} .price.c-perShow:hover{border-color:rgba(245,244,240,.4)}
-.price.c-season .p-sub{color:var(--n-teal)} .price.c-season{border-color:rgba(26,188,156,.5)} .price.c-season:hover{border-color:var(--n-teal)}
+.price.c-season .p-sub{color:var(--stand)} .price.c-season{border-color:rgba(164,107,255,.5)} .price.c-season:hover{border-color:var(--stand)}
 .price.c-ent .p-sub{color:var(--gold)} .price.c-ent{border-color:rgba(245,197,24,.45)} .price.c-ent:hover{border-color:var(--gold)}
 .price.c-perShow .fee-num{color:var(--white)}
-.price.c-season .fee-num{color:var(--n-teal)}
+.price.c-season .fee-num{color:var(--stand)}
 .price.c-ent .fee-num{color:var(--gold)}
-.price.c-season .p-feat li::before{background:var(--n-teal)}
+.price.c-season .p-feat li::before{background:var(--stand)}
 .price.c-ent .p-feat li::before{background:var(--gold)}
-.prod-track[data-track="stand"] .price:hover{border-color:var(--n-teal)}
+.prod-track[data-track="stand"] .price:hover{border-color:var(--stand)}
 </style>
 </head>
 <body data-product="network">
@@ -2490,7 +2495,7 @@ function addNet(canvas, opts) { if (!canvas) return null; const n = new Net(canv
    mode 0 = fan out   (a room connecting to itself)
    mode 1 = converge  (visitors arriving at one stand)
 ================================================================ */
-const STRING_PAL = ['#3B6FF6', '#8E7CFF', '#1ABC9C', '#5C86FF', '#A46BFF'];
+const STRING_PAL = ['#3B6FF6', '#5C86FF', '#7B5CFF', '#8E7CFF', '#A46BFF'];
 
 class DataStrings {
   constructor(cv, opts = {}) {
@@ -2601,16 +2606,16 @@ class DataStrings {
     if (this.m > 0.02) {
       const hx = W * this.hub.x, hy = H * this.hub.y;
       const glow = ctx.createRadialGradient(hx, hy, 0, hx, hy, 60);
-      glow.addColorStop(0, 'rgba(26,188,156,' + (this.m * 0.5).toFixed(3) + ')');
-      glow.addColorStop(1, 'rgba(26,188,156,0)');
+      glow.addColorStop(0, 'rgba(164,107,255,' + (this.m * 0.5).toFixed(3) + ')');
+      glow.addColorStop(1, 'rgba(164,107,255,0)');
       ctx.fillStyle = glow;
       ctx.globalAlpha = 1;
       ctx.beginPath(); ctx.arc(hx, hy, 60, 0, Math.PI * 2); ctx.fill();
       ctx.globalAlpha = this.m * 0.95 * g;
-      ctx.fillStyle = '#1ABC9C';
+      ctx.fillStyle = '#A46BFF';
       ctx.beginPath(); ctx.arc(hx, hy, 5 + Math.sin(this.t * 3) * 1.4, 0, Math.PI * 2); ctx.fill();
       ctx.globalAlpha = this.m * 0.35 * g;
-      ctx.strokeStyle = '#1ABC9C';
+      ctx.strokeStyle = '#A46BFF';
       ctx.beginPath(); ctx.arc(hx, hy, 17 + Math.sin(this.t * 3) * 5, 0, Math.PI * 2); ctx.stroke();
     }
     ctx.globalAlpha = 1;
