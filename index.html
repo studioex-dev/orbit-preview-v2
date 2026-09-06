@@ -35,7 +35,7 @@
   --grey-d:#4A4E57;
   --accent:#3B6FF6;
   --gold:#F5C518;
-  --stand:#A46BFF;   /* Orbit Stand — the lead-capture product */
+  --stand:#A46BFF;   /* Orbit Lead Capture */
   --n-blue:#3B6FF6;
   --n-green:#2ECC71;
   --n-red:#E74C3C;
@@ -793,10 +793,13 @@ body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(
    nav gives up its links, then the duplicate Demo button, to make room */
 @media(max-width:1180px){.nav-links{gap:22px;font-size:11px}}
 @media(max-width:1040px){.nav-links{display:none}}
+.nav-switch .sw-sm{display:none}
 @media(max-width:900px){
-  .nav-switch{margin-right:8px;padding:2px}
-  .nav-switch button{padding:6px 10px;font-size:8.5px;letter-spacing:.1em}
-  .nav-ctas{gap:8px}
+  .nav-switch{margin-right:7px;padding:2px}
+  .nav-switch button{padding:6px 9px;font-size:8.5px;letter-spacing:.08em}
+  .nav-switch .sw-lg{display:none}      /* "Lead Capture" will not fit a phone nav */
+  .nav-switch .sw-sm{display:inline}
+  .nav-ctas{gap:7px}
   #navDemo{display:none}         /* the floating sticky Demo covers this */
   .logo small{display:none}
 }
@@ -912,6 +915,9 @@ body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(
   line-height:1.25;color:var(--white);max-width:30ch;
 }
 .s-punch b{color:var(--stand)}
+.s-quote{margin-top:34px;border-left:2px solid var(--stand);padding-left:20px;font-family:var(--serif);font-style:italic;font-size:clamp(1.15rem,1.9vw,1.6rem);color:var(--grey-l);line-height:1.4;max-width:36ch}
+.s-quote b{color:var(--white);font-weight:700;font-style:normal}
+.s-quote span{display:block;font-family:var(--mono);font-style:normal;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--grey);margin-top:12px}
 
 /* the unlock — inversion table */
 .unlock{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2vw,26px);margin-top:52px}
@@ -959,6 +965,8 @@ body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(
 .ro-day{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--grey)}
 .ro-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(245,244,240,.1)}
 .ro-cell{background:var(--ink);padding:20px 18px}
+/* 11 metrics into a 4- or 2-column grid leaves one hole — fill it */
+.ro-cell:last-child{grid-column:span 2}
 .ro-cell b{display:block;font-family:var(--serif);font-weight:700;font-size:clamp(1.5rem,2.4vw,2.1rem);line-height:1;color:var(--white)}
 .ro-cell.hot b{color:var(--n-red)} .ro-cell.warm b{color:var(--n-orange)} .ro-cell.go b{color:var(--stand)}
 .ro-cell span{display:block;margin-top:9px;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey)}
@@ -988,6 +996,7 @@ body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(
     var q = new URLSearchParams(location.search).get('p');
     var h = (location.hash || '').replace('#', '');
     var s = localStorage.getItem('orbitProduct');
+    if (q === 'lead') q = 'stand';           /* the product is Lead Capture */
     if (q === 'stand' || q === 'network') p = q;
     else if (h.indexOf('s-') === 0) p = 'stand';
     else if (s === 'stand' || s === 'network') p = s;
@@ -1024,8 +1033,8 @@ body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(
   </div>
   <div class="nav-ctas">
     <div class="nav-switch" role="group" aria-label="Choose product">
-      <button type="button" data-go="network">Networking</button>
-      <button type="button" data-go="stand">Stand</button>
+      <button type="button" data-go="network"><span class="sw-lg">Networking</span><span class="sw-sm">Network</span></button>
+      <button type="button" data-go="stand"><span class="sw-lg">Lead Capture</span><span class="sw-sm">Leads</span></button>
     </div>
     <a class="btn small magnetic" id="navDemo" href="mailto:info@in-orbit.co?subject=Orbit%20demo%20request">Demo</a>
     <a class="btn small primary magnetic" href="#contact">Contact</a>
@@ -1056,10 +1065,10 @@ body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(
       </button>
       <button type="button" class="gw-card c-stand" data-go="stand">
         <span class="gw-k">I exhibit at other people's events</span>
-        <h3>Orbit <em>Stand</em></h3>
-        <span class="gw-d">The Smart Lead Experience</span>
-        <p>Your visitor's phone becomes your lead scanner. No hire, no app.</p>
-        <span class="gw-go">Explore Orbit Stand</span>
+        <h3>Orbit</h3>
+        <span class="gw-d">Event Lead Capture</span>
+        <p>A lead capture tool that gives you back the power of your data.</p>
+        <span class="gw-go">Explore Lead Capture</span>
       </button>
     </div>
     <p class="gw-note">Same infrastructure underneath. Switch any time.</p>
@@ -1699,13 +1708,13 @@ body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(
 <section id="s-hero" class="full-bleed">
   <canvas id="sHeroCanvas"></canvas>
   <div class="wrap" style="padding:0 var(--pad)">
-    <div class="eyebrow rv"><span>Orbit Stand — The Smart Lead Experience</span></div>
+    <div class="eyebrow rv"><span>Orbit — Event Lead Capture</span></div>
     <h1>
-      <span class="rv"><span>Don't scan the badge.</span></span>
-      <span class="rv"><span>Let the badge <b>scan you</b>.</span></span>
+      <span class="rv"><span>Hundreds of conversations at your stand.</span></span>
+      <span class="rv"><span>How many actually <b>convert</b>?</span></span>
     </h1>
-    <p class="sub rv"><span>Your reps carry a QR code, not a rented scanner. <b>Qualify the lead before they leave the stand.</b></span></p>
-    <div class="s-pillars rv"><span>Lead Capture &nbsp;·&nbsp; Instant Qualification &nbsp;·&nbsp; Live Dashboard &nbsp;·&nbsp; CRM Export</span></div>
+    <p class="sub rv"><span>Your reps carry a coded QR. A lead scans, and is <b>automatically qualified, organised and activated</b>.</span></p>
+    <div class="s-pillars rv"><span>Event Lead Infrastructure &nbsp;·&nbsp; Data Visualisation &nbsp;·&nbsp; Actionable Reporting &nbsp;·&nbsp; Smart Integration</span></div>
   </div>
   <div class="scroll-hint">Scroll</div>
 </section>
@@ -1714,30 +1723,30 @@ body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(
 <section id="s-problem">
   <div class="narrow">
     <div class="eyebrow fu">The Problem</div>
-    <h2 class="fu" style="max-width:26ch">Your team will have hundreds of conversations on that stand. Almost none of them <b>survive the journey home</b>.</h2>
+    <h2 class="fu" style="max-width:26ch">Lead capture at events is <b>broken and inconsistent</b>.</h2>
     <div class="problem-cards">
       <div class="problem-card fu">
         <div class="idx odo" data-value="01">01</div>
-        <h3>Scanner hire is a tax</h3>
+        <h3>Expensive and underwhelming</h3>
         <p>£300–£900 per device, per show — paid to the organiser, for data your own team earned standing on their feet for three days.</p>
       </div>
       <div class="problem-card fu">
         <div class="idx odo" data-value="02">02</div>
-        <h3>Six reps, six lists</h3>
+        <h3>Six lists that never reconcile</h3>
         <p>Every rep captures their own way. Nothing reconciles. Monday morning is spent merging spreadsheets instead of calling leads.</p>
       </div>
       <div class="problem-card fu">
         <div class="idx odo" data-value="03">03</div>
-        <h3>A name is not a reason</h3>
+        <h3>A name, not a reason</h3>
         <p>A badge scan gives you a job title and a company. It tells you nothing about why they stopped, what they asked, or whether they meant it.</p>
       </div>
       <div class="problem-card fu">
         <div class="idx odo" data-value="04">04</div>
-        <h3>By Monday, it's gone</h3>
+        <h3>By Monday nobody remembers</h3>
         <p>Nobody remembers the conversation. The follow-up starts three weeks late, generic, and to the wrong half of the list.</p>
       </div>
     </div>
-    <p class="s-punch fu">It's time to <b>activate your stand's lead data</b>.</p>
+    <p class="s-punch fu">It's time to give you <b>the power of your own data</b>.</p>
   </div>
 </section>
 
@@ -1745,14 +1754,14 @@ body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(
 <section id="s-reveal">
   <canvas id="sRevealCanvas"></canvas>
   <div class="wrap">
-    <div class="eyebrow center fu">What is Orbit Stand?</div>
+    <div class="eyebrow center fu">What is Orbit Lead Capture?</div>
     <h2>
-      <span class="rv"><span>Lead capture that runs on</span></span>
-      <span class="rv"><span><b>your visitor's phone</b>.</span></span>
+      <span class="rv"><span>A lead capture tool that gives you back</span></span>
+      <span class="rv"><span><b>the power of your data</b>.</span></span>
     </h2>
-    <p class="reveal-lede fu">Your reps carry a QR code — on the card, the table, the screen, the lanyard. A visitor scans it, shares once, and your team qualifies the conversation while it is still happening.</p>
+    <p class="reveal-lede fu">Your reps and stand carry uniquely coded QR codes. A lead scans and goes through a predetermined sequence &mdash; automatically qualifying, organising and activating the lead.</p>
     <div class="chips fu" style="justify-content:center;margin-top:38px">
-      <span class="chip">No App</span><span class="chip">No Scanner Hire</span><span class="chip">No Sign-up</span><span class="chip">Any Show</span>
+      <span class="chip">No App</span><span class="chip">No Download</span><span class="chip">No Friction</span><span class="chip">Any device</span>
     </div>
   </div>
 </section>
@@ -1761,30 +1770,29 @@ body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(
 <section id="s-unlock">
   <div class="narrow">
     <div class="eyebrow fu">The unlock</div>
-    <h2 class="fu" style="max-width:24ch">Capturing leads at someone else's event is <b>broken</b>. One inversion fixes it.</h2>
+    <h2 class="fu" style="max-width:24ch">You find the <b>specific intent</b> of the leads you capture.</h2>
     <div class="unlock fu">
       <div class="un-col bad">
-        <div class="un-hd">Badge scanning</div>
+        <div class="un-hd">Without Orbit</div>
         <ul>
           <li><i>✗</i> The organiser owns and encrypts the barcode</li>
-          <li><i>✗</i> Lead retrieval is licensed back to you, per device</li>
+          <li><i>✗</i> Lead retrieval is licensed back to you (per device)</li>
           <li><i>✗</i> Most exhibitor contracts forbid third-party scanning</li>
           <li><i>✗</i> A scan is a data pull, not a signal of interest</li>
           <li><i>✗</i> Nothing carries over to the next show</li>
         </ul>
       </div>
       <div class="un-col good">
-        <div class="un-hd">Orbit Stand</div>
+        <div class="un-hd">With Orbit</div>
         <ul>
-          <li><i>✓</i> The visitor scans your QR — you own the moment</li>
+          <li><i>✓</i> The visitor scans your QR (no breach)</li>
           <li><i>✓</i> Sharing is consent, the same as handing over a card</li>
           <li><i>✓</i> Works at any show, with no organiser permission</li>
-          <li><i>✓</i> A share is a signal — they chose to give it to you</li>
+          <li><i>✓</i> Personal and specific intent data on every lead</li>
           <li><i>✓</i> One continuous lead graph across every event</li>
         </ul>
       </div>
     </div>
-    <p class="s-punch fu">One inversion solves the technical, the contractual and the consent problem <b>at once</b>.</p>
   </div>
 </section>
 
@@ -1796,19 +1804,19 @@ body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(
     <div class="steps" style="margin-top:52px">
       <div class="step fu">
         <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM18 18h3v3h-3z"/></svg></div>
-        <div><h3>Display</h3><p>A QR on the card, the table, the screen, the lanyard. Wherever your rep is standing.</p></div>
+        <div><h3>Display</h3><p>A QR on the card, the table, the screen, the lanyard.</p></div>
       </div>
       <div class="step fu">
         <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><rect x="4" y="15" width="16" height="6" rx="1.5"/></svg></div>
-        <div><h3>Share</h3><p>Camera, browser, one tap. Eight seconds — and two seconds for every visitor after that.</p></div>
+        <div><h3>Share</h3><p>Camera, browser, tap. Five seconds.</p></div>
       </div>
       <div class="step fu">
         <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 3a4 4 0 0 1 4 4v4a4 4 0 0 1-8 0V7a4 4 0 0 1 4-4z"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></div>
-        <div><h3>Qualify</h3><p>Temperature, intent and a ten-second voice note — logged before they've left the stand.</p></div>
+        <div><h3>Qualify</h3><p>Temperature, intent, rep and notes — logged before they've left the stand.</p></div>
       </div>
       <div class="step fu">
         <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 21V9"/><path d="M8 17l4 4 4-4"/><rect x="4" y="3" width="16" height="6" rx="1.5"/></svg></div>
-        <div><h3>Export</h3><p>Deduped, ranked and drafted. Straight into your CRM, the same evening.</p></div>
+        <div><h3>Expand</h3><p>Deduped, ranked, drafted. Straight into your CRM.</p></div>
       </div>
     </div>
   </div>
@@ -1817,13 +1825,13 @@ body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(
 <!-- ============ S6. THE REP JOURNEY ============ -->
 <section id="s-journey">
   <div class="narrow">
-    <div class="eyebrow fu">The Rep Journey</div>
+    <div class="eyebrow fu">The User Journey</div>
     <h2 class="fu">From setup to <b>compounding</b>, in eight steps.</h2>
     <div class="rep-steps">
-      <div class="rep-step fu"><div class="rs-n">01</div><h3>Set up once</h3><p>Load your intent chips and collateral. Five minutes.</p></div>
-      <div class="rep-step fu"><div class="rs-n">02</div><h3>Pin, don't install</h3><p>The stand page lives on the home screen. Works offline.</p></div>
-      <div class="rep-step fu"><div class="rs-n">03</div><h3>Visitor scans you</h3><p>Camera, browser, one tap to share. No app, no sign-up.</p></div>
-      <div class="rep-step fu"><div class="rs-n">04</div><h3>They get value back</h3><p>Your card, deck and demo link land on their phone.</p></div>
+      <div class="rep-step fu"><div class="rs-n">01</div><h3>Set up once</h3><p>Load your intent cards and collateral.</p></div>
+      <div class="rep-step fu"><div class="rs-n">02</div><h3>No hardware needed</h3><p>The stand page lives on any browser, on any device.</p></div>
+      <div class="rep-step fu"><div class="rs-n">03</div><h3>Visitor scans you</h3><p>Camera, scan, one tap and shared.</p></div>
+      <div class="rep-step fu"><div class="rs-n">04</div><h3>They get value back</h3><p>Your card, deck, demo link or meeting planner.</p></div>
       <div class="rep-step fu"><div class="rs-n">05</div><h3>Qualify in the moment</h3><p>Temperature, intent, ten-second voice note.</p></div>
       <div class="rep-step fu"><div class="rs-n">06</div><h3>Watch the stand live</h3><p>Deduped across every rep, updating in real time.</p></div>
       <div class="rep-step fu"><div class="rs-n">07</div><h3>Nightly lead drop</h3><p>Ranked list with a drafted follow-up per lead.</p></div>
@@ -1845,18 +1853,18 @@ body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(
       </div>
       <div class="outcome fu">
         <div class="oc-i"><svg viewBox="0 0 24 24"><path d="M4 5h16M4 12h10M4 19h7"/><circle cx="18" cy="17" r="3.5"/></svg></div>
-        <h3>Context, not contacts</h3>
-        <p>Every lead arrives with a reason, a temperature and a note.</p>
+        <h3>Context + contacts</h3>
+        <p>Every lead arrives with a purpose, a temperature and a note.</p>
       </div>
       <div class="outcome fu">
         <div class="oc-i"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M17 14c2.2 0 4 1.8 4 4"/></svg></div>
         <h3>One team, one list</h3>
-        <p>Six reps, one deduped record. No merging spreadsheets on Monday.</p>
+        <p>Six reps, one deduped record. No chasing each other afterwards.</p>
       </div>
       <div class="outcome fu">
         <div class="oc-i"><svg viewBox="0 0 24 24"><path d="M3 6h18v12H3z"/><path d="M3 8l9 6 9-6"/></svg></div>
         <h3>Follow up the same day</h3>
-        <p>Drafted outreach per lead, while your stand is still fresh in mind.</p>
+        <p>Drafted outreach per lead while your stand is still fresh.</p>
       </div>
       <div class="outcome fu">
         <div class="oc-i"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></svg></div>
@@ -1877,28 +1885,32 @@ body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(
   <div class="narrow">
     <div class="eyebrow fu">The Proof</div>
     <h2 class="fu">Built on infrastructure that already works <b>at scale</b>.</h2>
+    <blockquote class="s-quote fu">&ldquo;Way <b>more precise data points</b>&rdquo;<span>X3 Orbit event attendee</span></blockquote>
     <div style="margin-top:36px">
-      <div class="proof-row c-blue fu"><div class="num odo" data-value="414,102">414,102</div><p>badge scans processed across real shows — the infrastructure Orbit Stand runs on.</p></div>
+      <div class="proof-row c-blue fu"><div class="num odo" data-value="414,102">414,102</div><p>badge scans processed across real shows — the infrastructure Lead Capture runs on.</p></div>
       <div class="proof-row c-green fu"><div class="num odo" data-value="179,410">179,410</div><p>first-time connections formed, each one logged, mutual and kept.</p></div>
-      <div class="proof-row c-red fu"><div class="num"><span class="odo" data-value="95">95</span>%</div><p>of connections crossed industry lines — the reach a badge scan never shows you.</p></div>
-      <div class="proof-row c-teal fu"><div class="num"><span class="odo" data-value="4">4</span>&times;</div><p>more connections than an unsupported room. The same engine, pointed at your stand.</p></div>
+      <div class="proof-row c-red fu"><div class="num"><span class="odo" data-value="4">4</span>&times;</div><p>more connections than an unsupported room. The same engine, pointed at your stand.</p></div>
+      <div class="proof-row c-teal fu"><div class="num"><span class="odo" data-value="95">95</span>%</div><p>of connections crossed industry lines — the reach a badge scan never shows you.</p></div>
     </div>
     <p class="proof-foot fu">* From live Orbit analysis of 414,102 badge scans across real shows. Every figure reproducible from source.</p>
 
     <div class="readout fu">
       <div class="ro-top">
         <div class="ro-ey">Example end-of-day readout</div>
-        <div class="ro-day">Day 1 &middot; Hall 4 &middot; Stand C22</div>
+        <div class="ro-day">Company Y &middot; Hall 4 &middot; Stand C2 &middot; Day 1</div>
       </div>
       <div class="ro-grid">
         <div class="ro-cell"><b>218</b><span>Leads captured</span></div>
         <div class="ro-cell"><b>164</b><span>Unique companies</span></div>
         <div class="ro-cell hot"><b>31</b><span>Hot</span></div>
         <div class="ro-cell warm"><b>77</b><span>Warm</span></div>
-        <div class="ro-cell go"><b>12</b><span>Demos booked</span></div>
+        <div class="ro-cell"><b>64</b><span>Meetings scheduled</span></div>
+        <div class="ro-cell go"><b>22</b><span>Demos booked</span></div>
         <div class="ro-cell"><b>Pricing</b><span>Top intent</span></div>
-        <div class="ro-cell"><b>96%</b><span>Notes attached</span></div>
-        <div class="ro-cell go"><b>218</b><span>Drafts ready to send</span></div>
+        <div class="ro-cell"><b>Live Ent</b><span>Top industry</span></div>
+        <div class="ro-cell"><b>Director</b><span>Top title</span></div>
+        <div class="ro-cell"><b>96%</b><span>Notes added</span></div>
+        <div class="ro-cell go"><b>184</b><span>Drafts ready to send</span></div>
       </div>
       <p class="ro-foot">Illustrative figures, shown to explain the format of the nightly drop.</p>
     </div>
@@ -1909,11 +1921,11 @@ body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(
 <section id="s-where">
   <div class="narrow">
     <div class="eyebrow fu">Where it works</div>
-    <h2 class="fu" style="max-width:22ch">One stand or fifty. <b>Same stack, same speed.</b></h2>
+    <h2 class="fu" style="max-width:26ch">An art exhibition or a trade show. <b>50 or 500,000 attendees.</b></h2>
     <div class="hours">
-      <div class="hour fu"><canvas data-p="0.16"></canvas><div class="tag">Hour 1</div><div class="cap">First scans. First conversations logged.</div></div>
-      <div class="hour fu"><canvas data-p="0.5"></canvas><div class="tag">Day 2</div><div class="cap">Clusters form. Patterns in who is stopping.</div></div>
-      <div class="hour fu"><canvas data-p="1"></canvas><div class="tag">Show close</div><div class="cap">A dense, worked map of everyone you met.</div></div>
+      <div class="hour fu"><canvas data-p="0.16"></canvas><div class="tag">Hour 1</div><div class="cap">First scans. The first threads appear.</div></div>
+      <div class="hour fu"><canvas data-p="0.5"></canvas><div class="tag">Hour 3</div><div class="cap">Strands multiply. Patterns in who stops.</div></div>
+      <div class="hour fu"><canvas data-p="1"></canvas><div class="tag">Hour 6</div><div class="cap">A dense, glowing map of the whole event.</div></div>
     </div>
   </div>
   <div class="marquee">
@@ -1922,7 +1934,7 @@ body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(
     </div>
   </div>
   <div class="narrow">
-    <p class="body fu" style="max-width:62ch">Anywhere your team stands behind a table, Orbit Stand turns the conversation into a record — <b style="color:var(--white)">without ever getting between a handshake</b>.</p>
+    <p class="s-punch fu" style="margin-top:0">Never <b>miss a lead</b>.</p>
   </div>
 </section>
 
@@ -1930,7 +1942,7 @@ body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(
 <section id="s-pricing">
   <div class="narrow">
     <div class="eyebrow fu">Pricing</div>
-    <h2 class="fu">Priced against the scanner <b>you already rent</b>.</h2>
+    <h2 class="fu">Designed to make your event <b>unforgettable, no matter the size</b>.</h2>
     <div class="prices">
       <div class="price c-perShow fu">
         <h3>Stand</h3>
@@ -1942,7 +1954,7 @@ body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(
           <li>Deduped CSV export</li>
           <li>Customer support</li>
         </ul>
-        <div class="fee"><span class="fee-num">from &pound;45</span><span class="fee-note">per rep, per show</span></div>
+        <div class="fee"><span class="fee-num">from &pound;30</span><span class="fee-note">per rep, per show</span></div>
       </div>
       <div class="price c-season fu">
         <h3>Season</h3>
@@ -1955,23 +1967,23 @@ body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(
           <li>CRM sync and CRM dedupe</li>
           <li>Drafted follow-ups</li>
         </ul>
-        <div class="fee"><span class="fee-num">from &pound;390</span><span class="fee-note">per rep, per year</span></div>
+        <div class="fee"><span class="fee-num">from &pound;360</span><span class="fee-note">per rep, per year</span></div>
       </div>
       <div class="price c-ent fu">
         <h3>Enterprise</h3>
         <div class="p-sub">The Full Custom Experience</div>
-        <p class="use">Multi-brand exhibitors and global show programmes.</p>
+        <p class="use">Multi-brand exhibits &amp; global programmes.</p>
         <ul class="p-feat">
           <li>All Season features</li>
           <li>Custom branded capture page</li>
           <li>Multi-brand and multi-stand</li>
           <li>API access and SSO</li>
-          <li>Bespoke reporting and CSM</li>
+          <li>Bespoke reporting and CSV</li>
         </ul>
         <div class="fee"><span class="fee-num">from &pound;6,000</span><span class="fee-note">per year</span></div>
       </div>
     </div>
-    <p class="price-notes fu">Benchmarked against &pound;300&ndash;&pound;900 per-device scanner hire, per show &middot; volume discounts from 10 seats<br>Hardware and add-on costs excluded &middot; agency and multi-brand terms available on request</p>
+    <p class="price-notes fu">Volume discounts from 10 seats &middot; hardware and add-on costs excluded<br>Agency and multi-brand terms available on request</p>
   </div>
 </section>
 
@@ -1979,22 +1991,22 @@ body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(
 <section id="s-cost">
   <div class="narrow">
     <div class="eyebrow fu">The cost of doing nothing</div>
-    <h2 class="fu" style="max-width:24ch">Every show without Orbit Stand is a <b>pipeline you'll never trace</b>.</h2>
+    <h2 class="fu" style="max-width:26ch">Every show without Orbit is a pipeline you'll <b>never properly activate</b>.</h2>
     <div class="compare fu" style="margin-top:52px">
       <div class="without">
-        <div class="hd">Without Orbit Stand</div>
+        <div class="hd">Without Orbit</div>
         <ul>
           <li><i>✗</i> Business cards lost in a jacket pocket</li>
           <li><i>✗</i> A CSV of names with no reason attached</li>
           <li><i>✗</i> Six rep lists that never reconcile</li>
           <li><i>✗</i> Follow-up that starts three weeks late</li>
           <li><i>✗</i> No idea which message actually landed</li>
-          <li><i>✗</i> Scanner invoices at every single show</li>
+          <li><i>✗</i> More spend on individual events and scanners</li>
           <li><i>✗</i> Next show starts from zero</li>
         </ul>
       </div>
       <div class="with">
-        <div class="hd">With Orbit Stand</div>
+        <div class="hd">With Orbit</div>
         <ul>
           <li><i>✓</i> Every conversation captured in ten seconds</li>
           <li><i>✓</i> A reason, a temperature and a note per lead</li>
@@ -2018,7 +2030,7 @@ body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(
       <div>
         <div class="eyebrow fu">Contact</div>
         <div class="only-network"><h2 class="fu">Give your attendees the tools they need to find the <b>people they need</b>.</h2></div>
-        <div class="only-stand"><h2 class="fu">Give your reps the tools to leave with <b>a list they will actually work</b>.</h2></div>
+        <div class="only-stand"><h2 class="fu">Give your reps the tool they need to leave with a <b>list that will actually convert</b>.</h2></div>
         <p class="mail fu">info@<a href="mailto:info@in-orbit.co">in-orbit.co</a> — or use the form. We reply within a day.</p>
       </div>
       <form id="contactForm" class="fu">
@@ -2055,9 +2067,9 @@ body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(
       <h2>
         <span class="rv"><span>The best lead tool is the one your reps</span></span>
         <span class="rv"><span><b>forget they're using</b>, then</span></span>
-        <span class="rv"><span><b>can't work a show without</b>.</span></span>
+        <span class="rv"><span><b>can't work without</b>.</span></span>
       </h2>
-      <a class="btn primary magnetic" href="#contact">Run Orbit Stand at your next show</a>
+      <a class="btn primary magnetic" href="#contact">Run Orbit at your stand next event</a>
     </div>
   </div>
 </section>
@@ -2071,12 +2083,12 @@ body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(
         Orbit
       </a>
       <p class="only-network" style="color:var(--grey);font-size:14px;max-width:34ch">The Event Networking Experience. One scan turns two strangers into a connection.</p>
-      <p class="only-stand" style="color:var(--grey);font-size:14px;max-width:34ch">The Smart Lead Experience. Your visitor's phone becomes your lead scanner.</p>
+      <p class="only-stand" style="color:var(--grey);font-size:14px;max-width:34ch">Event Lead Capture. A lead capture tool that gives you back the power of your data.</p>
     </div>
     <div>
       <h4>System</h4>
       <ul class="only-network"><li><a href="#reveal">What is Orbit</a></li><li><a href="#how">How it works</a></li><li><a href="#live">Live visualisation</a></li><li><a href="#proof">The proof</a></li></ul>
-      <ul class="only-stand"><li><a href="#s-reveal">What is Orbit Stand</a></li><li><a href="#s-how">How it works</a></li><li><a href="#s-unlock">The unlock</a></li><li><a href="#s-proof">The proof</a></li></ul>
+      <ul class="only-stand"><li><a href="#s-reveal">What is Lead Capture</a></li><li><a href="#s-how">How it works</a></li><li><a href="#s-unlock">The unlock</a></li><li><a href="#s-proof">The proof</a></li></ul>
     </div>
     <div>
       <h4>Company</h4>
@@ -3257,7 +3269,7 @@ requestAnimationFrame(loop);
   var FIRST = { network: '#hero', stand: '#s-hero' };
   var SUBJ = {
     network: 'mailto:info@in-orbit.co?subject=Orbit%20demo%20request',
-    stand: 'mailto:info@in-orbit.co?subject=Orbit%20Stand%20demo%20request'
+    stand: 'mailto:info@in-orbit.co?subject=Orbit%20Lead%20Capture%20demo%20request'
   };
 
   function replay(track) {
