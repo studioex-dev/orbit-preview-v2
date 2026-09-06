@@ -759,9 +759,237 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
 /* fade-up util */
 .fu{opacity:0;transform:translateY(40px)}
 .reduced .fu{opacity:1!important;transform:none!important}
+
+/* ================================================================
+   PRODUCT TRACKS — one entry point, two products
+================================================================ */
+.prod-track{display:none}
+body[data-product="network"] .prod-track[data-track="network"]{display:block}
+body[data-product="stand"]   .prod-track[data-track="stand"]{display:block}
+.only-stand{display:none!important}
+body[data-product="stand"] .only-network{display:none!important}
+body[data-product="stand"] span.only-stand{display:inline!important}
+body[data-product="stand"] li.only-stand{display:list-item!important}
+body[data-product="stand"] div.only-stand,
+body[data-product="stand"] p.only-stand{display:block!important}
+body[data-product="stand"] .foot-grid ul.only-stand{display:flex!important}
+
+/* nav product switcher */
+.nav-switch{display:flex;gap:3px;padding:3px;border:1px solid rgba(245,244,240,.16);border-radius:100px;margin-right:14px}
+.nav-switch button{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  padding:7px 13px;border-radius:100px;border:0;background:transparent;color:var(--grey);cursor:pointer;
+  transition:background .25s,color .25s;white-space:nowrap;
+}
+.nav-switch button:hover{color:var(--white)}
+body[data-product="network"] .nav-switch button[data-go="network"],
+body[data-product="stand"]   .nav-switch button[data-go="stand"]{background:var(--accent);color:var(--white)}
+/* the switcher is primary navigation now — it stays at every width, and the
+   nav gives up its links, then the duplicate Demo button, to make room */
+@media(max-width:1180px){.nav-links{gap:22px;font-size:11px}}
+@media(max-width:1040px){.nav-links{display:none}}
+@media(max-width:900px){
+  .nav-switch{margin-right:8px;padding:2px}
+  .nav-switch button{padding:6px 10px;font-size:8.5px;letter-spacing:.1em}
+  .nav-ctas{gap:8px}
+  #navDemo{display:none}         /* the floating sticky Demo covers this */
+  .logo small{display:none}
+}
+
+/* ================================================================
+   GATEWAY — the shared entry hero + product chooser
+================================================================ */
+#gateway{
+  position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:center;
+  padding:112px var(--pad) 52px;overflow:hidden;
+}
+#gwCanvas{position:absolute;inset:0;width:100%;height:100%;opacity:.9}
+#gateway > .gw-in{position:relative;z-index:2;width:100%;max-width:1180px;margin:0 auto}
+.gw-mark{
+  font-family:var(--mono);font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);
+  display:flex;align-items:center;gap:12px;margin-bottom:26px;
+}
+.gw-mark::before{content:"";width:34px;height:1px;background:var(--accent)}
+#gateway h1{
+  font-family:var(--serif);font-weight:700;line-height:1.04;letter-spacing:-.02em;
+  font-size:clamp(2rem,4.4vw,3.7rem);max-width:20ch;
+}
+#gateway h1 b{color:var(--accent);font-weight:700}
+.gw-sub{margin-top:22px;max-width:58ch;font-size:clamp(15px,1.25vw,17.5px);color:var(--grey-l);line-height:1.6}
+.gw-sub b{color:var(--white);font-weight:600}
+.gw-inds{
+  margin-top:20px;display:flex;flex-wrap:wrap;gap:7px 9px;
+  font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--grey);
+}
+.gw-inds span{padding:6px 12px;border:1px solid rgba(245,244,240,.12);border-radius:100px}
+
+.gw-ask{
+  margin-top:clamp(26px,3vw,42px);
+  font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--grey);
+  display:flex;align-items:center;gap:12px;
+}
+.gw-ask i{flex:1;height:1px;background:rgba(245,244,240,.12);font-style:normal}
+.gw-choice{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,1.6vw,22px)}
+.gw-card{
+  position:relative;text-align:left;cursor:pointer;font:inherit;color:inherit;
+  border:1px solid rgba(245,244,240,.14);background:linear-gradient(180deg,rgba(13,18,32,.62),rgba(5,5,7,.4));
+  padding:clamp(18px,1.9vw,26px);display:flex;flex-direction:column;gap:7px;
+  transition:border-color .3s,transform .3s,background .3s;backdrop-filter:blur(6px);
+}
+.gw-card:hover,.gw-card:focus-visible{transform:translateY(-6px);border-color:var(--accent);outline:none}
+.gw-card .gw-k{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--grey)}
+.gw-card h3{font-family:var(--serif);font-weight:700;font-size:clamp(1.5rem,2.4vw,2.1rem);line-height:1;letter-spacing:-.01em}
+.gw-card h3 em{font-style:normal;font-family:var(--mono);font-size:.44em;letter-spacing:.26em;text-transform:uppercase;color:var(--accent);vertical-align:middle;margin-left:8px}
+.gw-card .gw-d{font-family:var(--serif);font-weight:600;font-size:1rem;color:var(--accent)}
+.gw-card.c-stand .gw-d{color:var(--n-teal)}
+.gw-card.c-stand:hover,.gw-card.c-stand:focus-visible{border-color:var(--n-teal)}
+.gw-card.c-stand h3 em{color:var(--n-teal)}
+.gw-card p{color:var(--grey-l);font-size:13.8px;line-height:1.55;margin-top:2px}
+.gw-card .gw-go{
+  margin-top:11px;font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--white);
+  display:inline-flex;align-items:center;gap:8px;
+}
+.gw-card .gw-go::after{content:"→";transition:transform .3s}
+.gw-card:hover .gw-go::after{transform:translateX(5px)}
+.gw-note{margin-top:16px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--grey-d)}
+/* short laptop viewports: the chooser must stay above the fold */
+@media(max-height:860px){
+  #gateway{padding-top:92px;padding-bottom:30px}
+  #gateway h1{font-size:clamp(1.8rem,3.3vw,2.75rem)}
+  .gw-sub{margin-top:16px;font-size:14.6px;max-width:68ch}
+  .gw-inds{display:none}
+  .gw-ask{margin-top:20px}
+  .gw-choice{margin-top:14px}
+  .gw-card p{font-size:13.2px}
+  .gw-card .gw-go{margin-top:9px}
+  .gw-note{margin-top:12px}
+}
+@media(max-height:700px){
+  #gateway{min-height:0;padding-top:92px}
+  .gw-sub{display:none}
+}
+@media(max-width:760px){
+  .gw-choice{grid-template-columns:1fr}
+  #gateway{padding-top:104px}
+}
+
+/* ================================================================
+   ORBIT STAND — track styles
+================================================================ */
+.stand-mark{font-family:var(--serif);font-weight:700;letter-spacing:-.01em}
+.stand-mark em{font-style:normal;font-family:var(--mono);font-size:.42em;letter-spacing:.3em;text-transform:uppercase;color:var(--n-teal);margin-left:10px;vertical-align:middle}
+.prod-track[data-track="stand"] .eyebrow{color:var(--n-teal)}
+.prod-track[data-track="stand"] .eyebrow::before{background:var(--n-teal)}
+
+/* stand hero */
+#s-hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden;padding:110px 0 90px}
+#sHeroCanvas{position:absolute;inset:0;width:100%;height:100%;opacity:.62}
+#s-hero .wrap{position:relative;z-index:2;width:100%;max-width:1180px;margin:0 auto}
+#s-hero h1{font-family:var(--serif);font-weight:700;line-height:1.03;letter-spacing:-.02em;font-size:clamp(2.2rem,5.2vw,4.3rem);max-width:20ch}
+#s-hero h1 b{color:var(--n-teal);font-weight:700}
+#s-hero .sub{margin-top:34px;max-width:50ch;font-size:clamp(16px,1.45vw,20px);color:var(--grey-l);line-height:1.6}
+#s-hero .sub b{color:var(--white);font-weight:600}
+.s-pillars{
+  margin-top:34px;font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--grey);
+  display:flex;flex-wrap:wrap;gap:8px 18px;
+}
+
+/* stand "what is it" — mirrors #reveal */
+#s-reveal{overflow:hidden;text-align:center;padding-top:clamp(120px,18vh,220px)}
+#sRevealCanvas{position:absolute;inset:0;width:100%;height:100%;opacity:.5}
+#s-reveal .wrap{z-index:2}
+#s-reveal h2{font-size:clamp(2rem,4.3vw,4.4rem);max-width:30ch;margin:0 auto}
+
+/* stand problem cards reuse .problem-cards; tint the index */
+.prod-track[data-track="stand"] .problem-card .idx{color:var(--n-teal)}
+.s-punch{
+  margin-top:42px;font-family:var(--serif);font-weight:700;font-size:clamp(1.3rem,2.3vw,1.95rem);
+  line-height:1.25;color:var(--white);max-width:30ch;
+}
+.s-punch b{color:var(--n-teal)}
+
+/* the unlock — inversion table */
+.unlock{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2vw,26px);margin-top:52px}
+.un-col{border:1px solid rgba(245,244,240,.12);padding:clamp(22px,2.4vw,32px)}
+.un-col.bad{background:linear-gradient(180deg,rgba(231,76,60,.05),transparent)}
+.un-col.good{border-color:rgba(26,188,156,.42);background:linear-gradient(180deg,rgba(26,188,156,.07),transparent)}
+.un-hd{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:22px;color:var(--grey)}
+.un-col.good .un-hd{color:var(--n-teal)}
+.un-col ul{list-style:none;display:flex;flex-direction:column;gap:15px}
+.un-col li{position:relative;padding-left:26px;color:var(--grey-l);font-size:14.5px;line-height:1.55}
+.un-col li i{position:absolute;left:0;top:0;font-style:normal;font-size:13px}
+.un-col.bad li i{color:var(--n-red)}
+.un-col.good li i{color:var(--n-teal)}
+@media(max-width:820px){.unlock{grid-template-columns:1fr}}
+
+/* rep journey — 8 numbered steps */
+.rep-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,1.4vw,20px);margin-top:52px}
+.rep-step{
+  border:1px solid rgba(245,244,240,.12);padding:clamp(18px,1.9vw,26px);
+  display:flex;flex-direction:column;gap:9px;transition:border-color .3s,transform .3s;
+  background:linear-gradient(180deg,rgba(13,18,32,.3),transparent);
+}
+.rep-step:hover{border-color:var(--n-teal);transform:translateY(-5px)}
+.rep-step .rs-n{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--n-teal)}
+.rep-step h3{font-family:var(--serif);font-weight:600;font-size:1.12rem;line-height:1.2}
+.rep-step p{color:var(--grey);font-size:13.5px;line-height:1.55}
+@media(max-width:1000px){.rep-steps{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.rep-steps{grid-template-columns:1fr}}
+
+/* outcomes — 6 cards */
+.outcomes{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.6vw,22px);margin-top:52px}
+.outcome{border:1px solid rgba(245,244,240,.12);padding:clamp(22px,2.2vw,30px);transition:border-color .3s,transform .3s}
+.outcome:hover{border-color:var(--n-teal);transform:translateY(-5px)}
+.outcome h3{font-family:var(--serif);font-weight:600;font-size:1.18rem;margin-bottom:11px}
+.outcome p{color:var(--grey);font-size:14px;line-height:1.6}
+.outcome .oc-i{width:26px;height:26px;margin-bottom:18px;color:var(--n-teal)}
+.outcome .oc-i svg{width:100%;height:100%;stroke:currentColor;fill:none;stroke-width:1.4}
+@media(max-width:940px){.outcomes{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.outcomes{grid-template-columns:1fr}}
+
+/* end-of-day readout panel */
+.readout{margin-top:52px;border:1px solid rgba(26,188,156,.35);background:linear-gradient(180deg,rgba(13,18,32,.6),transparent);padding:clamp(22px,2.6vw,36px)}
+.ro-top{display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap;margin-bottom:26px}
+.ro-ey{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--n-teal)}
+.ro-day{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--grey)}
+.ro-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(245,244,240,.1)}
+.ro-cell{background:var(--ink);padding:20px 18px}
+.ro-cell b{display:block;font-family:var(--serif);font-weight:700;font-size:clamp(1.5rem,2.4vw,2.1rem);line-height:1;color:var(--white)}
+.ro-cell.hot b{color:var(--n-red)} .ro-cell.warm b{color:var(--n-orange)} .ro-cell.go b{color:var(--n-teal)}
+.ro-cell span{display:block;margin-top:9px;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey)}
+.ro-foot{margin-top:20px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--grey-d)}
+@media(max-width:820px){.ro-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* stand pricing tints */
+.price.c-perShow .p-sub{color:var(--grey-l)} .price.c-perShow:hover{border-color:rgba(245,244,240,.4)}
+.price.c-season .p-sub{color:var(--n-teal)} .price.c-season{border-color:rgba(26,188,156,.5)} .price.c-season:hover{border-color:var(--n-teal)}
+.price.c-ent .p-sub{color:var(--gold)} .price.c-ent{border-color:rgba(245,197,24,.45)} .price.c-ent:hover{border-color:var(--gold)}
+.price.c-perShow .fee-num{color:var(--white)}
+.price.c-season .fee-num{color:var(--n-teal)}
+.price.c-ent .fee-num{color:var(--gold)}
+.price.c-season .p-feat li::before{background:var(--n-teal)}
+.price.c-ent .p-feat li::before{background:var(--gold)}
+.prod-track[data-track="stand"] .price:hover{border-color:var(--n-teal)}
 </style>
 </head>
-<body>
+<body data-product="network">
+
+<script>
+/* Set the product track BEFORE anything measures layout, so ScrollTrigger
+   only ever sees the visible track. ?p=stand / #s-… / last choice. */
+(function () {
+  var p = 'network';
+  try {
+    var q = new URLSearchParams(location.search).get('p');
+    var h = (location.hash || '').replace('#', '');
+    var s = localStorage.getItem('orbitProduct');
+    if (q === 'stand' || q === 'network') p = q;
+    else if (h.indexOf('s-') === 0) p = 'stand';
+    else if (s === 'stand' || s === 'network') p = s;
+  } catch (e) {}
+  document.body.setAttribute('data-product', p);
+})();
+</script>
 
 <div id="loader">
   <canvas id="loaderCanvas"></canvas>
@@ -779,19 +1007,61 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
     Orbit <small>by Studio EX</small>
   </a>
   <div class="nav-links">
-    <a href="#reveal">What it is</a>
-    <a href="#how">How it Works</a>
-    <a href="#proof">The Proof</a>
-    <a href="#pricing">Pricing</a>
+    <span class="only-network"><a href="#reveal">What it is</a></span>
+    <span class="only-stand"><a href="#s-reveal">What it is</a></span>
+    <span class="only-network"><a href="#how">How it Works</a></span>
+    <span class="only-stand"><a href="#s-how">How it Works</a></span>
+    <span class="only-network"><a href="#proof">The Proof</a></span>
+    <span class="only-stand"><a href="#s-proof">The Proof</a></span>
+    <span class="only-network"><a href="#pricing">Pricing</a></span>
+    <span class="only-stand"><a href="#s-pricing">Pricing</a></span>
     <a href="#contact">About</a>
   </div>
   <div class="nav-ctas">
-    <a class="btn small magnetic" href="mailto:info@in-orbit.co?subject=Orbit%20demo%20request">Demo</a>
+    <div class="nav-switch" role="group" aria-label="Choose product">
+      <button type="button" data-go="network">Networking</button>
+      <button type="button" data-go="stand">Stand</button>
+    </div>
+    <a class="btn small magnetic" id="navDemo" href="mailto:info@in-orbit.co?subject=Orbit%20demo%20request">Demo</a>
     <a class="btn small primary magnetic" href="#contact">Contact</a>
   </div>
 </nav>
 
 <a id="stickyCta" class="btn primary magnetic" href="mailto:info@in-orbit.co?subject=Orbit%20demo%20request">Demo →</a>
+
+<!-- ============ 1. GATEWAY — shared entry + product chooser ============ -->
+<section id="gateway" class="full-bleed">
+  <canvas id="gwCanvas"></canvas>
+  <div class="gw-in">
+    <div class="gw-mark">Orbit — by Studio EX</div>
+    <h1>Live events run on conversations.<br>We turn them into <b>data you can use</b>.</h1>
+    <p class="gw-sub">Orbit is the layer that captures what actually happens in a room — who met whom, who stopped at your stand, and what it was worth. <b>No app. No account. No hardware to hire.</b> One scan, on any phone, at any event.</p>
+    <div class="gw-inds">
+      <span>Conferences</span><span>Trade shows</span><span>Summits</span><span>Expos</span><span>Festivals</span><span>Weddings</span><span>Art fairs</span><span>Member communities</span>
+    </div>
+
+    <div class="gw-ask">What brings you here?<i></i></div>
+    <div class="gw-choice">
+      <button type="button" class="gw-card c-network" data-go="network">
+        <span class="gw-k">I host, organise or run events</span>
+        <h3>Orbit</h3>
+        <span class="gw-d">The Smart Networking Experience</span>
+        <p>Turn the networking in your room into a live spectacle, a better experience for every attendee, and a data asset you own — with reports for your sponsors, exhibitors and board.</p>
+        <span class="gw-go">Explore Orbit</span>
+      </button>
+      <button type="button" class="gw-card c-stand" data-go="stand">
+        <span class="gw-k">I exhibit at someone else's event</span>
+        <h3>Orbit <em>Stand</em></h3>
+        <span class="gw-d">The Smart Lead Experience</span>
+        <p>Lead capture that runs on your visitor's phone. Your reps carry a QR code, not a rented scanner — and qualify the conversation while it is still happening.</p>
+        <span class="gw-go">Explore Orbit Stand</span>
+      </button>
+    </div>
+    <p class="gw-note">Same infrastructure underneath. Pick the one you need — you can switch any time.</p>
+  </div>
+</section>
+
+<div class="prod-track" data-track="network">
 
 <!-- ============ 2. HERO ============ -->
 <section id="hero" class="full-bleed">
@@ -1413,13 +1683,337 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
   </div>
 </section>
 
+</div><!-- /prod-track network -->
+
+<!-- ================================================================
+     ORBIT STAND — exhibitor track
+================================================================= -->
+<div class="prod-track" data-track="stand">
+
+<!-- ============ S1. STAND HERO ============ -->
+<section id="s-hero" class="full-bleed">
+  <canvas id="sHeroCanvas"></canvas>
+  <div class="wrap" style="padding:0 var(--pad)">
+    <div class="eyebrow rv"><span>Orbit Stand — The Smart Lead Experience</span></div>
+    <h1>
+      <span class="rv"><span>Don't scan the badge.</span></span>
+      <span class="rv"><span>Let the badge <b>scan you</b>.</span></span>
+    </h1>
+    <p class="sub rv"><span>Lead capture that runs on your visitor's phone. Your reps carry a QR code, not a rented scanner — a visitor scans it, shares once, and your team qualifies the conversation <b>while it is still happening</b>.</span></p>
+    <div class="s-pillars rv"><span>Lead Capture &nbsp;·&nbsp; Instant Qualification &nbsp;·&nbsp; Live Dashboard &nbsp;·&nbsp; CRM Export</span></div>
+  </div>
+  <div class="scroll-hint">Scroll</div>
+</section>
+
+<!-- ============ S2. THE PROBLEM ============ -->
+<section id="s-problem">
+  <div class="narrow">
+    <div class="eyebrow fu">The Problem</div>
+    <h2 class="fu" style="max-width:26ch">Your team will have hundreds of conversations on that stand. Almost none of them <b>survive the journey home</b>.</h2>
+    <div class="problem-cards">
+      <div class="problem-card fu">
+        <div class="idx odo" data-value="01">01</div>
+        <h3>Scanner hire is a tax</h3>
+        <p>£300–£900 per device, per show — paid to the organiser, for data your own team earned standing on their feet for three days.</p>
+      </div>
+      <div class="problem-card fu">
+        <div class="idx odo" data-value="02">02</div>
+        <h3>Six reps, six lists</h3>
+        <p>Every rep captures their own way. Nothing reconciles. Monday morning is spent merging spreadsheets instead of calling leads.</p>
+      </div>
+      <div class="problem-card fu">
+        <div class="idx odo" data-value="03">03</div>
+        <h3>A name is not a reason</h3>
+        <p>A badge scan gives you a job title and a company. It tells you nothing about why they stopped, what they asked, or whether they meant it.</p>
+      </div>
+      <div class="problem-card fu">
+        <div class="idx odo" data-value="04">04</div>
+        <h3>By Monday, it's gone</h3>
+        <p>Nobody remembers the conversation. The follow-up starts three weeks late, generic, and to the wrong half of the list.</p>
+      </div>
+    </div>
+    <p class="s-punch fu">It's time to <b>activate your stand's lead data</b>.</p>
+  </div>
+</section>
+
+<!-- ============ S3. WHAT IS ORBIT STAND ============ -->
+<section id="s-reveal">
+  <canvas id="sRevealCanvas"></canvas>
+  <div class="wrap">
+    <div class="eyebrow center fu">What is Orbit Stand?</div>
+    <h2>
+      <span class="rv"><span>Lead capture that runs on</span></span>
+      <span class="rv"><span><b>your visitor's phone</b>.</span></span>
+    </h2>
+    <p class="reveal-lede fu">Your reps carry a QR code — on the card, the table, the screen, the lanyard. A visitor scans it, shares once, and your team qualifies the conversation while it is still happening.</p>
+    <div class="chips fu" style="justify-content:center;margin-top:38px">
+      <span class="chip">No App</span><span class="chip">No Scanner Hire</span><span class="chip">No Sign-up</span><span class="chip">Any Show</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ S4. THE UNLOCK ============ -->
+<section id="s-unlock">
+  <div class="narrow">
+    <div class="eyebrow fu">The unlock</div>
+    <h2 class="fu" style="max-width:24ch">Capturing leads at someone else's event is <b>broken</b>. One inversion fixes it.</h2>
+    <div class="unlock fu">
+      <div class="un-col bad">
+        <div class="un-hd">Badge scanning</div>
+        <ul>
+          <li><i>✗</i> The organiser owns and encrypts the barcode</li>
+          <li><i>✗</i> Lead retrieval is licensed back to you, per device</li>
+          <li><i>✗</i> Most exhibitor contracts forbid third-party scanning</li>
+          <li><i>✗</i> A scan is a data pull, not a signal of interest</li>
+          <li><i>✗</i> Nothing carries over to the next show</li>
+        </ul>
+      </div>
+      <div class="un-col good">
+        <div class="un-hd">Orbit Stand</div>
+        <ul>
+          <li><i>✓</i> The visitor scans your QR — you own the moment</li>
+          <li><i>✓</i> Sharing is consent, the same as handing over a card</li>
+          <li><i>✓</i> Works at any show, with no organiser permission</li>
+          <li><i>✓</i> A share is a signal — they chose to give it to you</li>
+          <li><i>✓</i> One continuous lead graph across every event</li>
+        </ul>
+      </div>
+    </div>
+    <p class="s-punch fu">One inversion solves the technical, the contractual and the consent problem <b>at once</b>.</p>
+  </div>
+</section>
+
+<!-- ============ S5. HOW IT WORKS ============ -->
+<section id="s-how">
+  <div class="narrow">
+    <div class="eyebrow fu">How it works</div>
+    <h2 class="fu">A code. A share.<br>A <b>qualified lead</b>.</h2>
+    <div class="steps" style="margin-top:52px">
+      <div class="step fu">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM18 18h3v3h-3z"/></svg></div>
+        <div><h3>Display</h3><p>A QR on the card, the table, the screen, the lanyard. Wherever your rep is standing.</p></div>
+      </div>
+      <div class="step fu">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><rect x="4" y="15" width="16" height="6" rx="1.5"/></svg></div>
+        <div><h3>Share</h3><p>Camera, browser, one tap. Eight seconds — and two seconds for every visitor after that.</p></div>
+      </div>
+      <div class="step fu">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 3a4 4 0 0 1 4 4v4a4 4 0 0 1-8 0V7a4 4 0 0 1 4-4z"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></div>
+        <div><h3>Qualify</h3><p>Temperature, intent and a ten-second voice note — logged before they've left the stand.</p></div>
+      </div>
+      <div class="step fu">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 21V9"/><path d="M8 17l4 4 4-4"/><rect x="4" y="3" width="16" height="6" rx="1.5"/></svg></div>
+        <div><h3>Export</h3><p>Deduped, ranked and drafted. Straight into your CRM, the same evening.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ S6. THE REP JOURNEY ============ -->
+<section id="s-journey">
+  <div class="narrow">
+    <div class="eyebrow fu">The Rep Journey</div>
+    <h2 class="fu">From setup to <b>compounding</b>, in eight steps.</h2>
+    <div class="rep-steps">
+      <div class="rep-step fu"><div class="rs-n">01</div><h3>Set up once</h3><p>Load your intent chips and collateral. Five minutes.</p></div>
+      <div class="rep-step fu"><div class="rs-n">02</div><h3>Pin, don't install</h3><p>The stand page lives on the home screen. Works offline.</p></div>
+      <div class="rep-step fu"><div class="rs-n">03</div><h3>Visitor scans you</h3><p>Camera, browser, one tap to share. No app, no sign-up.</p></div>
+      <div class="rep-step fu"><div class="rs-n">04</div><h3>They get value back</h3><p>Your card, deck and demo link land on their phone.</p></div>
+      <div class="rep-step fu"><div class="rs-n">05</div><h3>Qualify in the moment</h3><p>Temperature, intent, ten-second voice note.</p></div>
+      <div class="rep-step fu"><div class="rs-n">06</div><h3>Watch the stand live</h3><p>Deduped across every rep, updating in real time.</p></div>
+      <div class="rep-step fu"><div class="rs-n">07</div><h3>Nightly lead drop</h3><p>Ranked list with a drafted follow-up per lead.</p></div>
+      <div class="rep-step fu"><div class="rs-n">08</div><h3>Compound it</h3><p>One lead graph that grows across every show you do.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ S7. THE OUTCOMES ============ -->
+<section id="s-outcomes">
+  <div class="narrow">
+    <div class="eyebrow fu">The Outcomes</div>
+    <h2 class="fu">What your team actually <b>leaves with</b>.</h2>
+    <div class="outcomes">
+      <div class="outcome fu">
+        <div class="oc-i"><svg viewBox="0 0 24 24"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg></div>
+        <h3>Zero-friction capture</h3>
+        <p>No app to download, nothing to hire, nothing to charge overnight.</p>
+      </div>
+      <div class="outcome fu">
+        <div class="oc-i"><svg viewBox="0 0 24 24"><path d="M4 5h16M4 12h10M4 19h7"/><circle cx="18" cy="17" r="3.5"/></svg></div>
+        <h3>Context, not contacts</h3>
+        <p>Every lead arrives with a reason, a temperature and a note.</p>
+      </div>
+      <div class="outcome fu">
+        <div class="oc-i"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M17 14c2.2 0 4 1.8 4 4"/></svg></div>
+        <h3>One team, one list</h3>
+        <p>Six reps, one deduped record. No merging spreadsheets on Monday.</p>
+      </div>
+      <div class="outcome fu">
+        <div class="oc-i"><svg viewBox="0 0 24 24"><path d="M3 6h18v12H3z"/><path d="M3 8l9 6 9-6"/></svg></div>
+        <h3>Follow up the same day</h3>
+        <p>Drafted outreach per lead, while your stand is still fresh in mind.</p>
+      </div>
+      <div class="outcome fu">
+        <div class="oc-i"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></svg></div>
+        <h3>No scanner fees</h3>
+        <p>Stop paying per device, per show, for data you already earned.</p>
+      </div>
+      <div class="outcome fu">
+        <div class="oc-i"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg></div>
+        <h3>Stand performance data</h3>
+        <p>Which rep, which hour, which message. Real numbers to plan the next show.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ S8. THE PROOF ============ -->
+<section id="s-proof">
+  <div class="narrow">
+    <div class="eyebrow fu">The Proof</div>
+    <h2 class="fu">Built on infrastructure that already works <b>at scale</b>.</h2>
+    <div style="margin-top:36px">
+      <div class="proof-row c-blue fu"><div class="num odo" data-value="414,102">414,102</div><p>badge scans processed across real shows — the infrastructure Orbit Stand runs on.</p></div>
+      <div class="proof-row c-green fu"><div class="num odo" data-value="179,410">179,410</div><p>first-time connections formed, each one logged, mutual and kept.</p></div>
+      <div class="proof-row c-red fu"><div class="num"><span class="odo" data-value="95">95</span>%</div><p>of connections crossed industry lines — the reach a badge scan never shows you.</p></div>
+      <div class="proof-row c-teal fu"><div class="num"><span class="odo" data-value="4">4</span>&times;</div><p>more connections than an unsupported room. The same engine, pointed at your stand.</p></div>
+    </div>
+    <p class="proof-foot fu">* From live Orbit analysis of 414,102 badge scans across real shows. Every figure reproducible from source.</p>
+
+    <div class="readout fu">
+      <div class="ro-top">
+        <div class="ro-ey">Example end-of-day readout</div>
+        <div class="ro-day">Day 1 &middot; Hall 4 &middot; Stand C22</div>
+      </div>
+      <div class="ro-grid">
+        <div class="ro-cell"><b>218</b><span>Leads captured</span></div>
+        <div class="ro-cell"><b>164</b><span>Unique companies</span></div>
+        <div class="ro-cell hot"><b>31</b><span>Hot</span></div>
+        <div class="ro-cell warm"><b>77</b><span>Warm</span></div>
+        <div class="ro-cell go"><b>12</b><span>Demos booked</span></div>
+        <div class="ro-cell"><b>Pricing</b><span>Top intent</span></div>
+        <div class="ro-cell"><b>96%</b><span>Notes attached</span></div>
+        <div class="ro-cell go"><b>218</b><span>Drafts ready to send</span></div>
+      </div>
+      <p class="ro-foot">Illustrative figures, shown to explain the format of the nightly drop.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ S9. WHERE IT WORKS ============ -->
+<section id="s-where">
+  <div class="narrow">
+    <div class="eyebrow fu">Where it works</div>
+    <h2 class="fu" style="max-width:22ch">One stand or fifty. <b>Same stack, same speed.</b></h2>
+    <div class="hours">
+      <div class="hour fu"><canvas data-p="0.16"></canvas><div class="tag">Hour 1</div><div class="cap">First scans. First conversations logged.</div></div>
+      <div class="hour fu"><canvas data-p="0.5"></canvas><div class="tag">Day 2</div><div class="cap">Clusters form. Patterns in who is stopping.</div></div>
+      <div class="hour fu"><canvas data-p="1"></canvas><div class="tag">Show close</div><div class="cap">A dense, worked map of everyone you met.</div></div>
+    </div>
+  </div>
+  <div class="marquee">
+    <div class="track" id="sMqTrack">
+      <span>Trade shows <em>●</em></span><span>Expos <em>●</em></span><span>Conferences <em>●</em></span><span>Roadshows <em>●</em></span><span>Partner summits <em>●</em></span><span>Activations <em>●</em></span>
+    </div>
+  </div>
+  <div class="narrow">
+    <p class="body fu" style="max-width:62ch">Anywhere your team stands behind a table, Orbit Stand turns the conversation into a record — <b style="color:var(--white)">without ever getting between a handshake</b>.</p>
+  </div>
+</section>
+
+<!-- ============ S10. PRICING ============ -->
+<section id="s-pricing">
+  <div class="narrow">
+    <div class="eyebrow fu">Pricing</div>
+    <h2 class="fu">Priced against the scanner <b>you already rent</b>.</h2>
+    <div class="prices">
+      <div class="price c-perShow fu">
+        <h3>Stand</h3>
+        <div class="p-sub">Per-Show Licence</div>
+        <p class="use">Everything a rep needs to work a single show.</p>
+        <ul class="p-feat">
+          <li>Capture and qualify</li>
+          <li>Live team dashboard</li>
+          <li>Deduped CSV export</li>
+          <li>Customer support</li>
+        </ul>
+        <div class="fee"><span class="fee-num">from &pound;45</span><span class="fee-note">per rep, per show</span></div>
+      </div>
+      <div class="price c-season fu">
+        <h3>Season</h3>
+        <div class="p-sub">The Exhibitor Experience</div>
+        <p class="use">For teams running a full calendar of shows.</p>
+        <ul class="p-feat">
+          <li>All Stand features</li>
+          <li>Unlimited shows, one lead graph</li>
+          <li>Voice notes and transcription</li>
+          <li>CRM sync and CRM dedupe</li>
+          <li>Drafted follow-ups</li>
+        </ul>
+        <div class="fee"><span class="fee-num">from &pound;390</span><span class="fee-note">per rep, per year</span></div>
+      </div>
+      <div class="price c-ent fu">
+        <h3>Enterprise</h3>
+        <div class="p-sub">The Full Custom Experience</div>
+        <p class="use">Multi-brand exhibitors and global show programmes.</p>
+        <ul class="p-feat">
+          <li>All Season features</li>
+          <li>Custom branded capture page</li>
+          <li>Multi-brand and multi-stand</li>
+          <li>API access and SSO</li>
+          <li>Bespoke reporting and CSM</li>
+        </ul>
+        <div class="fee"><span class="fee-num">from &pound;6,000</span><span class="fee-note">per year</span></div>
+      </div>
+    </div>
+    <p class="price-notes fu">Benchmarked against &pound;300&ndash;&pound;900 per-device scanner hire, per show &middot; volume discounts from 10 seats<br>Hardware and add-on costs excluded &middot; agency and multi-brand terms available on request</p>
+  </div>
+</section>
+
+<!-- ============ S11. THE COST OF DOING NOTHING ============ -->
+<section id="s-cost">
+  <div class="narrow">
+    <div class="eyebrow fu">The cost of doing nothing</div>
+    <h2 class="fu" style="max-width:24ch">Every show without Orbit Stand is a <b>pipeline you'll never trace</b>.</h2>
+    <div class="compare fu" style="margin-top:52px">
+      <div class="without">
+        <div class="hd">Without Orbit Stand</div>
+        <ul>
+          <li><i>✗</i> Business cards lost in a jacket pocket</li>
+          <li><i>✗</i> A CSV of names with no reason attached</li>
+          <li><i>✗</i> Six rep lists that never reconcile</li>
+          <li><i>✗</i> Follow-up that starts three weeks late</li>
+          <li><i>✗</i> No idea which message actually landed</li>
+          <li><i>✗</i> Scanner invoices at every single show</li>
+          <li><i>✗</i> Next show starts from zero</li>
+        </ul>
+      </div>
+      <div class="with">
+        <div class="hd">With Orbit Stand</div>
+        <ul>
+          <li><i>✓</i> Every conversation captured in ten seconds</li>
+          <li><i>✓</i> A reason, a temperature and a note per lead</li>
+          <li><i>✓</i> One deduped list across the whole stand</li>
+          <li><i>✓</i> Drafted follow-ups the same evening</li>
+          <li><i>✓</i> Rep, hour and message performance data</li>
+          <li><i>✓</i> No per-device hire, at any show</li>
+          <li><i>✓</i> A lead graph that compounds every year</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /prod-track stand -->
+
 <!-- ============ 16. CONTACT ============ -->
 <section id="contact">
   <div class="narrow">
     <div class="grid">
       <div>
         <div class="eyebrow fu">Contact</div>
-        <h2 class="fu">Give your attendees the tools they need to find the <b>people they need</b>.</h2>
+        <div class="only-network"><h2 class="fu">Give your attendees the tools they need to find the <b>people they need</b>.</h2></div>
+        <div class="only-stand"><h2 class="fu">Give your reps the tools to leave with <b>a list they will actually work</b>.</h2></div>
         <p class="mail fu">info@<a href="mailto:info@in-orbit.co">in-orbit.co</a> — or use the form. We reply within a day.</p>
       </div>
       <form id="contactForm" class="fu">
@@ -1444,12 +2038,22 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
   <canvas id="closeCanvas"></canvas>
   <span class="ph-scrim"></span>
   <div class="inner">
-    <h2>
-      <span class="rv"><span>The best networking tool is the one you</span></span>
-      <span class="rv"><span><b>forget you're using</b>, then</span></span>
-      <span class="rv"><span><b>can't live without</b>.</span></span>
-    </h2>
-    <a class="btn primary magnetic" href="#contact">Run Orbit at your next event</a>
+    <div class="only-network">
+      <h2>
+        <span class="rv"><span>The best networking tool is the one you</span></span>
+        <span class="rv"><span><b>forget you're using</b>, then</span></span>
+        <span class="rv"><span><b>can't live without</b>.</span></span>
+      </h2>
+      <a class="btn primary magnetic" href="#contact">Run Orbit at your next event</a>
+    </div>
+    <div class="only-stand">
+      <h2>
+        <span class="rv"><span>The best lead tool is the one your reps</span></span>
+        <span class="rv"><span><b>forget they're using</b>, then</span></span>
+        <span class="rv"><span><b>can't work a show without</b>.</span></span>
+      </h2>
+      <a class="btn primary magnetic" href="#contact">Run Orbit Stand at your next show</a>
+    </div>
   </div>
 </section>
 
@@ -1461,15 +2065,18 @@ footer{border-top:1px solid rgba(245,244,240,.09);padding:70px var(--pad) 40px}
         <svg viewBox="0 0 30 30" fill="none"><circle cx="15" cy="15" r="4.5" fill="#3B6FF6"/><ellipse cx="15" cy="15" rx="13" ry="6.5" stroke="#F5F4F0" stroke-width="1.4" transform="rotate(-24 15 15)"/><circle cx="26" cy="9.5" r="2" fill="#F5F4F0"/></svg>
         Orbit
       </a>
-      <p style="color:var(--grey);font-size:14px;max-width:34ch">The Event Networking Experience. One scan turns two strangers into a connection.</p>
+      <p class="only-network" style="color:var(--grey);font-size:14px;max-width:34ch">The Event Networking Experience. One scan turns two strangers into a connection.</p>
+      <p class="only-stand" style="color:var(--grey);font-size:14px;max-width:34ch">The Smart Lead Experience. Your visitor's phone becomes your lead scanner.</p>
     </div>
     <div>
       <h4>System</h4>
-      <ul><li><a href="#reveal">What is Orbit</a></li><li><a href="#how">How it works</a></li><li><a href="#live">Live visualisation</a></li><li><a href="#proof">The proof</a></li></ul>
+      <ul class="only-network"><li><a href="#reveal">What is Orbit</a></li><li><a href="#how">How it works</a></li><li><a href="#live">Live visualisation</a></li><li><a href="#proof">The proof</a></li></ul>
+      <ul class="only-stand"><li><a href="#s-reveal">What is Orbit Stand</a></li><li><a href="#s-how">How it works</a></li><li><a href="#s-unlock">The unlock</a></li><li><a href="#s-proof">The proof</a></li></ul>
     </div>
     <div>
       <h4>Company</h4>
-      <ul><li><a href="#contact">About</a></li><li><a href="#pricing">Pricing</a></li><li><a href="#contact">Contact</a></li></ul>
+      <ul class="only-network"><li><a href="#contact">About</a></li><li><a href="#pricing">Pricing</a></li><li><a href="#contact">Contact</a></li></ul>
+      <ul class="only-stand"><li><a href="#contact">About</a></li><li><a href="#s-pricing">Pricing</a></li><li><a href="#contact">Contact</a></li></ul>
     </div>
     <div>
       <h4>Reach us</h4>
@@ -1603,7 +2210,7 @@ document.querySelectorAll('.rv > span').forEach(sp => {
   const siblings = [...parentSec.querySelectorAll('.rv > span')];
   gsap.to(sp, {
     y: 0, duration: 1.2, ease: 'power4.out',
-    delay: siblings.indexOf(sp) * 0.12 + (parentSec && parentSec.id === 'hero' ? 1.1 : 0),
+    delay: siblings.indexOf(sp) * 0.12 + (parentSec && (parentSec.id === 'hero' || parentSec.id === 's-hero') ? 1.1 : 0),
     scrollTrigger: { trigger: sp.closest('.rv'), start: 'top 88%' }
   });
 });
@@ -1876,7 +2483,7 @@ class Net {
 
 /* central animation loop for all graphs */
 const nets = [];
-function addNet(canvas, opts) { const n = new Net(canvas, opts); nets.push(n); return n; }
+function addNet(canvas, opts) { if (!canvas) return null; const n = new Net(canvas, opts); nets.push(n); return n; }
 
 /* ---------- reveal bg graph ---------- */
 const revealNet = addNet(document.getElementById('revealCanvas'), { n: 130, k: 3, seed: 7, progress: REDUCED ? 1 : 0, dim: 0.9 });
@@ -1888,6 +2495,14 @@ if (!REDUCED) ScrollTrigger.create({
 if (!REDUCED) ScrollTrigger.create({
   trigger: '#reveal', start: 'top 80%', end: 'bottom top', scrub: 0.5,
   onUpdate: s => revealNet.progress = 0.25 + s.progress * 0.75
+});
+
+/* ---------- stand track graphs ---------- */
+const sHeroNet = addNet(document.getElementById('sHeroCanvas'), { n: 120, k: 3, seed: 34, progress: REDUCED ? 1 : 0.75, dim: 0.75, longEdges: 30 });
+const sRevealNet = addNet(document.getElementById('sRevealCanvas'), { n: 120, k: 3, seed: 12, progress: REDUCED ? 1 : 0, dim: 0.9 });
+if (!REDUCED) ScrollTrigger.create({
+  trigger: '#s-reveal', start: 'top 80%', end: 'bottom top', scrub: 0.5,
+  onUpdate: s => { if (sRevealNet) sRevealNet.progress = 0.25 + s.progress * 0.75; }
 });
 
 /* ---------- journey pinned graph ---------- */
@@ -2306,7 +2921,7 @@ const heroSim = (() => {
 ================================================================ */
 const globeGlEl = document.getElementById('globeGl');
 let gg = null;
-if (globeGlEl && typeof Globe !== 'undefined') {
+if (globeGlEl && typeof Globe !== 'undefined') try {
   const CITIES = [
     [51.5, -0.12], [40.7, -74], [19.07, 72.88], [28.6, 77.2], [35.68, 139.7],
     [-33.87, 151.2], [6.45, 3.39], [-23.55, -46.63], [52.52, 13.4], [1.35, 103.8],
@@ -2345,9 +2960,14 @@ if (globeGlEl && typeof Globe !== 'undefined') {
   ctr.enableZoom = false; ctr.enablePan = false;
   gg.pointOfView({ lat: 18, lng: -30, altitude: 1.9 });
   new ResizeObserver(() => {
+    if (!gg) return;
     const r = globeGlEl.getBoundingClientRect();
     if (r.width > 10 && r.height > 10 && (Math.abs(gg.width() - r.width) > 2 || Math.abs(gg.height() - r.height) > 2)) gg.width(r.width).height(r.height);
   }).observe(globeGlEl);
+} catch (e) {
+  /* no WebGL (old GPU, hardware acceleration off, locked-down machine):
+     the globe is decorative — never let it take the rest of the page down */
+  gg = null;
 }
 
 /* ================================================================
@@ -2435,6 +3055,203 @@ requestAnimationFrame(loop);
         m.innerHTML='Sorry \u2014 something went wrong. Please email <a href="mailto:info@in-orbit.co" style="color:var(--accent)">info@in-orbit.co</a> directly.';
       });
   });
+})();
+
+/* ================================================================
+   GATEWAY — the room / the stand, one field of people
+   mesh mode  = a room connecting to itself   (networking)
+   hub mode   = visitors converging on a point (stand)
+================================================================ */
+(function () {
+  var cv = document.getElementById('gwCanvas');
+  if (!cv) return;
+  var ctx = cv.getContext('2d');
+  var W = 0, H = 0, dpr = Math.min(devicePixelRatio || 1, 2);
+  var N = MOBILE ? 62 : 118;
+  var sd = 91;
+  var rnd = function () { return (sd = (sd * 16807) % 2147483647) / 2147483647; };
+
+  var nodes = [];
+  for (var i = 0; i < N; i++) {
+    nodes.push({
+      u: 0.04 + rnd() * 0.92, v: 0.08 + rnd() * 0.84,
+      ring: 1 + Math.floor(rnd() * 3),
+      ang: rnd() * Math.PI * 2,
+      r: 1.5 + rnd() * 2.4,
+      c: SPECTRUM[Math.floor(rnd() * SPECTRUM.length)],
+      ph: rnd() * Math.PI * 2, sp: 0.3 + rnd() * 0.7,
+      x: 0, y: 0
+    });
+  }
+  /* mesh edges: k-nearest in normalised space */
+  var edges = [];
+  nodes.forEach(function (a, ai) {
+    var near = nodes.map(function (b, bi) {
+      return { j: bi, d: (a.u - b.u) * (a.u - b.u) + (a.v - b.v) * (a.v - b.v) };
+    }).filter(function (o) { return o.j !== ai; }).sort(function (p, q) { return p.d - q.d; }).slice(0, 2);
+    near.forEach(function (o) { if (ai < o.j) edges.push([ai, o.j]); });
+  });
+
+  var morph = 0, target = 0, t = 0;
+  var mx = 0.5, my = 0.5;
+
+  function fit() {
+    var r = cv.getBoundingClientRect();
+    W = Math.max(r.width, 10); H = Math.max(r.height, 10);
+    cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  fit();
+  new ResizeObserver(fit).observe(cv);
+  addEventListener('mousemove', function (e) {
+    mx = e.clientX / innerWidth; my = e.clientY / innerHeight;
+  }, { passive: true });
+
+  var hubX, hubY;
+  function draw() {
+    if (!document.body.contains(cv)) return;
+    requestAnimationFrame(draw);
+    t += 0.006;
+    morph += (target - morph) * 0.055;
+
+    ctx.clearRect(0, 0, W, H);
+    var px = (mx - 0.5) * 14, py = (my - 0.5) * 10;
+    hubX = W * 0.78 + px; hubY = H * 0.52 + py;
+    var span = Math.min(W, H) * 0.42;
+
+    for (var i = 0; i < nodes.length; i++) {
+      var nd = nodes[i];
+      var mxp = nd.u * W + Math.sin(t * nd.sp + nd.ph) * 9 + px;
+      var myp = nd.v * H + Math.cos(t * nd.sp + nd.ph) * 9 + py;
+      var rad = span * (0.24 + nd.ring * 0.26);
+      var a = nd.ang + t * 0.12 * (nd.ring % 2 ? 1 : -1);
+      var hxp = hubX + Math.cos(a) * rad;
+      var hyp = hubY + Math.sin(a) * rad * 0.62;
+      nd.x = mxp + (hxp - mxp) * morph;
+      nd.y = myp + (hyp - myp) * morph;
+    }
+
+    /* mesh edges fade out as we move to hub */
+    var meshA = (1 - morph) * 0.5;
+    if (meshA > 0.01) {
+      ctx.lineWidth = 1;
+      var maxLen = Math.min(W, H) * 0.42, maxSq = maxLen * maxLen;
+      for (var e = 0; e < edges.length; e++) {
+        var A = nodes[edges[e][0]], B = nodes[edges[e][1]];
+        var dx = A.x - B.x, dy = A.y - B.y, d2 = dx * dx + dy * dy;
+        if (d2 > maxSq) continue;
+        var fade = 1 - d2 / maxSq;
+        ctx.strokeStyle = 'rgba(120,150,220,' + (meshA * 0.55 * fade).toFixed(3) + ')';
+        ctx.beginPath(); ctx.moveTo(A.x, A.y); ctx.lineTo(B.x, B.y); ctx.stroke();
+      }
+    }
+    /* spokes fade in */
+    if (morph > 0.01) {
+      ctx.lineWidth = 1;
+      for (var s = 0; s < nodes.length; s++) {
+        var nn = nodes[s];
+        ctx.strokeStyle = 'rgba(26,188,156,' + (morph * 0.28).toFixed(3) + ')';
+        ctx.beginPath(); ctx.moveTo(nn.x, nn.y); ctx.lineTo(hubX, hubY); ctx.stroke();
+      }
+      ctx.beginPath();
+      ctx.arc(hubX, hubY, 5 + Math.sin(t * 2) * 1.2, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(26,188,156,' + (morph * 0.95).toFixed(3) + ')';
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(hubX, hubY, 16 + Math.sin(t * 2) * 4, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(26,188,156,' + (morph * 0.35).toFixed(3) + ')';
+      ctx.stroke();
+    }
+    for (var k = 0; k < nodes.length; k++) {
+      var q = nodes[k];
+      ctx.globalAlpha = 0.5 + 0.4 * Math.sin(t * q.sp + q.ph) * 0.4 + 0.25;
+      ctx.fillStyle = q.c;
+      ctx.beginPath(); ctx.arc(q.x, q.y, q.r, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+  if (!REDUCED) draw(); else { fit(); }
+
+  if (!REDUCED && typeof gsap !== 'undefined') {
+    gsap.from('#gateway .gw-mark, #gateway h1, #gateway .gw-sub, #gateway .gw-inds, #gateway .gw-ask, #gateway .gw-card, #gateway .gw-note',
+      { opacity: 0, y: 28, duration: 1, ease: 'power3.out', stagger: 0.07, delay: 1.25 });
+  }
+
+  /* hovering a choice card previews that product's shape */
+  document.querySelectorAll('.gw-card').forEach(function (card) {
+    var to = card.dataset.go === 'stand' ? 1 : 0;
+    card.addEventListener('mouseenter', function () { target = to; });
+    card.addEventListener('focus', function () { target = to; });
+    card.addEventListener('mouseleave', function () { target = 0; });
+    card.addEventListener('blur', function () { target = 0; });
+  });
+})();
+
+/* ================================================================
+   PRODUCT SWITCHING — gateway cards + nav pills
+================================================================ */
+(function () {
+  var VALID = { network: 1, stand: 1 };
+  var FIRST = { network: '#hero', stand: '#s-hero' };
+  var SUBJ = {
+    network: 'mailto:info@in-orbit.co?subject=Orbit%20demo%20request',
+    stand: 'mailto:info@in-orbit.co?subject=Orbit%20Stand%20demo%20request'
+  };
+
+  function replay(track) {
+    if (REDUCED || typeof gsap === 'undefined') return;
+    /* re-arm the reveals inside the track we are about to show, so the
+       user sees them animate rather than arriving pre-revealed */
+    track.querySelectorAll('.rv > span').forEach(function (sp) { gsap.set(sp, { y: '110%' }); });
+    track.querySelectorAll('.fu').forEach(function (el) { gsap.set(el, { opacity: 0, y: 40 }); });
+    ScrollTrigger.getAll().forEach(function (st) {
+      if (st.trigger && track.contains(st.trigger) && st.animation) st.animation.progress(0).pause();
+    });
+  }
+
+  function setProduct(p, opts) {
+    if (!VALID[p]) return;
+    opts = opts || {};
+    var cur = document.body.getAttribute('data-product');
+    var track = document.querySelector('.prod-track[data-track="' + p + '"]');
+    if (p !== cur && track) replay(track);
+
+    document.body.setAttribute('data-product', p);
+    try { localStorage.setItem('orbitProduct', p); } catch (e) {}
+
+    var demo = document.getElementById('navDemo'), sticky = document.getElementById('stickyCta');
+    if (demo) demo.href = SUBJ[p];
+    if (sticky) sticky.href = SUBJ[p];
+
+    try {
+      var u = new URL(location.href);
+      u.searchParams.set('p', p);
+      history.replaceState(null, '', u.pathname + u.search);
+    } catch (e) {}
+
+    if (typeof ScrollTrigger !== 'undefined') {
+      ScrollTrigger.refresh();
+      setTimeout(function () { ScrollTrigger.refresh(); }, 420);
+    }
+
+    if (opts.scroll) {
+      var t = document.querySelector(FIRST[p]);
+      if (t) {
+        if (lenis) lenis.scrollTo(t, { offset: 0, duration: 1.15 });
+        else t.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }
+
+  document.querySelectorAll('.gw-card').forEach(function (b) {
+    b.addEventListener('click', function () { setProduct(b.dataset.go, { scroll: true }); });
+  });
+  document.querySelectorAll('.nav-switch button').forEach(function (b) {
+    b.addEventListener('click', function () { setProduct(b.dataset.go, { scroll: true }); });
+  });
+
+  /* keep the demo links right for the track chosen before this script ran */
+  setProduct(document.body.getAttribute('data-product') || 'network', {});
 })();
 </script>
 </body>
